@@ -8,8 +8,8 @@ import json
 import struct
 from datetime import datetime
 from bin2json import bin2json
-from zmq_utils import load_items_from_bin, send_all, send_weibo
-#from zmq_csv_utils import send_weibo
+#from zmq_utils import load_items_from_bin, send_all, send_weibo
+from zmq_csv_utils import send_weibo
 
 reload(sys)
 sys.path.append('../../')
@@ -58,14 +58,16 @@ if __name__=="__main__":
                 continue
             elif item == "RESTART": # restart the vent work
                 message = "RESTART"
-                total_count, total_cost = send_weibo(sender, poller, controller, total_count, total_cost)
+                #total_count, total_cost = send_weibo(sender, poller, controller, total_count, total_cost)
+                total_count, total_cost = send_weibo(sender, total_count, total_cost)
         else:
             if message == "PAUSE":
                 time.sleep(10)
                 print message
                 continue
             else:
-                total_count, total_cost = send_weibo(sender, poller, controller, total_count, total_cost)
+                #total_count, total_cost = send_weibo(sender, poller, controller, total_count, total_cost)
+                total_count, total_cost = send_weibo(sender, total_count, total_cost)
 
            
 
