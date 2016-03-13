@@ -11,7 +11,9 @@ from bin2json import bin2json
 
 reload(sys)
 sys.path.append('../../')
-from global_config import ZMQ_VENT_PORT_FLOW4, ZMQ_CTRL_VENT_PORT_FLOW4, ZMQ_VENT_HOST_FLOW1, ZMQ_CTRL_HOST_FLOW1, BIN_FILE_PATH, WRITTEN_TXT_PATH
+from global_config import ZMQ_VENT_PORT_FLOW4, ZMQ_CTRL_VENT_PORT_FLOW4,\
+                          ZMQ_VENT_HOST_FLOW1, ZMQ_CTRL_HOST_FLOW1,\
+                          BIN_FILE_PATH, WRITTEN_TXT_PATH
 from global_config import REPLICA_BIN_FILE_PATH
 
 BIN_FILE_PATH = REPLICA_BIN_FILE_PATH

@@ -58,6 +58,8 @@ R_12 = _default_redis(host=REDIS_HOST, port=REDIS_PORT, db=12)
 R_DICT = {'0':R_0, '1':R_1, '2':R_2, '3':R_3, '4':R_4, '5':R_5, '6':R_6, '7':R_7,\
           '8':R_8, '9':R_9, '10':R_10, '11':R_11, '12':R_12}
 
+#use to save user sentiment trend for all
+R_SENTIMENT_ALL = _default_redis(host=REDIS_HOST, port=REDIS_PORT, db=11)
 
 #use to save user domain in user_portrait
 R_DOMAIN = _default_redis(host=REDIS_HOST, port=REDIS_PORT, db=12)
