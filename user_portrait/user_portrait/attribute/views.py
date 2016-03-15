@@ -12,6 +12,10 @@ from search import search_bidirect_interaction, search_preference_attribute, sea
 from search import search_sentiment_weibo, get_influence_trend, search_remark, edit_remark
 from search import search_character_psy
 from search_daily_info import search_origin_attribute, search_retweeted_attribute, search_user_index
+#use to get new user portrait overview
+from new_search import new_get_user_profile, new_get_user_portrait,\
+        new_get_user_evaluate, new_get_user_location, new_get_user_social,\
+        new_get_user_weibo
 #from search_mid import index_mid
 from user_portrait.search_user_profile import es_get_source
 from user_portrait.global_utils import es_user_portrait as es
@@ -31,6 +35,76 @@ attribute_index_name = 'custom_attribute'
 attribute_index_type = 'attribute'
 
 mod = Blueprint('attribute', __name__, url_prefix='/attribute')
+
+
+
+# url for new user_portrait overview
+# profile information
+# write in version: 16-03-15
+@mod.route('/new_user_profile/')
+def ajax_new_user_profile():
+    uid = request.args.get('uid', '')
+    results = new_get_user_profile(uid)
+    if not results:
+        result = {}
+    return json.dumps(results)
+
+# url for new user_portrait overview
+# tag information/sensitive_words&keywords&hashtag/domain&topic&character
+# write in version: 16-03-15
+@mod.route('/new_user_portrait/')
+def ajax_new_user_portrait():
+    admin_user = request.args.get('admin_user', '')
+    uid = request.args.get('uid', '')
+    results = new_get_user_portrait(uid, admin_user)
+    if not results:
+        results = {}
+    return json.dumps(results)
+
+# url for new user_portrait overview
+# evaluate index
+# write in version: 16-03-15
+@mod.route('/new_user_evaluate/')
+def ajax_new_user_evaluate():
+    uid = request.args.get('uid', '')
+    results = new_get_user_evaluate(uid)
+    if not results:
+        results = {}
+    return json.dumps(results)
+
+# url for new user_portrait overview
+# location
+# write in version: 16-03-15
+@mod.route('new_user_location')
+def ajax_new_user_location():
+    uid = request.args.get('uid', '')
+    results = new_get_user_location(uid)
+    if not results:
+        results = {}
+    return json.dumps(results)
+
+# url for new user_portrait overview
+# social
+# write in version: 16-03-15
+@mod.route('new_user_social')
+def ajax_new_user_social():
+    uid =request.args.get('uid', '')
+    results = new_get_user_social(uid)
+    if not result:
+        results = {}
+    return json.dumps(results)
+
+# url for new user_portrait overview
+# weibo
+# write in version: 16-03-15
+@mod.route('new_user_weibo')
+def ajax_new_user_weibo():
+    uid = request.args.get('uid', '')
+    sort_type = request.args.get('sort_type', '')
+    results = new_get_user_weibo(uid, sort_type)
+    if not result:
+        results = {}
+    return json.dumps(results)
 
 @mod.route('/portrait_attribute/')
 def ajax_portrait_attribute():
