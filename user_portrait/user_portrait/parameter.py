@@ -15,6 +15,11 @@ MAX_VALUE = 99999999
 WEEK = 7
 EXPIRE_TIME = 8*24*3600
 
+#new attribute: verified_type
+verified_num2ch_dict = {-1: u'普通用户', 0:u'名人', 1: u'政府', 2: u'企业',\
+        3:u'媒体', 4:u'校园', 5: u'网站', 6:u'应用', 7:u'团体(机构)',\
+        8:u'待审企业', 200:u'初级达人', 220:u'中高级达人', 400:u'已故v用户'}
+
 #attribute: IP
 IP_TIME_SEGMENT = 4*3600 # return every 4 hour statistic result for ip information
 IP_TOP = 5 # return Top-5 ip for every time segment
