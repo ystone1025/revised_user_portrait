@@ -4,12 +4,36 @@ import sys
 
 reload(sys)
 sys.path.append('../../')
-from user_portrait.global_utils import es_user_portrait, portrait_index_name, portrait_index_type
+from user_portrait.global_utils import es_user_portrait, portrait_index_name,\
+                      portrait_index_type, es_sentiment_task, sentiment_keywords_index_name ,\
+                      sentiment_keywords_index_type, R_SENTIMENT_KEYWORDS,\
+                      r_sentiment_keywords_name
 
 #use to read task information from redis queue
 def get_task_information():
-    results = {}
-    return results
+    try:
+        results = R_SENTIMENT_KEYWORDS.rpop(r_sentiment_keywords_name)
+    except:
+        results = {}
+    if result:
+        task_information_dict = json.loads(results)
+    else:
+        task_information_dict = {}
+
+    return task_information_dict
+
+#use to identify the task is exist in es
+def identify_task_exist(task_information_dict):
+    task_id = task_information_dict['task_id']
+    try:
+        task_exist = es_sentiment_task.get(index=sentiment_keywords_index_name, \
+                doc_type=sentiment_keywords_index_type, id=task_id)['_source']
+    except:
+        task_exist = {}
+    if not task_exist:
+        return False
+    else:
+        return True
 
 
 #use to read task information from queue

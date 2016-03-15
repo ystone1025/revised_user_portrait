@@ -119,6 +119,7 @@ def save_sentiment_domain(date, new_timestamp, sentiment, uid):
             sentiment = 7
         r_domain_sentiment_name = r_domain_sentiment_pre + date + '_' + str(sentiment) + '_' + user_domain
         R_DOMAIN_SENTIMENT.hincrby(r_domain_sentiment_name, new_timestamp, 1)
+        
 
 #use to compute topic sentiment trend for user in user_portrait
 def save_sentiment_topic(date, new_timestamp, sentiment, uid):
