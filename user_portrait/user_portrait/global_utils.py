@@ -92,6 +92,7 @@ update_month_redis = _default_redis(host=REDIS_HOST, port=REDIS_PORT, db=5)
 UPDATE_MONTH_REDIS_KEY = 'update_month'
 
 # elasticsearch initialize, one for user_profile, one for user_portrait
+#es_user_profile = Elasticsearch(USER_PROFILE_ES_HOST, timeout = 600)
 es_user_profile = Elasticsearch(USER_PORTRAIT_ES_HOST, timeout = 600)
 es_user_portrait = Elasticsearch(USER_PORTRAIT_ES_HOST, timeout = 6000)
 es_flow_text = Elasticsearch(FLOW_TEXT_ES_HOST, timeout=600)

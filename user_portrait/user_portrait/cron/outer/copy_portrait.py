@@ -43,13 +43,8 @@ def co_search(es, user_list, bulk_action, count_n, tb):
             bulk_action.extend([xdata[0], xdata[1]])
             count_n += 1
             if count_n % 1000 == 0:
-                while True:
-                    try:
-                        es.bulk(bulk_action, index=index_destination, doc_type=index_destination_doctype, timeout=30)
-                        bulk_action = []
-                        break
-                    except:
-                        es = ES_CLUSTER_FLOW1
+                es.bulk(bulk_action, index=index_destination, doc_type=index_destination_doctype, timeout=30)
+                bulk_action = []
                 print count_n
 
             if count_n % 10000 == 0:

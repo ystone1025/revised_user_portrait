@@ -108,17 +108,17 @@ if __name__ == "__main__":
     ts = tb
     while 1:
         item = receiver.recv_json()
-        
+
         if not item:
             continue 
-        
+
         if int(item['sp_type']) == 1:
             try:
                 cal_text_work(item)
                 cal_text_sensitive(item)
             except Exception, r:
                 print Exception, r
-        
+
         count += 1
         #run_type
         if count % 10000 == 0 and RUN_TYPE == 0:
