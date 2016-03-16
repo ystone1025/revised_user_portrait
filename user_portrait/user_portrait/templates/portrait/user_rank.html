@@ -1,0 +1,88 @@
+{% extends "tbase.html" %}
+{% block title %}用户排行{% endblock title%}
+
+{% block css %}
+{{ super() }}
+<link  type="text/css" href="/static/personal/css/style.css" rel="stylesheet"/>
+<link  type="text/css" href="/static/personal/css/basic.css" rel="stylesheet"/>
+<style>
+	.shadow {
+		-webkit-box-shadow:5px 6px 3px #ABA8A8;
+		-moz-box-shadow:5px 6px 3px #ABA8A8;
+		box-shadow:5px 6px 3px #ABA8A8;
+	}
+</style>
+
+{% endblock css %}
+
+{% block head_js %}
+{{ super() }}
+<script type="text/javascript" src='/static/js/esl.js'></script>
+<script type="text/javascript" src='/static/js/echarts-all.js'></script>
+<script type="text/javascript" src='/static/js/echarts.js'></script>
+{% endblock %}
+
+{% block main %}
+	<h3>用户排行</h3>
+	<hr>
+	<div id=''>
+		<h4>排序设置</h4>
+		<table class="shadow" style="margin:30px;width:900px; height:150px;border: 2px solid #cccccc;">
+			<tr style="border-bottom: 1px solid #cccccc;">
+				<td style="background-color: #E4E4E4;text-align: center;">排序范围</td>
+				<td>
+					<select style="float: left;">
+						<option value='0'>库内-不限</option>
+						<option value='1'>库内-按身份</option>
+						<option value='2'>库内-按话题</option>
+						<option value='3'>库内-按关键词</option>
+						<option value='4'>库内-按Hashtag</option>
+						<option value='5'>库内-按地理位置</option>
+						<option value='6'>全网-不限<option>
+						<option value='7'>全网-按关键词</option>
+					</select>
+					<div style="float: left;margin-left:15px;">
+						<select>
+							<option value='0'>库内-不限</option>
+							<option value='1'>库内-按身份</option>
+							<option value='2'>库内-按话题</option>
+							<option value='3'>库内-按关键词</option>
+							<option value='4'>库内-按Hashtag</option>
+							<option value='5'>库内-按地理位置</option>
+							<option value='6'>全网-不限<option>
+							<option value='7'>全网-按关键词</option>
+						</select>
+					</div>
+				</td>
+			</tr>
+			<tr style="border-bottom: 1px solid #cccccc;">
+				<td  style="background-color: #E4E4E4;text-align: center;">排序指标</td>
+				<td>
+					<select>
+						<option value="0">重要度</option>
+						<option value="1">活跃度</option>
+						<option value="2">影响力</option>
+						<option value="3">敏感度</option>
+						<option value="4">突发重要度变动</option>
+						<option value="5">突发活跃度变动</option>
+						<option value="6">突发影响力变动</option>
+						<option value="7">突发敏感度变动</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td  style="background-color: #E4E4E4;text-align: center;">时间范围</td>
+				<td>
+					<input id="rank_from" type='text' class="form-control" style='width:145px; display:inline-block;height:25px;'>&nbsp;-&nbsp;
+	           		<input id="rank_to" type='text' class="form-control" style='width:145px; display:inline-block;height:25px'>
+					<span id="rank_style" class="label label-success" style='float:right;cursor:pointer; background-color:rgba(69, 133, 195, 0.89);margin-right:20px;'>提交</span>		
+				</td>
+			</tr>		
+		</table>
+
+	</div>
+
+
+<script type="text/javascript" src="/static/js/portrait/user_rank.js"></script>
+
+{% endblock %}
