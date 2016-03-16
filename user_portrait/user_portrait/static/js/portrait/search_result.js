@@ -137,17 +137,6 @@ Search_weibo_result.prototype = {
   }
 }
 
-function gender(num){
-    if (num == '1'){
-        return '男';
-    }
-    else if (num == '2'){
-        return '女';
-    }
-    else{
-        return '未知';
-    }
-}
 var global_pre_page = 1;
 var global_choose_uids = new Array();
 var global_data = new Array();

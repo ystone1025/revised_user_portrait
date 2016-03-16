@@ -10,6 +10,50 @@ function bindAdvanced(){
         }
     });
 }
+function get_simple_par(){
+    var str = '&uname=' + $('#uname').val();
+    return str
+}
+function get_advanced_par(){
+    var temp='';
+    var input_value;
+    var input_name;
+    $('.ad-search').each(function(){
+        input_name = '&' + $(this).attr('name');
+        input_value = '=' + $(this).val();
+        temp += input_name;
+        temp += input_value;;
+    });
+    
+    var psycho_status_by_emotion = new Array();
+    $("[name='psycho_status_by_emotion']:checked").each(function(){
+        psycho_status_by_emotion.push($(this).val());
+    });
+    temp += '&psycho_status_by_emotion=' + psycho_status_by_emotion.join(',');
+    
+    var psycho_status_by_word = new Array();
+    $("[name='psycho_status_by_word']:checked").each(function(){
+        psycho_status_by_word.push($(this).val());
+    });
+    temp += '&psycho_status_by_word=' + psycho_status_by_word.join(',');
+    
+    var domain = new Array();
+    $("[name='domain']:checked").each(function(){
+        domain.push($(this).val());
+    });
+    temp += '&domain=' + domain.join(',');
+
+    var topic = new Array();
+    $("[name='topic']:checked").each(function(){
+        topic += $(this).val() + ',';
+    });
+    temp += '&topic=' + topic.join(',');
+
+    temp += '&tag=' + $('[name="tag_type"]').val();
+    temp += ':' + $('[name="tag_name"]').val();
+
+    return temp;
+}
 function base_call_ajax_request(url, callback){
     $.ajax({
         url:url,

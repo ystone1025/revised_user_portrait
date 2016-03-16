@@ -5,7 +5,13 @@
     border:1px solid #c5c1c1;
 }
 .portrait_button{
+	display: inline-block;
+	color: #FFF;
+	border: 1px solid #334EE3;
+	border-radius: 2px;
     background-color:#6699FF;
+    width:90px;
+    height:40px;
 }
 .portrait_href{
     color:#0000CC;
@@ -337,16 +343,6 @@ background: #000 none repeat scroll 0% 0%;
 }
 .hidden{
 display:none;
-}
-.bluebtn {
-	display: inline-block;
-	background: #6699FF none repeat scroll 0% 0%;
-	color: #FFF;
-	border: 1px solid #334EE3;
-	border-radius: 2px;
-	width: 108px;
-	float: right;
-	margin-right: 10px;
 }
 .mright38{
 	margin-right: 38px;
