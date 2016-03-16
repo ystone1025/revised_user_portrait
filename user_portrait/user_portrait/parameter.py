@@ -341,11 +341,3 @@ sensitive_score_dict = {
     "3": 10
 }
 
-ES_SENSITIVE_INDEX = "sensitive_history"
-DOCTYPE_SENSITIVE_INDEX = "sensitive"
-COPY_USER_PORTRAIT_INFLUENCE = "copy_user_portrait_influence"
-COPY_USER_PORTRAIT_INFLUENCE_TYPE = 'bci'
-COPY_USER_PORTRAIT_IMPORTANCE = "copy_user_portrait_importance"
-COPY_USER_PORTRAIT_IMPORTANCE_TYPE = 'importance'
-COPY_USER_PORTRAIT_ACTIVENESS = "copy_user_portrait_activeness"
-COPY_USER_PORTRAIT_ACTIVENESS_TYPE = 'activeness'
