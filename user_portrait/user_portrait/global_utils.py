@@ -10,7 +10,7 @@ from global_config import REDIS_CLUSTER_HOST_FLOW1, REDIS_CLUSTER_PORT_FLOW1,\
 from global_config import WEIBO_API_HOST, WEIBO_API_PORT
 from global_config import USER_PROFILE_ES_HOST, USER_PROFILE_ES_PORT, ES_CLUSTER_HOST_FLOW1,\
                           USER_PORTRAIT_ES_HOST, USER_PORTRAIT_ES_PORT,\
-                          FLOW_TEXT_ES_HOST, FLOW_TEXT_ES_PORT
+                          FLOW_TEXT_ES_HOST, FLOW_TEXT_ES_PORT, ES_COPY_USER_PORTAIT_HOST
 from global_config import UNAME2UID_HOST, UNAME2UID_PORT
 from global_config import RETWEET_REDIS_HOST, RETWEET_REDIS_PORT
 from global_config import COMMENT_REDIS_HOST, COMMENT_REDIS_PORT
@@ -176,4 +176,17 @@ def get_client(api_host=WEIBO_API_HOST, api_port=WEIBO_API_PORT):
 
 ES_DAILY_RANK = _default_es_cluster_flow1(host=ES_CLUSTER_HOST_FLOW1)
 
+ES_SENSITIVE_INDEX = "sensitive_history"
+DOCTYPE_SENSITIVE_INDEX = "sensitive"
+
+# 存储user_portrait的重要度/活跃度/影响力和敏感度，与es_flow1一致
+ES_COPY_USER_PORTRAIT = _default_es_cluster_flow1(host=ES_COPY_USER_PORTAIT_HOST)
+COPY_USER_PORTRAIT_INFLUENCE = "copy_user_portrait_influence"
+COPY_USER_PORTRAIT_INFLUENCE_TYPE = 'bci'
+COPY_USER_PORTRAIT_IMPORTANCE = "copy_user_portrait_importance"
+COPY_USER_PORTRAIT_IMPORTANCE_TYPE = 'importance'
+COPY_USER_PORTRAIT_ACTIVENESS = "copy_user_portrait_activeness"
+COPY_USER_PORTRAIT_ACTIVENESS_TYPE = 'activeness'
+COPY_USER_PORTRAIT_SENSITIVE = "copy_user_portrait_sensitive"
+COPY_USER_PORTRAIT_SENSITIVE_TYPE = 'sensitive'
 

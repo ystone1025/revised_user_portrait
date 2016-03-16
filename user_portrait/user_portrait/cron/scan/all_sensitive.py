@@ -13,7 +13,8 @@ sys.path.append('./../../')
 from global_utils import es_user_profile as es
 from global_utils import R_CLUSTER_FLOW2 as r
 from global_utils import R_ADMIN as r_sensitive
-from parameter import sensitive_score_dict, DAY, ES_SENSITIVE_INDEX, DOCTYPE_SENSITIVE_INDEX
+from parameter import sensitive_score_dict, DAY
+from global_utils import ES_SENSITIVE_INDEX, DOCTYPE_SENSITIVE_INDEX
 from parameter import WEEK, MONTH, RUN_TYPE
 from time_utils import ts2datetime, datetime2ts
 from sensitive_history_mappings import mappings
