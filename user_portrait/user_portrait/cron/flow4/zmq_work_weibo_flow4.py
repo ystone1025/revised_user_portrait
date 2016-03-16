@@ -151,13 +151,13 @@ if __name__ == "__main__":
     ts = tb
     while 1:
         item = receiver.recv_json()
-        
+
         if not item:
             continue 
 
         if int(item['sp_type']) == 1:
             #step1: compute hashtag to save redis
-            #cal_text_work(item)
+            cal_text_work(item)
             #step2: compute sentiment to redis
             uid = item['uid']
             text = item['text']
@@ -178,7 +178,6 @@ if __name__ == "__main__":
             #step6: save to sentiment in topic
             save_sentiment_topic(date, new_timestamp, sentiment, uid)
 
-        
         count += 1
         #run_type
         if count % 10000 == 0 and RUN_TYPE == 0:

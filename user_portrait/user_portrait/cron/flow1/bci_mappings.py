@@ -64,6 +64,9 @@ index_info = {
                 'retweeted_weibo_number': {
                     "type": "long",
                 },
+                'total_number': {
+                    "type": "long",
+                },
                 'retweeted_weibo_comment_top_number': {
                     "type": "long",
                 },
