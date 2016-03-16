@@ -61,54 +61,49 @@
 		{% block header %}
 			<div id="header">
                 <a href="/index/"><h1 class="headtitle" style="color:#333;">网民画像系统</h1></a>
-				<div class="fleft entrance">
-					<a title="" href="/profile/" target="_blank" class="link2portrait">人物背景信息库入口</a>
-				</div>
-				
-		        <div class="fright userInfo">
-		                <a title="logout" href=""> 登出 </a>
-		        </div>
-		    </div>
+				<div class="example">
+        <ul id="nav">
+                    <li><a href="">用户排名</a></li>
+                    <li><a href="">情绪监控</a></li>
+                    <li><a href="">网民画像</a>
+                        <div>
+                            <ul>
+                                <li><a href="#">查看人物画像</a></li>
+                                <li><a href="#">人物对比分析</a></li>
+                                <li><a href="#">人物关联分析</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="">群体分析</a>
+                        <div>
+                            <ul>
+                                <li><a href="#">群体发现</a></li>
+                                <li><a href="#">群体分析</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="#">社会感知</a></li>
+                    <li><a href="#">个人中心</a></li>
+                    <li><a href="#">出入管理</a>
+					    <div>
+					        <ul>
+							    <li><a href="#">入库管理</a></li>
+								<li><a href="#">出库管理</a></li>
+                            </ul>
+                        </div>
+					</li>
+                    <li><a title="logout" href=""> 登出 </a></li>
+                </ul>
+            </div>
+		</div>
 		{% endblock %}
 		<!-- end 导航 -->
-		
-		<!-- 左侧导航 -->
-		{% block left %}
-			<div class="leftsidebar_box">
-				<ul class="ce" style="position:fixed;top:40%;">
-					<li> <a class=""  href="/index/">整体概览</a> </li>
-					<li> <a>管理操作<img class="more fright" src="/static/img/more.png"/></a>
-						<ul class="er">
-							<li> <a  style="padding-left:50px;" href="/index/recommend_in/">入库管理</a></li>
-							<li> <a  style="padding-left:50px;" href="/index/recommend_out/">出库管理</a> </li>
-							<li> <a  style="padding-left:50px;" href="/index/tag/">自定义标签</a> </li>
-						</ul>
-					</li>
-					<li><a>综合应用<img class="more fright" src="/static/img/more.png"/></a>
-						<ul class="er">
-							<li> <a  style="padding-left:50px;" href="/index/contrast_analysis/">对比分析</a> </li>
-							<li> <a  style="padding-left:50px;" href="/index/group/">群体分析</a> </li>
-                            <!--<li> <a  style="padding-left:50px;" href="/index/influence_rank/">影响力分析</a> </li>-->
-							<li> <a  style="padding-left:50px;" href="/index/social_sensing/">社会感知</a> </li>
-						</ul>
-					</li>
-				</ul>
-			</div>	
-		{% endblock %}
-		<!-- end 导航 -->
-		
-		<!-- 高级搜索 -->
-		{% block search %}
-			<div id = "float-wrap"  class="hidden"></div>				
-		
-		{% endblock %}
-		<!-- end serarch -->
-		
+
 		<!-- start main -->
-		<div id="main" style="font-size:13px;margin-left:200px;margin-top:45px;width:1000px;">
-            <h2 style='font-size:24px;font-weight:bold;font-family:Microsoft Yahei;'>{% block head_title %}{% endblock head_title %}</h2>
+        <div id="main" style="margin-left:200px;margin-top:45px;width:1000px;">
+            <h2 style='font-size:24px;font-family:Microsoft Yahei;font-weight:bold'>{% block head_title %}{% endblock %}</h2>
             <hr style='width:1100px;'>
-            {% block main %}
+			{% block main %}
 
 			{% endblock %}
 		</div>
@@ -116,27 +111,6 @@
 
 		<!-- DIY js -->
 		{% block Own_js %}
-			<script type="text/javascript">
-                $(".ce > li > a").click(function(){
-                     $(this).addClass("xz").parents().siblings().find("a").removeClass("xz");
-                     $(this).parents().siblings().find(".er").hide(300);
-                     $(this).siblings(".er").toggle(300);
-                     $(this).parents().siblings().find(".er > li > .thr").hide().parents().siblings().find(".thr_nr").hide();
-                    
-                })
-                
-                $(".er > li > a").click(function(){
-                    $(this).addClass("sen_x").parents().siblings().find("a").removeClass("sen_x");
-                    $(this).parents().siblings().find(".thr").hide(300);	
-                    $(this).siblings(".thr").toggle(300);	
-                })
-
-                $(".thr > li > a").click(function(){
-                     $(this).addClass("xuan").parents().siblings().find("a").removeClass("xuan");
-                     $(this).parents().siblings().find(".thr_nr").hide();	
-                     $(this).siblings(".thr_nr").toggle();
-                })
-            </script>
 		{% endblock %}
 		<!-- end DIY -->
 

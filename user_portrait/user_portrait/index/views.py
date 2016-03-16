@@ -15,6 +15,10 @@ def loading():
 
     return render_template('portrait/overview.html')
 
+@mod.route('/user_rank/')
+def user_rank():
+    return render_template('portrait/user_rank.html')
+
 @mod.route('/social_sensing/')
 def social_sensing():
     return render_template('portrait/social_sensing.html')
