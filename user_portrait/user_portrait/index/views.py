@@ -68,6 +68,22 @@ def tag():
 def contrast_analysis():
     return render_template('portrait/contrast_analysis.html')
 
+@mod.route('/portrait_in/')
+def portrait_in():
+    return render_template('portrait/portrait_in.html')
+
+@mod.route('/search_portrait/')
+def search_portrait():
+    return render_template('portrait/search_portrait.html')
+
+@mod.route('/search_contrast/')
+def search_contrast():
+    return render_template('portrait/search_contrast.html')
+
+@mod.route('/search_connect/')
+def search_connect():
+    return render_template('portrait/search_connect.html')
+'''
 @mod.route('/search_result/')
 def search_result():
     stype = request.args.get('stype', '1')
@@ -93,7 +109,7 @@ def search_result():
                 location=location, activity_geo=activity_geo, adkeyword=adkeyword, hashtag=hashtag, psycho_status_by_emotion=psycho_status_by_emotion,psycho_status_by_word=psycho_status_by_word,\
                 psycho_feature=psycho_feature, domain=domain, topic=topic, tag=tag)
 
-
+'''
 @mod.route('/contact/')
 def contact():
     uid = request.args.get('uid', '2001627641')
