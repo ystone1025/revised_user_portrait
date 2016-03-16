@@ -57,148 +57,198 @@ $(function(){
 {% endblock head_js %}
 
 {% block main %}
-<div id="basicwrapper">
-	<!-- end #menu -->
-	<div id="basicpage">
-	<div id="basicpage-bgtop">
-    <div id="basicpage-bgbtm">
-        <div class="framepost" id="frametopbar">
-            <h3 class='title'>个人注册信息</h3>
-            <div style="width:180px; float:left;margin:10px;"><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="170" height="170" /></span></div>
-            <div style="width:750px; float:right;padding-top:10px;padding-right:10px;">
-                <div style="height:70px; margin-bottom: 8px;">
-                  <div style="width:640px; float:left;">
-                      <span class="nickname" id="nickname"></span>
-                    <a style="font-size:15px;margin-left:15px;" href='#detail' onclick="$('#detail').css('display','block');">查看详细属性</a>
-                    <div class="PersonPre" style="margin-bottom:5px;">
-                        <!--<span class="lightw">个人描述：</span>-->
-                        <span class="" style="font-family: "宋体";" id="portraitDetail"></span>
-                    </div>
-                  </div>
-                  <div style="width:100px; font-size:15px;float:right; text-align: right;">
-                      <br />
-                      <a id="homepage" target="_blank" style="cursor:pointer;">ta的微博主页</a>
-                      <br />
-                      <a id="contact" target="_blank" style="cursor:pointer;">与ta相关的人</a>
-                      <br/>
-                  </div>
-                </div>
-              </div>
-              <div style="width:750px; float:right;">
-                <div style="height:90px;font-weight:bold;font-size:14px;margin-right:10px;border-style:solid;border-width: 1px; padding: 5px; border-color: #CCCCCC; background-color: #FFFFFF;">
-                    <div class="cols" style="width:700px;margin-top:0px;">
-                        <div style="width:230px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">用户ID</span>
-                            <span class="fleft lineh42 mright38" id="userId" ></span>
-                        </div>
-                        <div style="width:245px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">注册地</span>
-                            <span class="fleft lineh42 mright38" id="userLocation" ></span>
-                        </div>
-                        <div style="width:215px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">性&nbsp;&nbsp;&nbsp;别</span>
-                            <span class="fleft lineh42 mright38" id="userGender" ></span>
-                        </div>
-                    </div>
-                    <div class="cols" style="width:700px;margin-top:0px;">
-                        <div style="width:230px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">粉丝数</span>
-                            <span class="fleft lineh42 mright38" id="userFans" ></span>
-                        </div>
-                        <div style="width:245px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">关注数</span>
-                            <span class="fleft lineh42 mright38" id="userFriend" ></span>
-                        </div>
-                        <div style="width:215px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">微博数</span>
-                            <span class="fleft lineh42 mright38" id="userWeibo" ></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="framecontent">
-            <div class="framepost">
-                <h3 class="title">系统画像信息</h3>
-                <div class="entry">
-                    <div style="height:160px;width:100%;" id='overview'>
-                        <div style='height:150px;width:10%;float:left;'>
-                            <select style='margin-top:108px;margin-left:10px;' id='status_option'>
-                                <option value='latest'>最新</option>
-                                <option value='longterm'>长期</option>
-                            </select>
-                        </div>
-                        <table style="height:150px;width:90%;">
-                            <tr>
-                                <td style="text-align:center;vertical-align:middle;width:185px;"><img src="/static/img/activeness.png" style="height:80px"></td>
-                                <td style="text-align:center;vertical-align:middle;width:185px;"><img src="/static/img/importance.png" style="height:80px"></td>
-                                <td style="text-align:center;vertical-align:middle;width:185px;"><img src="/static/img/influence.png" style="height:80px"></td>
-                            </tr>
-                            <tr style='font-size:14px;'>
-                                <td style="text-align:center;vertical-align:middle">
-                                    <span class=" red" id="APnum"></span>(No.<span id="APrank"></span>/<span id="APsum"></span>)
-                                </td>
-                                <td style="text-align:center;vertical-align:middle">
-                                    <span class=" red" id="IPnum"></span>(No.<span id="IPrank"></span>/<span id="IPsum"></span>)
-                                </td>
-                                <td style="text-align:center;vertical-align:middle">
-                                    <span class=" red" id="FPnum"></span>(No.<span id="FPrank"></span>/<span id="FPsum"></span>)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding:0px;font-size:14px;text-align:center;vertical-align:middle"><b>活跃度<i id="" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="（日更新）衡量该用户线上线下的活跃程度，通过发布微博综述、活跃地区数、发布微博的时间走势计算得到"></i>&nbsp;&nbsp;</b></td>
-                                <td style="padding:0px;font-size:14px;text-align:center;vertical-align:middle"><b>重要度<i id="" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="（月更新）衡量该用户对社会网络安全业务的重要程度，通过所属领域和偏好话题计算得到"></i>&nbsp;&nbsp;</b></td>
-                                <td style="padding:0px;font-size:14px;text-align:center;vertical-align:middle"><b>影响力<i id="" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="（日更新）衡量该用户整体的影响力，通过原创微博、转发微博的评论和转发的最高值、均值、总量计算得到"></i>&nbsp;&nbsp;</b></td></tr>
-                        </table>
-                    </div>
-                    <div class="m-wrap" style="margin-top;0px;">
-                        <ul id="vector_table"class="clearfix">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        <!--<div style="clear: both;">&nbsp;</div>-->
-        </div>
-        <!-- end #content -->
-		<div id="framesidebar">
-			<ul>
-				<li>
-                    <h3 style="padding:5px;">业务备注信息</h3>
-                    <ul style="padding:0px;">
-                        <div id="ptag" class="fleft" style="font-size:14px;width:240px;margin-top:20px;">
-                            <!--
-                            <div class="tagClo fleft" ><span style="color:red;">test1</span>:<span class="tagbg"><span>tag1<span><a id="delIcon"></a></span></div>
-                            <div class="tagClo fleft" ><span style="color:red;">test1</span>:<span class="tagbg"><span>tag1<span><a id="delIcon"></a></span></div>
-                            -->         
-                        </div>
-                        <div id="addM" style="font-size:14px;border-bottom:solid 1px lightgrey;border-top:solid 1px lightgrey;width:240px;padding-top:20px;padding-bottom:20px;padding-right:25px;" class="fleft">
-                            <div >
-                                <span style="margin-left:30px;">选择类别：</span>
-                                <span id="attribute_name_zh" style="margin-left:10px">
-                                    
-                                </span>
-                            </div>
-                            <div style="margin-top:20px;">
-                                <span style="margin-left:30px">选择标签：</span>
-                                <span id="attribute_value_zh" style="margin-left:10px">
-                                    
-                                </span>
-                            </div>
-                            <span style=""><button class="btn btn-primary btn-sm" style="width:80px;height:30px;margin-top:30px;margin-left:30px;float:right;" id="add_person_tag_button" title="确定选择" onclick="add_person_tag()">添加</button></span>
-                        </div>
-                        <div class="PersonPre" style="margin-top:0px;padding:10px;"><span class="lightw">备注：</span>
-                            <span style="font-family: '宋体';"id="extraDetail"></span>
-                        </div>
-                    </ul>
-                </li>
-			</ul>
-		</div>
-		<!-- end #sidebar -->
-		<!--<div style="clear: both;">&nbsp;</div>-->
+<div id = "porphoto" style="width:100px;float:left;">
+    <span class="img-photo" style="align:center;display:block;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="70" height="70"></span>
+    <span class="" style="margin-top:10px;font-size:14px;"> <a href="#" style="">查看详细属性</a>
+</div>
+<div class="overall_evaluation" style="float:left;" >
+    <h4 class="title">整体评价</h4>
+    <div class = "row" style="font-size:16px; line-height:20px;" >
+        <span style="color:red;margin-left:40px;">活跃度</span> <span id="activePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="activeness_rank">233</span>/<span id="activeness">33334</span>)&nbsp&nbsp近30日最高值<span id="Hactiveness">80</span>最低值<span id="Lactiveness">70</span>
+        <span style="color:red;margin-left:20px;">重要度</span> <span id="importantPower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="importance_rank">233</span>/<span id="importance">33334</span>)&nbsp&nbsp近30日最高值<span id="Himportance">80</span>最低值<span id="Limportance">70</span>
+    </div>
+    <div class = "row" style="font-size:16px;line-height:20px;margin-top:10px;" >
+        <span style="color:red;margin-left:40px;">影响力</span> <span id="influencePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="influence_rank">233</span>/<span id="influence">33334</span>)&nbsp&nbsp近30日最高值<span id="Hinfluence">80</span>最低值<span id="Linfluence">70</span>
+        <span style="color:red;margin-left:20px;">敏感度</span> <span id="sensitivePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="sensitive_rank">233</span>/<span id="sensitiveness">33334</span>)&nbsp&nbsp近30日最高值<span id="Hsensitiveness">80</span>最低值<span id="Lsensitiveness">70</span>
+    </div>
+</div>
+<div class="basicinfo" style="float:left;" >
+    <h4 class="title" style="background:#77ACF4;color:#fff;">注册信息</h4>
+    <ul>
+        <li><span>用户ID：</span><span id="uid">1111111111</span></li>
+        <li><span>昵称：</span><span id="uname">XXXXXX</span></li>
+        <li><span>是否认证：</span><span id="verf">是</span></li>
+        <li><span>认证类型：</span><span id="verf_type">暂无</span></li>
+        <li><span>粉丝数：</span><span id="fansum">12123213</span></li>
+        <li><span>关注数：</span><span id="attentionsum">213</span></li>
+        <li><span>微博数：</span><span id="weibosum">3432</span></li>
+        <li><span>注册地：</span><span id="location">北京 北京</span></li>
+        <li><span>个人描述：</span><span id="description">暂无</span></li>
+        <li><span>主页微博：</span></li>
+        <li><span id="weibo_url">http://weibo.com/u/2860954042</span></li>
+    </ul>
+</div>
+<div class="" style="float:left;margin-left:22px;">
+    <div class="locationinfo" style="width:330px;float:left;border:1px solid #77ACF4;background:#fff;">
+        <h4 class="title" style="background:#77ACF4;color:#fff;">位置信息</h4>
+        <ul>
+            <li><span style="color:red;">当前位置</span><span id="cur_loca" style="margin-left:20px;">114.112.65.16(中国 北京 北京)</span></li>
+			<li><span style="color:red;">异常位置</span><span id="ab_loca" style="margin-left:20px;">114.112.65.16(中国 北京 北京)</span></li>
+            <li><span style="color:red;">活跃位置</span><span id="act_loca" style="margin-left:20px;">114.112.65.16(中国 北京 北京)</span></li>
+			<li><span style="color:red;">家庭位置</span><span id="fam_loca" style="margin-left:20px;">114.112.65.16(中国 北京 北京)</span></li>
+			<li><span style="color:red;">工作位置</span><span id="work_loca" style="margin-left:20px;">114.112.65.16(中国 北京 北京)</span></li>
+        </ul>
+    </div>
+    <div class="attentioninfo" style="width:380px;float:left;border:1px solid #77ACF4;background:#fff; margin-left:22px;">
+        <h4 class="title" style="background:#77ACF4;color:#fff;">关注信息</h4>
+        <ul>
+            <li><span style="color:red;">敏感词</span><span id="sensitive_word" style="margin-left:20px;">世界 世界 世界 世界 世界 </span><a href="#" id="more_sensitive" style="margin-left:20px;">更多</a></li>
+            <li><span style="color:red;">关键词</span><span id="keywords" style="margin-left:20px;">世界 世界 世界 世界 世界</span><a href="#" id="more_keywords" style="margin-left:20px;">更多</a></li>
+			<li><span style="color:red;">Hashtag</span><span id="hashtag" style="margin-left:20px;">微提醒 微提醒 微提醒 微提醒 微提醒</span><a href="#" id="more_hashtag" style="margin-left:20px;" >更多</a></li>
+        </ul>
+    </div>
+	<div class="preinfo" style="width:730px;border:1px solid #77ACF4;background:#fff;margin-top:305px;height:80px;">
+        <h4 class="title" style="background:#77ACF4;color:#fff;">倾向信息</h4>
+        <ul>
+            <li><span style="color:red;">身份</span><span id="identify" style="margin-left:20px;">政府机构及人士</span></li>
+            <li><span style="color:red;">话题</span><span id="topic_zh" style="margin-left:20px;">民生就业</span></li>
+			<li><span style="color:red;">性格特征</span><span id="character" style="margin-left:20px;">抑郁</span></li>
+			<li><span style="color:red;">语言风格</span><span id="language" style="margin-left:20px;">批判</span></li>
+        </ul>
+    </div>
+</div>
+<div class="taginfo" style="float:left;width:245px;border:1px solid #77ACF4;background:#fff;margin-top:10px;" >
+    <h4 class="title" style="background:#77ACF4;color:#fff;">标签信息</h4>
+    <ul style="float:left;width:245px;">
+        <li style="float:left;margin-left:20px;font-size:14px;">已有标签:</li>
+        <li style="float:left;">
+            <label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">重要：一级</label>
+            <label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">敏感：一级</label>
+        </li>
+        <li class="portrait_button" style="margin-right:15px;float:right;width:50px;align:center;">删除</li>
+    </ul>
+    <ul style="float:left;border-top:1px solid #ccc;width:245px;">
+        <li style="float:left;margin-left:20px;font-size:14px;margin-top:20px;">添加标签</li>
+        <li style="float:left;">
+            <span style="margin-left:20px;margin-top:10px;">选择类别：</span>
+			<span id="attribute_name_zh" style="margin-left:10px">
+                <select id="select_attribute_name">
+			        <option value="重要">重要</option>
+				    <option value="红">红</option>
+				    <option value="危害">危害</option>
+				    <option value="敏感">敏感</option>
+				    <option value="好">好</option>
+				    <option value="人数">人数</option>
+				    <option value="紧急">紧急</option>
+			    </select>
+			</span>
+            <span style="margin-left:20px;margin-top:10px;">选择标签：</span>
+			<span id="attribute_value_zh" style="margin-left:10px">
+                <select id="select_attribute_name">
+			        <option value="重要">重要</option>
+				    <option value="红">红</option>
+				    <option value="危害">危害</option>
+				    <option value="敏感">敏感</option>
+				    <option value="好">好</option>
+				    <option value="人数">人数</option>
+				    <option value="紧急">紧急</option>
+			    </select>
+			</span>
+        </li>
+        <li class="portrait_button" style="margin-right:15px;float:right;width:50px;align:center;">添加</li>
+    </ul>
+    <ul style="float:left;border-top:1px solid #ccc;width:245px;">
+        <li style="float:left;margin-left:20px;">用户备注</li>
+        <li style="float:left;margin-left:40px;">暂无</li>
+        
+    </ul>
+    <span style="float:right;margin-right:15px;" class="portrait_button">修改</span>
+</div>
+<div class="socialinfo" style="float:left;width:730px;border:1px solid #77ACF4;background:#fff;margin-top:10px;margin-left:22px;" >
+    <h4 class="title" style="background:#77ACF4;color:#fff;">社交信息</h4>
+    <div class = "row" style="font-size:16px;margin-top:20px;margin-bottom20px;" >
+        <span style="color:red;margin-left:30px;margin-right:10px;line-height:30px;float:left;">转发及评论用户</span>
+		<span id="retweet" style="margin-left:20px;">
+		    <span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+		</span>
+		<a href="#" id="more_retweet" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+        <span style="color:red;margin-left:20px;margin-right:10px;float:left;line-height:30px;">被转发及评论用户</span>
+		<span id="retweeted" style="margin-left:20px;">
+		    <span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+		</span>
+		<a href="#" id="more_tweeted" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+    </div>
+    <div class = "row" style="font-size:16px;margin-top:10px;margin-bottom:20px;" >
+	    <span style="color:red;margin-left:30px;margin-right:10px;float:left;line-height:30px;">双向交互的用户</span>
+		<span id="two_way" style="margin-left:20px;">
+		    <span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+		</span>
+		<a href="#" id="more_ways" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+		<span style="color:red;margin-left:20px;margin-right:25px;float:left;line-height:30px;">他@的相关用户</span>
+		<span id="related" style="margin-left:20px;">
+		    <span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+			<span class="img-photo" style="align:center;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="30" height="30"></span>
+		</span>
+		<a href="#" id="more_related" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+    </div>
+	<div style="border-top:1px solid #ccc;width:100%;">
+    <span style="margin-left:20px;margin-top:10px;">主要交互的用户情况</span>
+	<ul style="font-size:16px;line-height:40px;margin-top:10px;">
+	    <li style="float:left;margin-left:20px;"><span style="color:red;">话题</span><span id="analyse_topic" style="margin-left:20px;margin-right:10px;">科技类   科技类   科技类</span><a href="#" id="more_analyse_topic">更多</a></li>
+		<li style="float:left;margin-left:20px;"><span style="color:red;">身份</span><span id="analyse_identify" style="margin-left:20px;margin-right:10px;">媒体人士   媒体人士   媒体人士</span><a href="#" id="more_analyse_identify">更多</a></li>
+	</ul>
+	</div >
+	<div style="border-top:1px solid #ccc;width:100%;float:left;padding-left:20px;line-height:40px;">
+	    <span>注：分析范围为已入库用户。</span>
 	</div>
+</div>
+
+
+<div class="tweetinfo" style="float:left;width:730px;border:1px solid #77ACF4;background:#fff;margin-top:10px;margin-left:22px;" >
+    <h4 class="title" style="background:#77ACF4;color:#fff;">发帖信息</h4>
+    <div style="width:100%;">
+	    <span style= "color:red;margin-left:20px;">排序指标</span>
+		<span>
+		    <input type="radio" name="mode_choose" value="single_user" checked="checked">
+            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">时间</span>
+            <input type="radio" name="mode_choose" value="multi_user">
+            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">转发数</span>
+		     <input type="radio" name="mode_choose" value="single_user" checked="checked">
+            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">评论数</span>
+            <input type="radio" name="mode_choose" value="multi_user">
+            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">敏感性</span>
+		</span>
 	</div>
+    <span style= "color:red;width:100%;margin-left:20px;">相关微博</span>
+    <div class="tang-scrollpanel-content" style="margin:0;">
+	    <ul>
+		    <li class="item">
+			    <div class="weibo_detail" style="width:100%">
+				    <p style="text-align:left;margin-bottom:0;">1、昵称:<a class="undlin" target="_blank" href="http://weibo.com/u/1189729754">闾丘露薇</a>(中国 香港)&nbsp;&nbsp;发布内容：&nbsp;&nbsp;忽然想到，从上海合作组织成立到现在，只有哈萨克斯坦的总统纳扎尔巴耶夫每届都会见到哈。从89年到现在。阿斯塔纳的标志，那座塔，官方说法，是总统梦中得到的灵感，醒来之后的设计。</p>
+					<div class="weibo_info" style="width:100%">
+					    <div class="weibo_pz">
+					    <div id="topweibo_mid" class="hidden">3619988537724799</div>
+					    <a class="retweet_count" href="javascript:;" target="_blank">转发数(141)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="comment_count" href="javascript:;" target="_blank">评论数(116)</a></div><div class="m"><u>2013-09-07 20:13:04</u>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/1189729754/A8nZzwpzx">微博</a>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/u/1189729754">用户</a>;</div></div></div></li>
+			<li class="item"><div class="weibo_detail" style="width:100%"><p style="text-align:left;margin-bottom:0;">2、昵称:<a class="undlin" target="_blank" href="http://weibo.com/u/1189729754">闾丘露薇</a>(中国 香港)&nbsp;&nbsp;发布内容：&nbsp;&nbsp;澳大利亚新总理阿博特一家。工党执政六年后，保守党回归。阿博特读牛津时的同学，纽约时报专栏作家Kristof在twitter感叹，读书时同学们很喜欢阿博特，只是觉得他太保守，担心他无法在澳大利亚政坛生存。结果，人家当选总理了， 是不是Oz变了？</p><div class="weibo_info" style="width:100%"><div class="weibo_pz"><div id="topweibo_mid" class="hidden">3620033433959954</div><a class="retweet_count" href="javascript:;" target="_blank">转发数(90)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="comment_count" href="javascript:;" target="_blank">评论数(52)</a></div><div class="m"><u>2013-09-07 23:11:31</u>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/1189729754/A8p9ZgCae">微博</a>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/u/1189729754">用户</a>;</div></div></div></li>
+			<li class="item"><div class="weibo_detail" style="width:100%"><p style="text-align:left;margin-bottom:0;">3、昵称:<a class="undlin" target="_blank" href="http://weibo.com/u/1189729754">闾丘露薇</a>(中国 香港)&nbsp;&nbsp;发布内容：&nbsp;&nbsp;请教：为何我的首页页面连我自己发的微博都看不到？</p><div class="weibo_info" style="width:100%"><div class="weibo_pz"><div id="topweibo_mid" class="hidden">3619993894087520</div><a class="retweet_count" href="javascript:;" target="_blank">转发数(21)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="comment_count" href="javascript:;" target="_blank">评论数(70)</a></div><div class="m"><u>2013-09-07 20:34:22</u>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/1189729754/A8o8dh9lK">微博</a>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/u/1189729754">用户</a>;</div></div></div></li>
+			<div id="TANGRAM_54__slider" class="tang-ui tang-slider tang-slider-vtl" style="height: 100%;"><div id="TANGRAM_56__view" class="tang-view" style="width: 6px;"><div class="tang-content"><div id="TANGRAM_56__inner" class="tang-inner"><div id="TANGRAM_56__process" class="tang-process tang-process-undefined" style="height: 0px;"></div></div></div><a id="TANGRAM_56__knob" href="javascript:;" class="tang-knob" style="top: 0%; left: 0px;"></a></div><div class="tang-corner tang-start" id="TANGRAM_54__arrowTop"></div><div class="tang-corner tang-last" id="TANGRAM_54__arrowBottom"></div></div>
+	    </ul>
 	</div>
-	<!-- end #page -->
 </div>
 <div id="float-wrap" class="hidden"></div>
 

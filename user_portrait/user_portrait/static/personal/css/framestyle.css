@@ -49,17 +49,18 @@ a {
 	/*padding: 0;*/
 }
 
-.framepost {
-    height:650px;
+.overall_evaluation {
+   /* height:650px;*/
 	margin-bottom: 25px;
 	padding: 0px;
 	background: #FFFFFF;
 	border: 1px solid #77ACF4;
+    width:900px;
 }
-.framepost .title {
+.overall_evaluation .title {
 	height: 38px;
 	margin-bottom: 10px;
-	padding: 12px 0 0 20px;
+	/*padding: 12px 0 0 20px;*/
 	background: #77ACF4;
 	border: 1px solid #77ACF4;
 	letter-spacing: -.5px;
@@ -148,4 +149,30 @@ a {
 #framesidebar a:hover {
 	text-decoration: underline;
 }
-
+.basicinfo {
+    width:245px;
+    float:left;
+    border:1px solid #77ACF4;
+    background:#fff;
+}
+.basicinfo ul li{
+    font-size:14px;
+    line-height:30px;
+    margin-left:20px;
+}
+.preinfo ul li{
+    float:left;
+    margin-left:40px;
+    font-size:14px;
+    line-height:30px;
+}
+.locationinfo ul li{
+    font-size:14px;
+    line-height:45px;
+    margin-left:10px;
+}
+.attentioninfo ul li{
+    font-size:14px;
+    line-height:75px;
+    margin-left:10px;
+}
