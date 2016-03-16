@@ -5,5 +5,13 @@
 {% block main %}
 <div id='search'>
     {% include "portrait/search_base.html" %}
+    <div class="clearfix lineh42">
+      <input name="submit" type="submit" style='margin-right:-10px;' class="portrait_button bluebtn" id="commit_search" value="确定" />
+    </div>
 </div>
 {% endblock main %}
+
+{% block Own_js %}
+{{ super() }}
+    <script src='/static/js/portrait/search_portrait.js'></script>
+{% endblock Own_js %}

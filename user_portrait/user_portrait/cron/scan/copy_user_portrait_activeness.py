@@ -11,9 +11,10 @@ from elasticsearch.helpers import scan
 reload(sys)
 sys.path.append('./../../')
 from global_utils import es_user_portrait, portrait_index_name, portrait_index_type
-from global_utils import ES_CLUSTER_FLOW1 as es_cluster
+from global_utils import ES_COPY_USER_PORTRAIT as es_cluster
 from time_utils import ts2datetime, datetime2ts
-from parameter import DAY,MONTH, COPY_USER_PORTRAIT_ACTIVENESS, COPY_USER_PORTRAIT_ACTIVENESS_TYPE, RUN_TYPE
+from parameter import DAY,MONTH
+from global_utils import COPY_USER_PORTRAIT_ACTIVENESS, COPY_USER_PORTRAIT_ACTIVENESS_TYPE, RUN_TYPE
 
 def compute_week(item, now_ts):
     week_list = []
@@ -25,8 +26,8 @@ def compute_week(item, now_ts):
     for iter_key in week_list:
         if iter_key in set(item.keys()):
             score_list.append(item[iter_key])
-        else:
-            score_list.append(0)
+        #else:
+        #    score_list.append(0)
 
     average = np.mean(score_list)
     var = np.var(score_list)
@@ -45,8 +46,8 @@ def compute_month(item, now_ts):
     for iter_key in month_list:
         if iter_key in set(item.keys()):
             score_list.append(item[iter_key])
-        else:
-            score_list.append(0)
+        #else:
+        #    score_list.append(0)
 
     average = np.mean(score_list)
     var = np.var(score_list)
