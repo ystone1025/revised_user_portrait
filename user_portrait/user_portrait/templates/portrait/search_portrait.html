@@ -1,13 +1,17 @@
 {% extends "tbase.html" %}
 {% block title %}查看人物画像{% endblock title %}
 {% block head_title %}查看人物画像{% endblock head_title %}
+{% block css %}
+{{ super() }}
+<style>
+    .dataTables_filter{text-align:right;margin-bottom:5px;}
+    .dataTables_paginate{margin-top:-10px;margin-bottom:-20px;}
+</style>
+{% endblock css %}
 
 {% block main %}
 <div id='search'>
     {% include "portrait/search_base.html" %}
-    <div class="clearfix lineh42">
-      <input name="submit" type="submit" style='margin-right:-10px;' class="portrait_button bluebtn" id="commit_search" value="确定" />
-    </div>
 </div>
 {% endblock main %}
 
