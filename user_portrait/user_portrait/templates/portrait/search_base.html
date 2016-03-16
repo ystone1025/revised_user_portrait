@@ -1,8 +1,8 @@
 <div style='margin-left:65px;' class="cols">
     <span class="fleft lineh42 mright38">用户ID</span>
-    <input name="uid" class="inputbox fleft ad-search" type="text" value="" placeholder="请输入uid" />
+    <input id='uid' name="uid" class="inputbox fleft ad-search" type="text" value="" placeholder="请输入uid" />
     <span class="fleft lineh42 mright13">用户昵称</span>
-    <input name="uname" class="inputbox fleft ad-search" type="text" value="" placeholder="请输入用户名" />
+    <input id='uname' name="uname" class="inputbox fleft ad-search" type="text" value="" placeholder="请输入用户名" />
     <a class='portrait_href' style='line-height:50px;margin-left:135px;' id='show_advanced'>高级搜索</a>
 </div>
 <div id="supersearch" style='display:none;'>
@@ -83,19 +83,5 @@
             </td>
         </tr>
     </table>
-    <div class="clearfix lineh42">
-      <input name="submit" type="submit" style='margin-right:-10px;' class="portrait_button bluebtn" id="bluebtn" value="确定" />
-    </div>
 </div>
-<script>
-    $("#show_advanced").off("click").click(function(){
-        if (($('#supersearch')).is(':hidden')){
-            $(this).html('收起高级搜索');
-            $("#supersearch").css('display', 'block');
-        }
-        else{
-            $(this).html('高级搜索');
-            $("#supersearch").css('display', 'none');
-        }
-    });
-</script>
+<script src= '/static/js/portrait/tbase.js'></script>
