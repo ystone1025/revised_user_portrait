@@ -1,5 +1,5 @@
 # -*-coding:utf-8-*-
-# 从人物库user_portrait获得用户的敏感度
+# 从人物库user_portrait获得用户的重要度
 
 import sys
 import json
@@ -14,13 +14,13 @@ from global_utils import es_user_portrait, portrait_index_name, portrait_index_t
 from global_utils import ES_COPY_USER_PORTRAIT as es_cluster
 from time_utils import ts2datetime, datetime2ts
 from parameter import DAY,MONTH
-from global_utils import COPY_USER_PORTRAIT_SENSITIVE, COPY_USER_PORTRAIT_SENSITIVE_TYPE, RUN_TYPE
+from global_utils import COPY_USER_PORTRAIT_IMPORTANCE, COPY_USER_PORTRAIT_IMPORTANCE_TYPE, RUN_TYPE
 
 def compute_week(item, now_ts):
     week_list = []
     for i in range(7):
         date_string = str(now_ts - i*DAY)
-        week_list.append("sensitive_"+date_string)
+        week_list.append("importance_"+date_string)
 
     score_list = []
     for iter_key in week_list:
@@ -40,7 +40,7 @@ def compute_month(item, now_ts):
     month_list = []
     for i in range(30):
         date_string = str(now_ts - i*DAY)
-        month_list.append("sensitive_"+date_string)
+        month_list.append("importance_"+date_string)
 
     score_list = []
     for iter_key in month_list:
@@ -84,7 +84,7 @@ def normal_index(index, max_index):
 
 def co_search(add_info, update_bci_key, former_bci_key, now_ts):
     uid_list = add_info.keys()
-    evaluate_history_results = es_user_portrait.mget(index=COPY_USER_PORTRAIT_SENSITIVE, doc_type=COPY_USER_PORTRAIT_SENSITIVE_TYPE,body={'ids':uid_list})['docs']
+    evaluate_history_results = es_user_portrait.mget(index=COPY_USER_PORTRAIT_IMPORTANCE, doc_type=COPY_USER_PORTRAIT_IMPORTANCE_TYPE,body={'ids':uid_list})['docs']
     iter_count = 0
     bulk_action = []
     for uid in uid_list:
@@ -93,21 +93,21 @@ def co_search(add_info, update_bci_key, former_bci_key, now_ts):
             user_history_item = item['_source']
             #更新新的字段
             user_history_item.update(add_info[uid])
-            user_history_item['sensitive_day_change'] = user_history_item[update_bci_key] - user_history_item.get(former_bci_key, 0)
-            user_history_item['sensitive_week_change'] = user_history_item[update_bci_key] - user_history_item.get('sensitive_week_ave', 0)
-            user_history_item['sensitive_month_change'] = user_history_item[update_bci_key] - user_history_item.get('sensitive_month_ave', 0)
-            user_history_item['sensitive_week_ave'], user_history_item['sensitive_week_var'], user_history_item['sensitive_week_sum'] = compute_week(user_history_item, now_ts)
-            user_history_item['sensitive_month_ave'], user_history_item['sensitive_month_var'], user_history_item['sensitive_month_sum'] = compute_month(user_history_item, now_ts)
+            user_history_item['importance_day_change'] = user_history_item[update_bci_key] - user_history_item.get(former_bci_key, 0)
+            user_history_item['importance_week_change'] = user_history_item[update_bci_key] - user_history_item.get('importance_week_ave', 0)
+            user_history_item['importance_month_change'] = user_history_item[update_bci_key] - user_history_item.get('importance_month_ave', 0)
+            user_history_item['importance_week_ave'], user_history_item['importance_week_var'], user_history_item['importance_week_sum'] = compute_week(user_history_item, now_ts)
+            user_history_item['importance_month_ave'], user_history_item['importance_month_var'], user_history_item['importance_month_sum'] = compute_month(user_history_item, now_ts)
         else:
             user_history_item = dict()
             user_history_item.update(add_info[uid])
             user_history_item["uid"] = uid
             user_history_item.update(add_info[uid])
-            user_history_item['sensitive_day_change'] = user_history_item[update_bci_key]
-            user_history_item['sensitive_week_change'] = user_history_item[update_bci_key]
-            user_history_item['sensitive_month_change'] = user_history_item[update_bci_key]
-            user_history_item['sensitive_week_ave'], user_history_item['sensitive_week_var'], user_history_item['sensitive_week_sum'] = compute_week(user_history_item, now_ts)
-            user_history_item['sensitive_month_ave'], user_history_item['sensitive_month_var'], user_history_item['sensitive_month_sum'] = compute_month(user_history_item, now_ts)
+            user_history_item['importance_day_change'] = user_history_item[update_bci_key]
+            user_history_item['importance_week_change'] = user_history_item[update_bci_key]
+            user_history_item['importance_month_change'] = user_history_item[update_bci_key]
+            user_history_item['importance_week_ave'], user_history_item['importance_week_var'], user_history_item['importance_week_sum'] = compute_week(user_history_item, now_ts)
+            user_history_item['importance_month_ave'], user_history_item['importance_month_var'], user_history_item['importance_month_sum'] = compute_month(user_history_item, now_ts)
         iter_count += 1
 
         try:
@@ -118,7 +118,7 @@ def co_search(add_info, update_bci_key, former_bci_key, now_ts):
         action = {'index':{'_id': uid}}
         bulk_action.extend([action, user_history_item])
     if bulk_action:
-        es_cluster.bulk(bulk_action, index=COPY_USER_PORTRAIT_SENSITIVE, doc_type=COPY_USER_PORTRAIT_SENSITIVE_TYPE,timeout=600)
+        es_cluster.bulk(bulk_action, index=COPY_USER_PORTRAIT_IMPORTANCE, doc_type=COPY_USER_PORTRAIT_IMPORTANCE_TYPE,timeout=600)
     print iter_count
 
 
@@ -130,14 +130,14 @@ def main():
         ts = str(datetime2ts('2013-09-07'))
     now_ts = int(ts)
 
-    max_influence = get_max_index('sensitive')
-    update_bci_key = "sensitive_" + ts # 更新的键
+    max_influence = get_max_index('importance')
+    update_bci_key = "importance_" + ts # 更新的键
     del_month = str(datetime2ts(ts2datetime(now_ts - MONTH)))
-    del_bci_key = "sensitive_" + del_month
+    del_bci_key = "importance_" + del_month
 
     former_ts = now_ts - DAY
     former_date = str(datetime2ts(ts2datetime(former_ts)))
-    former_bci_key = "sensitive_" + former_date
+    former_bci_key = "importance_" + former_date
 
     s_re = scan(es_user_portrait, query={'query':{'match_all':{}}, 'size':1000},index=portrait_index_name, doc_type=portrait_index_type)
     bulk_action = []
@@ -149,7 +149,7 @@ def main():
             scan_re = s_re.next()['_source']
             count += 1
             uid = scan_re['uid']
-            influence_value = scan_re['sensitive']
+            influence_value = scan_re['importance']
             normal_influence = normal_index(influence_value, max_influence)
             add_info[uid] = {update_bci_key: normal_influence, "domain": scan_re['domain'], "activity_geo": scan_re["activity_geo"], "hashtag": scan_re['hashtag'], "topic_string": scan_re["topic_string"]}
 
