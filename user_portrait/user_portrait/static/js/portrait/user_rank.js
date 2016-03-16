@@ -1,6 +1,23 @@
+function user_rank_timepicker(str){
+    var date_time = str.split(' ');
+    var dates = date_time[0].split('/');
+    var yy = parseInt(dates[0]);
+    var mm = parseInt(dates[1]) - 1;
+    var dd = parseInt(dates[2]);
+    var times = date_time[1].split(':');
+    var hh = parseInt(times[0]);
+    var minute = parseInt(times[1]);
+    var final_date = new Date();
+    final_date.setFullYear(yy,mm,dd);
+    final_date.setHours(hh,minute);
+    final_date = Math.floor(final_date.getTime()/1000);
+    return final_date;
+}
+
 function task_status (data) {
+	$('#task_status').empty();
 	var html = '';
-	html += '<table class="table table-striped table-bordered bootstrap-datatable datatable responsive" style="margin-left:30px;width:900px;font-size:14px;">';
+	html += '<table class="table table-striped" style="margin-left:30px;width:900px;">';
 	for(var i=0;i<data.length;i++){
 		html += '<tr>';
 		html += '<td style="width:200px;text-align:center;">'+data[i][0]+'</td>';
@@ -15,10 +32,20 @@ function draw_rank_table(data){
 	$('#result_rank_table').empty();
 	var html = '';
 	html += '<table id="rank_table" class="table table-striped table-bordered bootstrap-datatable datatable responsive" style="margin-left:30px;width:900px;">';
+	html += '<thead><th style="text-align:center;">排名</th>';
+	html += '<th style="text-align:center;">用户ID</th>';
+	html += '<th style="text-align:center;">昵称</th>';
+	html += '<th style="text-align:center;">注册地</th>';
+	html += '<th style="text-align:center;">敏感度</th>';
+	html += '<th style="text-align:center;">影响力</th></thead>';
 	for(var i=0;i<data.length;i++){
 		html += '<tr>';
-		html += '<td style="width:200px;text-align:center;">'+data[i][0]+'</td>';
-		html += '<td>'+data[i][1]+'</td>';
+		html += '<td style="text-align:center;">'+(i+1)+'</td>';
+		html += '<td style="text-align:center;">'+data[i][0]+'</td>';
+		html += '<td style="text-align:center;">'+data[i][0]+'</td>';
+		html += '<td style="text-align:center;">'+data[i][0]+'</td>';
+		html += '<td style="text-align:center;">'+data[i][0]+'</td>';
+		html += '<td style="text-align:center;">'+data[i][0]+'</td>';
 		html += '</tr>';
 	}
 	html += '</table>';
@@ -26,7 +53,7 @@ function draw_rank_table(data){
 	$('#rank_table').dataTable({
 		"sDom": "<'row'<'col-md-6'l ><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>",
 		"sPaginationType": "bootstrap",
-		"aoColumnDefs":[ {"bSortable": false, "aTargets":[1]}],
+		//"aoColumnDefs":[ {"bSortable": false, "aTargets":[1]}],
 		"oLanguage": {
 		    "sLengthMenu": "_MENU_ 每页",
 		}
@@ -37,10 +64,11 @@ function draw_rank_table(data){
 //排序范围选择
 $('#range_choose').change(function(){
 	$('#range_choose_detail').empty();
+	//库内-不限
 	if($('#range_choose').val() == 'in_nolimit') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select  id="sort_select_2">';
 		sort_select += '<option value="imp">身份敏感度</option>';
 		sort_select += '<option value="act">活跃度</option>';
 		sort_select += '<option value="bci">影响力</option>';
@@ -54,15 +82,16 @@ $('#range_choose').change(function(){
 
 		$('#time_choose').empty();
 	    var time_html = '';	    
-		time_html += '<input name="time_range" type="radio" value="1"> 过去一天';
+		time_html += '<input name="time_range" type="radio" value="1" checked="checked"> 过去一天';
 		time_html += '<input name="time_range" type="radio" value="7" style="margin-left:20px;"> 过去七天';
 		time_html += '<input name="time_range" type="radio" value="30" style="margin-left:20px;"> 过去一个月';
 		$('#time_choose').append(time_html);
 	}
+	//库内-领域
 	if($('#range_choose').val() == 'in_limit_domain') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="imp">身份敏感度</option>';
 		sort_select += '<option value="act">活跃度</option>';
 		sort_select += '<option value="bci">影响力</option>';
@@ -76,13 +105,13 @@ $('#range_choose').change(function(){
 
 		$('#time_choose').empty();
 	    var time_html = '';	    
-		time_html += '<input name="time_range" type="radio" value="1"> 过去一天';
+		time_html += '<input name="time_range" type="radio" value="1" checked="checked"> 过去一天';
 		time_html += '<input name="time_range" type="radio" value="7" style="margin-left:20px;"> 过去七天';
 		time_html += '<input name="time_range" type="radio" value="30" style="margin-left:20px;"> 过去一个月';
 		$('#time_choose').append(time_html);
 
 		var html = '';
-		html += '<select id="range_choose">';
+		html += '<select id="range_choose_detail_2">';
 		html += '<option value="">境内机构</option>'
 		html += '<option value="">境外机构</option>'
 		html += '<option value="">民间组织</option>'
@@ -98,10 +127,11 @@ $('#range_choose').change(function(){
 		html += '<option value="">其他</option>'
 		html += '</select>'
 	};
+	//库内-话题
 	if($('#range_choose').val() == 'in_limit_topic') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="imp">身份敏感度</option>';
 		sort_select += '<option value="act">活跃度</option>';
 		sort_select += '<option value="bci">影响力</option>';
@@ -115,13 +145,13 @@ $('#range_choose').change(function(){
 
 		$('#time_choose').empty();
 	    var time_html = '';	    
-		time_html += '<input name="time_range" type="radio" value="1"> 过去一天';
+		time_html += '<input name="time_range" type="radio" value="1" checked="checked"> 过去一天';
 		time_html += '<input name="time_range" type="radio" value="7" style="margin-left:20px;"> 过去七天';
 		time_html += '<input name="time_range" type="radio" value="30" style="margin-left:20px;"> 过去一个月';
 		$('#time_choose').append(time_html);
 
 		var html = '';
-		html += '<select id="range_choose">';
+		html += '<select id="range_choose_detail_2">';
 		html += '<option value="">科技类</option>';
 		html += '<option value="">经济类</option>';
 		html += '<option value="">教育类</option>';
@@ -143,10 +173,11 @@ $('#range_choose').change(function(){
 		html += '<option value="">其他类</option>';
 		html += '</select>';
 	};
+	//库内-关键词（修改时间范围）
 	if($('#range_choose').val() == 'in_limit_keyword') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="imp">身份敏感度</option>';
 		sort_select += '<option value="act">活跃度</option>';
 		sort_select += '<option value="bci">影响力</option>';
@@ -163,15 +194,16 @@ $('#range_choose').change(function(){
 	    time_html += '<input id="weibo_from" type="text" class="form-control" style="width:145px; display:inline-block;height:25px;">&nbsp;-&nbsp;';
 		time_html += '<input id="weibo_to" type="text" class="form-control" style="width:145px; display:inline-block;height:25px">';	    
 		$('#time_choose').append(time_html);
-
+		date_init();
 
 		var html = '';
-	    html += '<input id="" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入关键词">';
+	    html += '<input id="keyword_hashtag" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入关键词">';
 	};
+	//hashtag库内
 	if($('#range_choose').val() == 'in_limit_hashtag') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="imp">身份敏感度</option>';
 		sort_select += '<option value="act">活跃度</option>';
 		sort_select += '<option value="bci">影响力</option>';
@@ -188,15 +220,16 @@ $('#range_choose').change(function(){
 	    time_html += '<input id="weibo_from" type="text" class="form-control" style="width:145px; display:inline-block;height:25px;">&nbsp;-&nbsp;';
 		time_html += '<input id="weibo_to" type="text" class="form-control" style="width:145px; display:inline-block;height:25px">';	    
 		$('#time_choose').append(time_html);
-
+		date_init();
 
 		var html = '';
-	    html += '<input id="" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入微话题">';
+	    html += '<input id="keyword_hashtag" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入微话题">';
 	};
+	//地理位置-库内
 	if($('#range_choose').val() == 'in_limit_geo') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="imp">身份敏感度</option>';
 		sort_select += '<option value="act">活跃度</option>';
 		sort_select += '<option value="bci">影响力</option>';
@@ -210,13 +243,13 @@ $('#range_choose').change(function(){
 
 		$('#time_choose').empty();
 	    var time_html = '';	    
-		time_html += '<input name="time_range" type="radio" value="1"> 过去一天';
+		time_html += '<input name="time_range" type="radio" value="1" checked="checked"> 过去一天';
 		time_html += '<input name="time_range" type="radio" value="7" style="margin-left:20px;"> 过去七天';
 		time_html += '<input name="time_range" type="radio" value="30" style="margin-left:20px;"> 过去一个月';
 		$('#time_choose').append(time_html);
 
 		var html = '';
-		html += '<select id="range_choose">';
+		html += '<select id="range_choose_detail_2">';
 		html += '<option value="北京">北京</option>';
 		html += '<option value="天津">天津</option>';
 		html += '<option value="上海">上海</option>';
@@ -254,10 +287,11 @@ $('#range_choose').change(function(){
 		html += '<option value="国外">国外</option>';
 		html += '</select>';
 	};
+	//全网-all
 	if($('#range_choose').val() == 'all_nolimit') {
 		$('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="fans">粉丝数</option>';
 		sort_select += '<option value="act">发帖数</option>';
 		sort_select += '<option value="imp">身份敏感度</option>';
@@ -268,19 +302,19 @@ $('#range_choose').change(function(){
 
 	    $('#time_choose').empty();
 	    var time_html = '';	    
-		time_html += '<input name="time_range" type="radio" value="1"> 过去一天';
+		time_html += '<input name="time_range" type="radio" value="1" checked="checked"> 过去一天';
 		time_html += '<input name="time_range" type="radio" value="7" style="margin-left:20px;"> 过去七天';
 		time_html += '<input name="time_range" type="radio" value="30" style="margin-left:20px;"> 过去一个月';
 		$('#time_choose').append(time_html);
 
 	}
-	//全库关键词
+	//全网-关键词
 	if($('#range_choose').val() == 'all_limit_keyword') {
 		var html = '';
-	    html += '<input id="" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入关键词">';
+	    html += '<input id="keyword_hashtag" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入关键词">';
 	    $('#sort_select').empty();
 		var sort_select = '';
-		sort_select += '<select>';
+		sort_select += '<select id="sort_select_2">';
 		sort_select += '<option value="fans">粉丝数</option>';
 		sort_select += '<option value="act">发帖数</option>';
 		sort_select += '<option value="imp">身份敏感度</option>';
@@ -294,35 +328,94 @@ $('#range_choose').change(function(){
 	    time_html += '<input id="weibo_from" type="text" class="form-control" style="width:145px; display:inline-block;height:25px;">&nbsp;-&nbsp;';
 		time_html += '<input id="weibo_to" type="text" class="form-control" style="width:145px; display:inline-block;height:25px">';	    
 		$('#time_choose').append(time_html);
+		date_init();
 
 		var html = '';
-	    html += '<input id="" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入关键词">';
+	    html += '<input id="keyword_hashtag" type="text" class="form-control" style="width:145px;height:25px;" placeholder="请输入关键词">';
 
 	};
 	$('#range_choose_detail').append(html);
 });
 
-var date = choose_time_for_mode();
-date.setHours(0,0,0,0);
-var max_date = date.format('yyyy/MM/dd hh:mm');
-console.log(max_date);
-var current_date = date.format('yyyy/MM/dd hh:mm');
-var from_date_time = Math.floor(date.getTime()/1000) - 60*60*24*30;
-var min_date_ms = new Date()
-min_date_ms.setTime(from_date_time*1000);
-var from_date = min_date_ms.format('yyyy/MM/dd hh:mm');
-if(global_test_mode==0){
-    $('#time_choose #weibo_from').datetimepicker({value:from_date,step:60});
-    $('#time_choose #weibo_to').datetimepicker({value:current_date,step:60});
-}else{
-    $('#time_choose #weibo_from').datetimepicker({value:from_date,step:60,minDate:'-1970/01/30',maxDate:'+1970/01/01'});
-    $('#time_choose #weibo_to').datetimepicker({value:current_date,step:60,minDate:'-1970/01/30',maxDate:'+1970/01/01'});
+//筛选条件初始化时间
+function date_init(){
+	var date = choose_time_for_mode();
+	date.setHours(0,0,0,0);
+	var max_date = date.format('yyyy/MM/dd hh:mm');
+	var current_date = date.format('yyyy/MM/dd hh:mm');
+	var from_date_time = Math.floor(date.getTime()/1000) - 60*60*24;
+	var min_date_ms = new Date()
+	min_date_ms.setTime(from_date_time*1000);
+	var from_date = min_date_ms.format('yyyy/MM/dd hh:mm');
+	if(global_test_mode==0){
+	    $('#time_choose #weibo_from').datetimepicker({value:from_date,step:60});
+	    $('#time_choose #weibo_to').datetimepicker({value:current_date,step:60});
+	}else{
+	    $('#time_choose #weibo_from').datetimepicker({value:from_date,step:60,minDate:'-1970/01/30',maxDate:'+1970/01/01'});
+	    $('#time_choose #weibo_to').datetimepicker({value:current_date,step:60,minDate:'-1970/01/30',maxDate:'+1970/01/01'});
+	}
+}
+
+function submit_rank(){
+	var s = [];
+	var show_scope = $('#range_choose option:selected').text();
+	var show_arg = $('#range_choose_detail_2 option:selected').text();
+	var show_norm = $('#sort_select_2 option:selected').text();
+	var keyword = $('#keyword_hashtag').val();
+	var sort_scope = $('#range_choose option:selected').val();
+	var sort_norm = $('#sort_select_2 option:selected').val();
+	var arg = $('#range_choose_detail_2 option:selected').text();
+	var day_select = $("input[name='time_range']:checked").val();
+	//console.log(keyword);
+	if(keyword == ''){  //检查输入词是否为空
+		alert('请输入关键词！');
+	}else{
+		if(keyword == undefined){  //没有输入的时候，更新表格及文字
+			var url = 'time='+day_select+'&sort_norm='+sort_norm+'&sort_scope='+sort_scope;
+			var data = [['111关键词：两会','111状态：正在计算'],['关键词：两会','状态：正在计算'],['关键词：两会','状态：正在计算']];
+			//task_status(data);
+			draw_rank_table(data);
+			$('#rec_range').empty();
+			$('#rec_detail').empty();
+			$('#rec_rank_by').empty();
+			$('#rec_time_range').empty();
+			$('#rec_range').append(show_scope);
+			console.log(arg);
+			if(sort_scope != 'in_nolimit' && sort_scope != 'all_nolimit' ){  // 参数是可选的时候，加上详细条件
+				$('#rec_detail').append('-');
+				$('#rec_detail').append(show_arg);
+				url += '&arg='+arg;   //该参数为空时不传
+			}
+			// if(keyword != undefined){
+			// 	$('#rec_detail').append('：');
+			// 	$('#rec_detail').append(keyword);
+			// }
+			$('#rec_rank_by').append(show_norm);
+			if(day_select == "1"){
+				$('#rec_time_range').append('过去一天');
+			}
+			if(day_select == "7"){
+				$('#rec_time_range').append('过去七天');
+			}
+			if(day_select == "30"){
+				$('#rec_time_range').append('过去一个月');
+			}
+			console.log(url);
+		}else{ //输入参数的时候，更新任务状态表格
+			var time_from = user_rank_timepicker($('#time_choose #weibo_from').val());
+			var time_to = user_rank_timepicker($('#time_choose #weibo_to').val());
+			var url = 'time='+time_from+','+time_to+'&sort_norm='+sort_norm+'&sort_scope='+sort_scope+'&arg='+keyword;
+			var data = [['121关键词：两会','121状态：正在计算'],['关键词：两会','状态：正在计算'],['关键词：两会','状态：正在计算']];
+			task_status(data);
+			console.log(url);
+		}
+	}
 }
 
 //结果分析默认值
 $('#rec_range').append($('#range_choose option:selected').text());
-$('#rec_detail').append('：');
-$('#rec_detail').append($('#range_choose option:selected').text());
+// $('#rec_detail').append('：');
+// $('#rec_detail').append($('#range_choose option:selected').text());
 $('#rec_rank_by').append($('#sort_select_2 option:selected').text());
 var day_select = $("input[name='time_range']:checked").val();
 if(day_select == "1"){

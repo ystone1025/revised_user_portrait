@@ -11,11 +11,6 @@
 {% block main %}
 <h4 class="page-header" style='margin-top:0px;'>搜索结果</h4>
 <div class="box-content">
-        {% if stype=='2' %}
-            <span style="float:left;margin-top:0px">已选条件:</span>
-            <div id="conditions" style='float:left;margin-top:0px;'></div>
-        {% endif %}
-        <div id="search_result" style="margin-top:0px;"></div>
         <div style="text-align:right">
             <button class="btn btn-primary btn-sm" style="width:80px;height:40px;margin-right:5px" name="custom_button" id="custom_button" title="为用户添加标签"  onclick="custom_button();">自定义属性</button>
             <button class="btn btn-primary btn-sm" style="width:80px;height:40px;margin-right:5px" name="compare_button" id="compare_button" title="选择2至3个用户对比"  onclick="compare_button();">个体对比</button>
