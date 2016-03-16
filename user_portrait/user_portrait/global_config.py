@@ -45,6 +45,10 @@ ZMQ_CTRL_VENT_PORT_FLOW4 = '5588'
 ZMQ_VENT_PORT_FLOW5 = '6391'
 ZMQ_CTRL_VENT_PORT_FLOW5 = '5589'
 
+#use to save txt file
+WRITTEN_TXT_PATH = '/home/ubuntu8/data1309/20130901'
+REPLICA_BIN_FILE_PATH = '/home/ubuntu8/data1309/20130901'
+
 # csv file path
 '''
 BIN_FILE_PATH = '/home/ubuntu8/yuankun/data' # '219.224.135.93:/home/ubuntu8/yuankun'
@@ -65,8 +69,6 @@ USER_PORTRAIT_ES_HOST = ['219.224.134.213', '219.224.134.214']
 USER_PORTRAIT_ES_PORT = 9200
 FLOW_TEXT_ES_HOST = ['219.224.134.213:9206', '219.224.134.214:9206']
 FLOW_TEXT_ES_PORT = 9206
-
-
 
 # use to identify the db number of redis-97
 R_BEGIN_TIME = '2013-09-01'

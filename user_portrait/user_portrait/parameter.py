@@ -8,12 +8,18 @@ RUN_TEST_TIME = '2013-09-08'
 
 #for all
 DAY = 24*3600
+Fifteen = 60 * 15
 HALF_HOUR = 1800
 FOUR_HOUR = 3600*4
 MAX_VALUE = 99999999
 WEEK = 7*24*3600
 MONTH = 30*24*3600
 EXPIRE_TIME = 8*24*3600
+
+#new attribute: verified_type
+verified_num2ch_dict = {-1: u'普通用户', 0:u'名人', 1: u'政府', 2: u'企业',\
+        3:u'媒体', 4:u'校园', 5: u'网站', 6:u'应用', 7:u'团体(机构)',\
+        8:u'待审企业', 200:u'初级达人', 220:u'中高级达人', 400:u'已故v用户'}
 
 #attribute: IP
 IP_TIME_SEGMENT = 4*3600 # return every 4 hour statistic result for ip information
@@ -42,6 +48,12 @@ domain_en2ch_dict = {'university':u'高校', 'homeadmin':u'境内机构', 'abroa
                      'lawyer':u'法律机构及人士', 'politician':u'政府机构及人士', 'mediaworker':u'媒体人士',\
                      'activer':u'活跃人士', 'grassroot':u'草根', 'other':u'其他', 'business':u'商业人士'}
 
+domain_ch2en_dict = {u'高校': 'university', u'境内机构':'homeadmin', u'境外机构':'abroadadmin' ,\
+                     u'媒体': 'homemedia', u'境外媒体': 'abroadmedia', u'民间组织': 'folkorg', \
+                     u'法律机构及人士': 'lawyer', u'政府机构及人士':'politician', u'媒体人士':'mediaworker',\
+                     u'活跃人士': 'activer', u'草根': 'grassroot', u'其他':'other', u'商业人士':'business'}
+
+
 #attribtue: topic
 topic_en2ch_dict = {'art':u'文体类_娱乐','computer':u'科技类','economic':u'经济类', \
                     'education':u'教育类','environment':u'民生类_环保', 'medicine':u'民生类_健康',\
@@ -50,6 +62,14 @@ topic_en2ch_dict = {'art':u'文体类_娱乐','computer':u'科技类','economic'
                     'employment':u'民生类_就业','fear-of-violence':u'政治类_暴恐',\
                     'house':u'民生类_住房','law':u'民生类_法律','peace':u'政治类_地区和平',\
                     'religion':u'政治类_宗教','social-security':u'民生类_社会保障'}
+
+topic_ch2en_dict = {u'文体类_娱乐': 'art', u'科技类':'computer', u'经济类':'economic', \
+                    u'教育类':'education', u'民生类_环保': 'environment', u'民生类_健康':'medicine',\
+                    u'军事类': 'military', u'政治类_外交':'politics', u'文体类_体育':'sports',\
+                    u'民生类_交通':'traffic', u'其他类':'life', u'政治类_反腐':'anti-corruption',\
+                    u'民生类_就业':'employment', u'政治类_暴恐':'fear-of-violence',\
+                    u'民生类_住房': 'house', u'民生类_法律':'law', u'政治类_地区和平':'peace',\
+                    u'政治类_宗教':'religion', u'民生类_社会保障':'social-security'}
 
 #attribtue:retweet/be_retweet/comment/be_comment/bidirect_interaction
 SOCIAL_DEFAULT_COUNT = '20'
