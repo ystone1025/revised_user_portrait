@@ -6,7 +6,7 @@
 		    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     		<meta charset="utf-8">
     		<meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>{% block title %}人物画像系统{% endblock title %}</title>
+            <title>{% block title %}网民画像系统{% endblock title %}</title>
 		{% endblock %}
 		<!-- end head 标签 -->
 
@@ -60,7 +60,7 @@
 		<!-- 上面导航 -->
 		{% block header %}
 			<div id="header">
-                <a href="/index/"><h1 class="headtitle" style="color:#333;">人物画像系统</h1></a>
+                <a href="/index/"><h1 class="headtitle" style="color:#333;">网民画像系统</h1></a>
 				<div class="example">
         <ul id="nav">
                     <li><a href="">用户排名</a></li>
@@ -89,31 +89,20 @@
 					        <ul>
 							    <li><a href="#">入库管理</a></li>
 								<li><a href="#">出库管理</a></li>
-							</ul>
+                            </ul>
+                        </div>
 					</li>
                     <li><a title="logout" href=""> 登出 </a></li>
                 </ul>
-    </div>
-
-				<!--
-		        <div class="fright userInfo">
-		                <a title="logout" href=""> 登出 </a>
-		        </div>
-				-->
+            </div>
 		</div>
 		{% endblock %}
 		<!-- end 导航 -->
-		
-        <!--
-		<div class="clearfix lineh42">
-		  <input name="submit" type="submit" style='margin-right:85px;' class="bluebtn" id="bluebtn" value="确定" />
-		</div>
-		-->
 
-		<!-- end serarch -->
-		
 		<!-- start main -->
-		<div id="main" style="margin-left:200px;margin-top:45px;width:1000px;">
+        <div id="main" style="font-size:13px;margin-left:200px;margin-top:45px;width:1000px;">
+            <h2 style='font-size:24px;font-family:Microsoft Yahei;font-weight:bold'>{% block head_title %}{% endblock %}</h2>
+            <hr style='width:1100px;'>
 			{% block main %}
 
 			{% endblock %}
@@ -122,38 +111,6 @@
 
 		<!-- DIY js -->
 		{% block Own_js %}
-			<script type="text/javascript">
-                $(".ce > li > a").click(function(){
-                     $(this).addClass("xz").parents().siblings().find("a").removeClass("xz");
-                     $(this).parents().siblings().find(".er").hide(300);
-                     $(this).siblings(".er").toggle(300);
-                     $(this).parents().siblings().find(".er > li > .thr").hide().parents().siblings().find(".thr_nr").hide();
-                    
-                })
-                
-                $(".er > li > a").click(function(){
-                    $(this).addClass("sen_x").parents().siblings().find("a").removeClass("sen_x");
-                    $(this).parents().siblings().find(".thr").hide(300);	
-                    $(this).siblings(".thr").toggle(300);	
-                })
-
-                $(".thr > li > a").click(function(){
-                     $(this).addClass("xuan").parents().siblings().find("a").removeClass("xuan");
-                     $(this).parents().siblings().find(".thr_nr").hide();	
-                     $(this).siblings(".thr_nr").toggle();
-                })
-				$("#showBtn").off("click").click(function(){
-					$("#float-wrap").removeClass("hidden");
-					$("#supersearch").removeClass("hidden");
-					return false;
-				});
-				$("#close").off("click").click(function(){
-					$("#float-wrap").addClass("hidden");
-					$("#supersearch").addClass("hidden");
-					return false;
-				});
-            </script>
-            <script src="/static/js/portrait/tbase.js"></script>
 		{% endblock %}
 		<!-- end DIY -->
 
