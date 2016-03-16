@@ -16,7 +16,7 @@ class HomeView(views.MethodView):
     """
     搜索首页和结果展示页
     """
-    index_template = 'index.html'
+    index_template = 'profile/index.html'
 
     def get(self):
         #q = request.args.get('q')
@@ -92,7 +92,7 @@ class HomeView(views.MethodView):
 class KeywordView(views.MethodView):
     """关键词搜索热度展示页"""
 
-    template = 'keyword.html'
+    template = 'profile/keyword.html'
 
     def get(self):
         keywords = list(redis.smembers('keywords'))
@@ -122,7 +122,7 @@ class IndividualView(views.MethodView):
     """
     单个用户的个人信息页面
     """
-    template = 'individual.html'
+    template = 'profile/individual.html'
 
     def get(self, id):
         user = es_get_source(id)
@@ -145,7 +145,7 @@ class UserFollowersView(views.MethodView):
     单个用户与粉丝的关联延伸
     """
 
-    template = 'individual_followers.html'
+    template = 'profile/individual_followers.html'
 
     def get(self, id):
         return render_template(self.template, id=id)
@@ -156,7 +156,7 @@ class UserFriendsView(views.MethodView):
     单个用户与好友的关联延伸
     """
 
-    template = 'individual_friends.html'
+    template = 'profile/individual_friends.html'
 
     def get(self, id):
         return render_template(self.template, id=id)
@@ -164,7 +164,7 @@ class UserFriendsView(views.MethodView):
 class Testviews(views.MethodView):
 
     def get(self):
-        return  render_template('test.html')
+        return  render_template('profile/test.html')
 class UserView(views.MethodView):
     """user detail information"""
     def get(self):

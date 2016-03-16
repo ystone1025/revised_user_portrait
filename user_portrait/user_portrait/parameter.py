@@ -12,7 +12,8 @@ Fifteen = 60 * 15
 HALF_HOUR = 1800
 FOUR_HOUR = 3600*4
 MAX_VALUE = 99999999
-WEEK = 7
+WEEK = 7*24*3600
+MONTH = 30*24*3600
 EXPIRE_TIME = 8*24*3600
 
 #new attribute: verified_type
@@ -39,7 +40,7 @@ SENTIMENT_SECOND = ['2', '3', '4', '5', '6']
 PATTERN_THRESHOLD = 3
 
 #activeness threshould 
-LOW_INFLUENCE_THRESHOULD = 200
+LOW_INFLUENCE_THRESHOULD = 50
 
 #attribute: domain
 domain_en2ch_dict = {'university':u'高校', 'homeadmin':u'境内机构', 'abroadadmin':u'境外机构', \
@@ -332,3 +333,19 @@ GROUP_DENSITY_DESCRIPTION = {
 GROUP_KEYWORD_COUNT = 50
 GROUP_HASHTAG_COUNT = 50
 GROUP_SENTIMENT_WORD_COUNT = 50
+
+# 敏感词等级评分, string类型
+sensitive_score_dict = {
+    "1": 1,
+    "2": 5,
+    "3": 10
+}
+
+ES_SENSITIVE_INDEX = "sensitive_history"
+DOCTYPE_SENSITIVE_INDEX = "sensitive"
+COPY_USER_PORTRAIT_INFLUENCE = "copy_user_portrait_influence"
+COPY_USER_PORTRAIT_INFLUENCE_TYPE = 'bci'
+COPY_USER_PORTRAIT_IMPORTANCE = "copy_user_portrait_importance"
+COPY_USER_PORTRAIT_IMPORTANCE_TYPE = 'importance'
+COPY_USER_PORTRAIT_ACTIVENESS = "copy_user_portrait_activeness"
+COPY_USER_PORTRAIT_ACTIVENESS_TYPE = 'activeness'
