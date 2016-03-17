@@ -84,7 +84,7 @@ $.extend($.fn.dataTableExt.oPagination, {
             }
         }
     },
-    "recommend_boot": {
+    "custom_bootstrap": {
         "fnInit": function (oSettings, nPaging, fnDraw) {
             var oLang = oSettings.oLanguage.oPaginate;
             var fnClickHandler = function (e) {

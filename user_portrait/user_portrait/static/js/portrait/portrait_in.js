@@ -137,7 +137,7 @@ Search_weibo_recommend.prototype = {
 
     $('#recommend_table_new').dataTable({
         "sDom": "<'row'<'col-md-6'l ><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>",
-        "sPaginationType": "recommend_boot",
+        "sPaginationType": "custom_bootstrap",
         "aoColumnDefs":[ {"bSortable": false, "aTargets":[7]}],
         "oLanguage": {
             "sLengthMenu": "_MENU_ 每页",
