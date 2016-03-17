@@ -112,6 +112,7 @@ def main():
     else:
         now_ts = datetime2ts(RUN_TEST_TIME)
     date = ts2datetime(now_ts - DAY)
+    # auto recommendation: step 1:4
     #step1: read from top es_daily_rank
     top_user_set, user_dict = search_from_es(date)
     #step2: filter black_uid
@@ -122,14 +123,26 @@ def main():
     candidate_results = filter_in(subtract_user_set)
     #step4: filter rules about ip count& reposts/bereposts count&activity count
     results = filter_rules(candidate_results)
+    hashname_influence = "recomment_" + date + "_influence"
+    if results:
+        for uid in results:
+            r.hset(hashname_influence, uid, "0")
     #step5: get sensitive user
     sensitive_user = list(get_sensitive_user(date))
+    hashname_sensitive = "recomment_" + date + "_sensitive"
+    if sensitive_user:
+        for uid in sensitive_user:
+            r.hset(hashname_sensitive, uid, "0")
     results.extend(sensitive_user)
     results = set(results)
     #step6: write to recommentation csv/redis
-    status = save_recommentation2redis(date, results)
-    if status != True:
-        print 'cron/recommend_in/recommend_in.py&error-3&'
+    hashname_submit = "submit_recomment_" + date
+    if results:
+        for uid in results:
+            r.hset(hashname_submit, uid, json.dumps({"system":1, "operation":"system"}))
+    #status = save_recommentation2redis(date, results)
+    #if status != True:
+    #    print 'cron/recommend_in/recommend_in.py&error-3&'
 
 #abandon in version: 16-02-29
 '''

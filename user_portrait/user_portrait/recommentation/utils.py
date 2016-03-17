@@ -26,7 +26,7 @@ from user_portrait.parameter import DAY, WEEK, RUN_TYPE, RUN_TEST_TIME
 
 #get user detail
 #output: uid, uname, location, fansnum, statusnum, influence
-def get_user_detail(date, input_result, status):
+def get_user_detail(date, input_result, status, user_type="influence"):
     results = []
     if status=='show_in':
         uid_list = input_result
@@ -72,8 +72,19 @@ def get_user_detail(date, input_result, status):
             location = ''
             fansnum = ''
             statusnum = ''
+        if user_type == "sensitive":
+            tmp_ts = datetime2ts(date)
+            tmp_data = r_cluster.hget("sensitive_"+str(ts), uid)
+            if tmp_data:
+                sensitive_dict = json.loads(tmp_data)
+                sensitive_words = sensitive_dict.keys()
+            else:
+                senstive_words = []
         if status == 'show_in':
-            results.append([uid, uname, location, fansnum, statusnum, influence])
+            if user_type == "sensitive":
+                results.append([uid, uname, location, fansnum, statusnum, influence, sensitive_words])
+            else:
+                results.append([uid, uname, location, fansnum, statusnum, influence])
         if status == 'show_compute':
             in_date = json.loads(input_result[uid])[0]
             compute_status = json.loads(input_result[uid])[1]
@@ -82,33 +93,87 @@ def get_user_detail(date, input_result, status):
             results.append([uid, uname, location, fansnum, statusnum, influence, in_date, compute_status])
         if status == 'show_in_history':
             in_status = input_result[uid]
-            results.append([uid, uname, location, fansnum, statusnum, influence, in_status])
+            if user_type == "sensitive":
+                results.append([uid, uname, location, fansnum, statusnum, influence, in_status, sensitive_words])
+            else:
+                results.append([uid, uname, location, fansnum, statusnum, influence, in_status])
 
     return results
 
 
 # show recommentation in uid
-def recommentation_in(input_ts):
+def recommentation_in(input_ts, recomment_type):
     date = ts2datetime(input_ts)
     recomment_results = []
     # read from redis
     results = []
-    hash_name = 'recomment_'+str(date)
+    hash_name = 'recomment_'+str(date) + "_" + recomment_type
     results = r.hgetall(hash_name)
     if not results:
         return results
     # search from user_profile to rich the show information
+    """
     for item in results:
         status = results[item]
-        if status=='0':
+        if int(status) == 0:
             recomment_results.append(item)
+    """
+    ewxomment_results = results.keys()
     if recomment_results:
-        results = get_user_detail(date, recomment_results, 'show_in')
+        results = get_user_detail(date, recomment_results, 'show_in', recomment_type)
+    else:
+        results = []
+    return results
+
+# show recommentation in uid to admin
+def admin_recommentation_in(input_ts):
+    date = ts2datetime(input_ts)
+    recomment_results = []
+    # read from redis
+    results = []
+    hashname_submit = "submit_recomment_" + date
+    results = r.hgetall(hashname_submit)
+    if not results:
+        return results
+    # search from user_profile to rich the show information
+    recomment_results = results.keys()
+    if recomment_results:
+        results = get_user_detail(date, recomment_results, 'show_in', "sensitive")
+        for i in len(recomment_results):
+            tmp_data = json.loads(r.hget(hashname_submit, uid))
+            recommend_list = (tmp_data['operation']).split('&')
+            results[i].append(tmp_data['system'])
+            results[i].append(recommend_list)
+            results[i].append(len(recommend_list))
+        sorted_results = sorted(results, key=lambda x:x[-1], reverse=True)
+        results = sorted_results
     else:
         results = []
     return results
 
 # identify uid to in user_portrait
+def new_identify_in(data, date, submit_user):
+    in_status = 1
+    compute_status = 0
+    hashname_submit = "submit_recomment_" + date
+    hashname_influence = "recomment_" + date + "_influence"
+    hashname_sensitive = "recomment_" + date + "_sensitive"
+    auto_recomment_set = set(r.hkeys(hashname_influence)) + set(r.hkeys(hashname_sensitive)) # 系统自动推荐名单
+    for item in data:
+        date = item[0] # identify the date form '2013-09-01' with web
+        uid = item[1]
+        status = item[2]
+        if uid in auto_recomment_set:
+            tmp = json.loads(hget(hashname_submit, uid))
+            tmp['operation'] = tmp['operation'] & submit_user
+        else:
+            tmp = {"system":"0", "operation":submit_user}
+        r.hset(hashname_submit, uid, json.dumps(tmp))
+    return True
+
+
+# identify uid to in user_portrait for admin
+# recomment_date是存推荐入库用户的
 def identify_in(data):
     in_status = 1
     compute_status = 0
@@ -132,12 +197,12 @@ def identify_in(data):
 
 
 #show in history
-def show_in_history(date):
+def show_in_history(date, user_type):
     results = []
     hash_name = 'recomment_'+str(date)
     r_results = r.hgetall(hash_name)
     if r_results:
-        results = get_user_detail(date, r_results, 'show_in_history')
+        results = get_user_detail(date, r_results, 'show_in_history', user_type)
     return results
 
 # show uid who have in but not compute
