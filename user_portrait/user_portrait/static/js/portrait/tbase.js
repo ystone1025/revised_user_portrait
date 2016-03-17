@@ -62,12 +62,8 @@ function draw_conditions(url){
 }
 function process_par(name, value){
     var result = new Array();
-    if (name == 'uid'){
-        result[0] = '用户ID';
-        result[1] = value;
-    }
-    else if(name=='uname'){
-        result[0] = '昵称';
+    if(name=='term'){
+        result[0] = '用户ID或昵称';
         result[1] = value;
     }
     else if(name=='location'){
@@ -79,15 +75,15 @@ function process_par(name, value){
         result[1] = value;
     }
     else if(name=='hashtag'){
-        result[0] = 'hashtag';
+        result[0] = '微话题';
         result[1] = value;
     }
     else if(name=='psycho_status_by_emotion'){
-        result[0] = '性格（语言）';
+        result[0] = '语言特征';
         result[1] = value;
     }
     else if(name=='psycho_status_by_word'){
-        result[0] = '性格（情绪）';
+        result[0] = '性格特征';
         result[1] = value;
     }
     else if(name=='domain'){
@@ -114,7 +110,7 @@ function process_par(name, value){
     return result;
 }
 function get_simple_par(){
-    var str = '&uname=' + $('#uname').val();
+    var str = '&term=' + $('#term').val();
     return str
 }
 function get_advanced_par(){
