@@ -57,19 +57,19 @@ $(function(){
 {% endblock head_js %}
 
 {% block main %}
-<div id = "porphoto" style="width:100px;float:left;">
-    <span class="img-photo" style="align:center;display:block;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="70" height="70"></span>
-    <span class="" style="margin-top:10px;font-size:14px;"> <a href="#" style="">查看详细属性</a>
+<div id = "porphoto" style="width:245px;float:left;">
+    <span class="img-photo" style="margin-left:80px;margin-top:10px;margin-bottom:10px;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="70" height="70"></span>
+    <span class="portrait_href" style="font-size:13px;float:right;margin-top:80px;"> <a href="#" style="">查看详细属性</a>
 </div>
 <div class="overall_evaluation" style="float:left;" >
     <h4 class="title">整体评价</h4>
-    <div class = "row" style="font-size:16px; line-height:20px;" >
-        <span style="color:red;margin-left:40px;">活跃度</span> <span id="activePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="activeness_rank">233</span>/<span id="activeness">33334</span>)&nbsp&nbsp近30日最高值<span id="Hactiveness">80</span>最低值<span id="Lactiveness">70</span>
-        <span style="color:red;margin-left:20px;">重要度</span> <span id="importantPower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="importance_rank">233</span>/<span id="importance">33334</span>)&nbsp&nbsp近30日最高值<span id="Himportance">80</span>最低值<span id="Limportance">70</span>
+    <div class = "row" style="font-size:13px; line-height:20px;" >
+        <span style="color:red;margin-left:20px;font-size:13px;">活跃度</span> <span id="activePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="activeness_rank">233</span>/<span id="activeness">33334</span>)&nbsp&nbsp近30日最高值<span id="Hactiveness">80</span>最低值<span id="Lactiveness">70</span>
+        <span style="color:red;margin-left:20px;font-size:13px;">重要度</span> <span id="importantPower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="importance_rank">233</span>/<span id="importance">33334</span>)&nbsp&nbsp近30日最高值<span id="Himportance">80</span>最低值<span id="Limportance">70</span>
     </div>
-    <div class = "row" style="font-size:16px;line-height:20px;margin-top:10px;" >
-        <span style="color:red;margin-left:40px;">影响力</span> <span id="influencePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="influence_rank">233</span>/<span id="influence">33334</span>)&nbsp&nbsp近30日最高值<span id="Hinfluence">80</span>最低值<span id="Linfluence">70</span>
-        <span style="color:red;margin-left:20px;">敏感度</span> <span id="sensitivePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="sensitive_rank">233</span>/<span id="sensitiveness">33334</span>)&nbsp&nbsp近30日最高值<span id="Hsensitiveness">80</span>最低值<span id="Lsensitiveness">70</span>
+    <div class = "row" style="font-size:13px;line-height:20px;margin-top:10px;" >
+        <span style="color:red;margin-left:20px;font-size:14px;">影响力</span> <span id="influencePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="influence_rank">233</span>/<span id="influence">33334</span>)&nbsp&nbsp近30日最高值<span id="Hinfluence">80</span>最低值<span id="Linfluence">70</span>
+        <span style="color:red;margin-left:20px;font-size:14px;">敏感度</span> <span id="sensitivePower" style="margin-left:20px;">74</span>&nbsp&nbsp(NO.<span id="sensitive_rank">233</span>/<span id="sensitiveness">33334</span>)&nbsp&nbsp近30日最高值<span id="Hsensitiveness">80</span>最低值<span id="Lsensitiveness">70</span>
     </div>
 </div>
 <div class="basicinfo" style="float:left;" >
@@ -125,12 +125,13 @@ $(function(){
             <label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">重要：一级</label>
             <label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">敏感：一级</label>
         </li>
-        <li class="portrait_button" style="margin-right:15px;float:right;width:50px;align:center;">删除</li>
+        <li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">删除</span></li>
     </ul>
     <ul style="float:left;border-top:1px solid #ccc;width:245px;">
         <li style="float:left;margin-left:20px;font-size:14px;margin-top:20px;">添加标签</li>
         <li style="float:left;">
-            <span style="margin-left:20px;margin-top:10px;">选择类别：</span>
+		    <span style= "width:100%;float:left;margin-left:30px;margin-top:10px;">
+            <span >选择类别：</span>
 			<span id="attribute_name_zh" style="margin-left:10px">
                 <select id="select_attribute_name">
 			        <option value="重要">重要</option>
@@ -142,7 +143,9 @@ $(function(){
 				    <option value="紧急">紧急</option>
 			    </select>
 			</span>
-            <span style="margin-left:20px;margin-top:10px;">选择标签：</span>
+			</span>
+			<span style= "width:100%;float:left;margin-top:10px;margin-left:30px;">
+            <span >选择标签：</span>
 			<span id="attribute_value_zh" style="margin-left:10px">
                 <select id="select_attribute_name">
 			        <option value="重要">重要</option>
@@ -154,15 +157,16 @@ $(function(){
 				    <option value="紧急">紧急</option>
 			    </select>
 			</span>
+			</span>
         </li>
-        <li class="portrait_button" style="margin-right:15px;float:right;width:50px;align:center;">添加</li>
+        <li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">添加</span></li>
     </ul>
-    <ul style="float:left;border-top:1px solid #ccc;width:245px;">
+    <ul style="float:left;border-top:1px solid #ccc;width:245px;padding-top:20px;">
         <li style="float:left;margin-left:20px;">用户备注</li>
         <li style="float:left;margin-left:40px;">暂无</li>
         
     </ul>
-    <span style="float:right;margin-right:15px;" class="portrait_button">修改</span>
+    <span style="float:right;margin-right:15px;width:50px;height:30px;margin-bottom:10px;" class="portrait_button"><span style="padding-left:10px;line-height:30px;">修改<.span></span>
 </div>
 <div class="socialinfo" style="float:left;width:730px;border:1px solid #77ACF4;background:#fff;margin-top:10px;margin-left:22px;" >
     <h4 class="title" style="background:#77ACF4;color:#fff;">社交信息</h4>
@@ -221,21 +225,29 @@ $(function(){
 
 <div class="tweetinfo" style="float:left;width:730px;border:1px solid #77ACF4;background:#fff;margin-top:10px;margin-left:22px;" >
     <h4 class="title" style="background:#77ACF4;color:#fff;">发帖信息</h4>
-    <div style="width:100%;">
-	    <span style= "color:red;margin-left:20px;">排序指标</span>
-		<span>
-		    <input type="radio" name="mode_choose" value="single_user" checked="checked">
-            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">时间</span>
-            <input type="radio" name="mode_choose" value="multi_user">
-            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">转发数</span>
-		     <input type="radio" name="mode_choose" value="single_user" checked="checked">
-            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">评论数</span>
-            <input type="radio" name="mode_choose" value="multi_user">
-            <span class="input-group-addon" style="width:40px;border:1px solid white;font-weight:bold; background-color:white;display:inline-block">敏感性</span>
-		</span>
+    <div style="width:100%;margin-top:10px;">
+	    <span style= "color:red;margin-left:20px;font-size:16px;float:left;">排序指标</span>
+		<ul style="float:left;">
+			<li>
+		        <input type="radio" name="mode_choose" value="by_tome" checked="checked">
+                <span class="" style="">时间</span>
+			</li>
+			<li>
+                <input type="radio" name="mode_choose" value="by_retweet">
+                <span class="" style="">转发数</span>
+			</li>
+			<li>
+				<input type="radio" name="mode_choose" value="by_comment" checked="checked">
+				<span class="" style="">评论数</span>
+			</li>
+			<li>
+                <input type="radio" name="mode_choose" value="by_sensitive">
+                <span class="" style="">敏感性</span>
+			</li>
+		</ul>
 	</div>
-    <span style= "color:red;width:100%;margin-left:20px;">相关微博</span>
-    <div class="tang-scrollpanel-content" style="margin:0;">
+    <span style= "color:red;width:100%;margin-left:20px;font-size:16px;float:left;margin-bottom:10px;">相关微博</span>
+    <div class="tang-scrollpanel-content" style="margintop:10px;">
 	    <ul>
 		    <li class="item">
 			    <div class="weibo_detail" style="width:100%">
