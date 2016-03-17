@@ -57,148 +57,185 @@ $(function(){
 {% endblock head_js %}
 
 {% block main %}
-<div id="basicwrapper">
-	<!-- end #menu -->
-	<div id="basicpage">
-	<div id="basicpage-bgtop">
-    <div id="basicpage-bgbtm">
-        <div class="framepost" id="frametopbar">
-            <h3 class='title'>个人注册信息</h3>
-            <div style="width:180px; float:left;margin:10px;"><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="170" height="170" /></span></div>
-            <div style="width:750px; float:right;padding-top:10px;padding-right:10px;">
-                <div style="height:70px; margin-bottom: 8px;">
-                  <div style="width:640px; float:left;">
-                      <span class="nickname" id="nickname"></span>
-                    <a style="font-size:15px;margin-left:15px;" href='#detail' onclick="$('#detail').css('display','block');">查看详细属性</a>
-                    <div class="PersonPre" style="margin-bottom:5px;">
-                        <!--<span class="lightw">个人描述：</span>-->
-                        <span class="" style="font-family: "宋体";" id="portraitDetail"></span>
-                    </div>
-                  </div>
-                  <div style="width:100px; font-size:15px;float:right; text-align: right;">
-                      <br />
-                      <a id="homepage" target="_blank" style="cursor:pointer;">ta的微博主页</a>
-                      <br />
-                      <a id="contact" target="_blank" style="cursor:pointer;">与ta相关的人</a>
-                      <br/>
-                  </div>
-                </div>
-              </div>
-              <div style="width:750px; float:right;">
-                <div style="height:90px;font-weight:bold;font-size:14px;margin-right:10px;border-style:solid;border-width: 1px; padding: 5px; border-color: #CCCCCC; background-color: #FFFFFF;">
-                    <div class="cols" style="width:700px;margin-top:0px;">
-                        <div style="width:230px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">用户ID</span>
-                            <span class="fleft lineh42 mright38" id="userId" ></span>
-                        </div>
-                        <div style="width:245px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">注册地</span>
-                            <span class="fleft lineh42 mright38" id="userLocation" ></span>
-                        </div>
-                        <div style="width:215px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">性&nbsp;&nbsp;&nbsp;别</span>
-                            <span class="fleft lineh42 mright38" id="userGender" ></span>
-                        </div>
-                    </div>
-                    <div class="cols" style="width:700px;margin-top:0px;">
-                        <div style="width:230px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">粉丝数</span>
-                            <span class="fleft lineh42 mright38" id="userFans" ></span>
-                        </div>
-                        <div style="width:245px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">关注数</span>
-                            <span class="fleft lineh42 mright38" id="userFriend" ></span>
-                        </div>
-                        <div style="width:215px;height:40px;float:left;">
-                            <span class="lightw fleft lineh42 mright38">微博数</span>
-                            <span class="fleft lineh42 mright38" id="userWeibo" ></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div id = "porphoto" style="width:245px;float:left;">
+    <span class="img-photo" style="margin-left:45px;margin-top:0px;margin-bottom:10px;display:block;float:left;"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="120" height="120"></span>
+    <span class="portrait_href" style="font-size:13px;float:right;margin-top:120px;"> <a href="#" style="">查看详细属性</a>
+</div>
+<div class="overall_evaluation" style="float:left;" >
+    <h4 class="title">整体评价</h4>
+    <div class = "row" style="font-size:13px; line-height:30px;" >
+        <span style="color:red;margin-left:20px;font-size:13px;">活跃度</span> <span id="activePower" style="margin-left:20px;"></span>&nbsp(NO.<span id="activeness_rank"></span>/<span id="activeness_total"></span>)&nbsp <span class="gray">最高值</span><span id="Hactiveness"></span>/<span class="gray">最低值</span><span id="Lactiveness"></span>
+        <span style="color:red;margin-left:20px;font-size:13px;">身份敏感度</span> <span id="importantPower" style="margin-left:20px;"></span>&nbsp(NO.<span id="importance_rank"></span>/<span id="importance"></span>)&nbsp <span class="gray">最高值</span><span id="Himportance"></span>/<span class="gray">最低值</span><span id="Limportance"></span>
+    </div>
+    <div class = "row" style="font-size:13px;line-height:30px;margin-top:10px;" >
+        <span style="color:red;margin-left:20px;font-size:14px;">影响力</span> <span id="influencePower" style="margin-left:20px;"></span>&nbsp(NO.<span id="influence_rank"></span>/<span id="influence"></span>)&nbsp <span class="gray">最高值</span><span id="Hinfluence"></span>/<span class="gray">最低值</span><span id="Linfluence"></span>
+        <span style="color:red;margin-left:20px;font-size:14px;">言论敏感度</span> <span id="sensitivePower" style="margin-left:20px;"></span>&nbsp(NO.<span id="sensitive_rank"></span>/<span id="sensitiveness"></span>)&nbsp <span class="gray">最高值</span><span id="Hsensitiveness"></span>/<span class="gray">最低值</span><span id="Lsensitiveness"></span>
+    </div>
+    <div style="border-top:1px solid #ccc;width:100%;float:left;padding-left:20px;line-height:40px;">
+	    <span>注：当前数值是通过计算近7日信息获得，最高、最低值统计范围为近30日。</span>
+	</div>
+</div>
+<div class="" style="float:left;width:245px;">
+	<div class="basicinfo" style="float:left;width:245px;" >
+		<h4 class="title" style="background:#77ACF4;color:#fff;">注册信息</h4>
+		<ul>
+			<li><span>用户ID：</span><span id="uid"></span></li>
+			<li><span>昵称：</span><span id="uname"></span></li>
+			<li><span>是否认证：</span><span id="verf"></span></li>
+			<li><span>认证类型：</span><span id="verf_type"></span></li>
+			<li><span>粉丝数：</span><span id="fansum"></span></li>
+			<li><span>关注数：</span><span id="attentionsum"></span></li>
+			<li><span>微博数：</span><span id="weibosum"></span></li>
+			<li><span>注册地：</span><span id="location"></span></li>
+			<li><span>个人描述：</span><span id="description"></span></li>
+			<li><span>主页微博：</span></li>
+			<li><a id="homepage" ></a></li>
+		</ul>
+	</div>
+	
+	<div class="taginfo" style="float:left;width:245px;border:1px solid #77ACF4;background:#fff;margin-top:10px;" >
+		<h4 class="title" style="background:#77ACF4;color:#fff;">标签信息</h4>
+		<ul style="float:left;width:245px;">
+			<li style="float:left;margin-left:20px;font-size:14px;">已有标签:</li>
+			<li style="float:left;">
+				<label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">重要：一级</label>
+				<label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">敏感：一级</label>
+			</li>
+			<li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">删除</span></li>
+		</ul>
+		<ul style="float:left;border-top:1px solid #ccc;width:245px;">
+			<li style="float:left;margin-left:20px;font-size:14px;margin-top:20px;">添加标签</li>
+			<li style="float:left;">
+				<span style= "width:100%;float:left;margin-left:30px;margin-top:10px;">
+					<span >选择类别：</span>
+					<span id="attribute_name_zh" style="margin-left:10px">
+						<select id="select_attribute_name">
+							<option value="重要">重要</option>
+							<option value="红">红</option>
+						</select>
+					</span>
+				</span>
+				<span style= "width:100%;float:left;margin-top:10px;margin-left:30px;">
+					<span >选择标签：</span>
+					<span id="attribute_value_zh" style="margin-left:10px">
+						<select id="select_attribute_name">
+							<option value="重要">重要</option>
+							<option value="红">红</option>
+						</select>
+					</span>
+				</span>
+			</li>
+			<li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">添加</span></li>
+		</ul>
+		<ul style="float:left;border-top:1px solid #ccc;width:245px;padding-top:20px;">
+			<li style="float:left;margin-left:20px;">用户备注</li>
+			<li style="float:left;margin-left:40px;">暂无</li>
+        
+		</ul>
+		<span style="float:right;margin-right:15px;width:50px;height:30px;margin-bottom:10px;" class="portrait_button"><span style="padding-left:10px;line-height:30px;">修改<.span></span>
+	</div>
+</div>
+<div class="" style="float:left;margin-left:22px;">
+    <div class="locationinfo" style="width:330px;float:left;border:1px solid #77ACF4;background:#fff;">
+        <h4 class="title" style="background:#77ACF4;color:#fff;">活动信息</h4>
+        <ul>
+            <li><span style="color:red;">当前位置</span><span id="cur_ip" style="margin-left:20px;"></span>(<span id="cur_loca"></span>)</li>
+			<li><span style="color:red;">异常位置</span><span id="ab_ip" style="margin-left:20px;"></span>(<span id="ab_loca"></span>)</li>
+            <li><span style="color:red;">活跃位置</span><span id="act_ip" style="margin-left:20px;"></span>(<span id="act_loca"></span>)</li>
+			<li><span style="color:red;">家庭位置</span><span id="fam_ip" style="margin-left:20px;"></span>(<span id="fam_loca"></span>)</li>
+			<li><span style="color:red;">工作位置</span><span id="work_ip" style="margin-left:20px;"></span>(<span id="work_loca"></span>)</li>
+        </ul>
+    </div>
+	<div class="" style="width:380px;float:left;margin-left:22px;">
+	    <div class="preinfo" style="width:380px;float:left;border:1px solid #77ACF4;background:#fff;">
+            <h4 class="title" style="background:#77ACF4;color:#fff;">性格特征</h4>
+            <ul>
+                <li><span style="color:red;">身份</span><span id="identify" style="margin-left:20px;"></span></li>
+                <li><span style="color:red;">话题</span><span id="topic_zh" style="margin-left:20px;"></span></li>
+            </ul>
         </div>
-        <div id="framecontent">
-            <div class="framepost">
-                <h3 class="title">系统画像信息</h3>
-                <div class="entry">
-                    <div style="height:160px;width:100%;" id='overview'>
-                        <div style='height:150px;width:10%;float:left;'>
-                            <select style='margin-top:108px;margin-left:10px;' id='status_option'>
-                                <option value='latest'>最新</option>
-                                <option value='longterm'>长期</option>
-                            </select>
-                        </div>
-                        <table style="height:150px;width:90%;">
-                            <tr>
-                                <td style="text-align:center;vertical-align:middle;width:185px;"><img src="/static/img/activeness.png" style="height:80px"></td>
-                                <td style="text-align:center;vertical-align:middle;width:185px;"><img src="/static/img/importance.png" style="height:80px"></td>
-                                <td style="text-align:center;vertical-align:middle;width:185px;"><img src="/static/img/influence.png" style="height:80px"></td>
-                            </tr>
-                            <tr style='font-size:14px;'>
-                                <td style="text-align:center;vertical-align:middle">
-                                    <span class=" red" id="APnum"></span>(No.<span id="APrank"></span>/<span id="APsum"></span>)
-                                </td>
-                                <td style="text-align:center;vertical-align:middle">
-                                    <span class=" red" id="IPnum"></span>(No.<span id="IPrank"></span>/<span id="IPsum"></span>)
-                                </td>
-                                <td style="text-align:center;vertical-align:middle">
-                                    <span class=" red" id="FPnum"></span>(No.<span id="FPrank"></span>/<span id="FPsum"></span>)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="padding:0px;font-size:14px;text-align:center;vertical-align:middle"><b>活跃度<i id="" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="（日更新）衡量该用户线上线下的活跃程度，通过发布微博综述、活跃地区数、发布微博的时间走势计算得到"></i>&nbsp;&nbsp;</b></td>
-                                <td style="padding:0px;font-size:14px;text-align:center;vertical-align:middle"><b>重要度<i id="" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="（月更新）衡量该用户对社会网络安全业务的重要程度，通过所属领域和偏好话题计算得到"></i>&nbsp;&nbsp;</b></td>
-                                <td style="padding:0px;font-size:14px;text-align:center;vertical-align:middle"><b>影响力<i id="" class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="（日更新）衡量该用户整体的影响力，通过原创微博、转发微博的评论和转发的最高值、均值、总量计算得到"></i>&nbsp;&nbsp;</b></td></tr>
-                        </table>
-                    </div>
-                    <div class="m-wrap" style="margin-top;0px;">
-                        <ul id="vector_table"class="clearfix">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        <!--<div style="clear: both;">&nbsp;</div>-->
+	
+        <div class="attentioninfo" style="width:380px;float:left;border:1px solid #77ACF4;background:#fff; margin-top:22px;">
+            <h4 class="title" style="background:#77ACF4;color:#fff;">话题偏好</h4>
+            <ul>
+		        <li><span style="color:red;">微话题</span><span id="hashtag" style="margin-left:20px;">微提醒 微提醒 微提醒 微提醒 微提醒</span><a href="#" id="more_hashtag" style="margin-left:20px;" >更多</a></li>
+                <li><span style="color:red;">敏感词</span><span id="sensitive_word" style="margin-left:20px;">世界 世界 世界 世界 世界 </span><a href="#" id="more_sensitive" style="margin-left:20px;">更多</a></li>
+                <li><span style="color:red;">关键词</span><span id="keywords" style="margin-left:20px;">世界 世界 世界 世界 世界</span><a href="#" id="more_keywords" style="margin-left:20px;">更多</a></li>
+            </ul>
         </div>
-        <!-- end #content -->
-		<div id="framesidebar">
-			<ul>
-				<li>
-                    <h3 style="padding:5px;">业务备注信息</h3>
-                    <ul style="padding:0px;">
-                        <div id="ptag" class="fleft" style="font-size:14px;width:240px;margin-top:20px;">
-                            <!--
-                            <div class="tagClo fleft" ><span style="color:red;">test1</span>:<span class="tagbg"><span>tag1<span><a id="delIcon"></a></span></div>
-                            <div class="tagClo fleft" ><span style="color:red;">test1</span>:<span class="tagbg"><span>tag1<span><a id="delIcon"></a></span></div>
-                            -->         
-                        </div>
-                        <div id="addM" style="font-size:14px;border-bottom:solid 1px lightgrey;border-top:solid 1px lightgrey;width:240px;padding-top:20px;padding-bottom:20px;padding-right:25px;" class="fleft">
-                            <div >
-                                <span style="margin-left:30px;">选择类别：</span>
-                                <span id="attribute_name_zh" style="margin-left:10px">
-                                    
-                                </span>
-                            </div>
-                            <div style="margin-top:20px;">
-                                <span style="margin-left:30px">选择标签：</span>
-                                <span id="attribute_value_zh" style="margin-left:10px">
-                                    
-                                </span>
-                            </div>
-                            <span style=""><button class="btn btn-primary btn-sm" style="width:80px;height:30px;margin-top:30px;margin-left:30px;float:right;" id="add_person_tag_button" title="确定选择" onclick="add_person_tag()">添加</button></span>
-                        </div>
-                        <div class="PersonPre" style="margin-top:0px;padding:10px;"><span class="lightw">备注：</span>
-                            <span style="font-family: '宋体';"id="extraDetail"></span>
-                        </div>
-                    </ul>
-                </li>
-			</ul>
-		</div>
-		<!-- end #sidebar -->
-		<!--<div style="clear: both;">&nbsp;</div>-->
 	</div>
+	
+</div>
+
+<div class="socialinfo" style="float:left;width:730px;border:1px solid #77ACF4;background:#fff;margin-top:10px;margin-left:22px;" >
+    <h4 class="title" style="background:#77ACF4;color:#fff;">社交关系</h4>
+    <div class = "row" style="font-size:13px;margin-top:20px;margin-bottom:20px;line-height:30px;" >
+        <span style="color:red;margin-left:30px;margin-right:10px;line-height:30px;float:left;">被他转发及评论用户</span>
+		<span id="retweet" style="margin-left:20px;float:left;"></span>
+		<a href="#" id="more_retweet" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+        <span style="color:red;margin-left:20px;margin-right:10px;float:left;line-height:30px;">转发及评论他的用户</span>
+		<span id="retweeted" style="margin-left:20px;float:left;"></span>
+		<a href="#" id="more_tweeted" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+    </div>
+    <div class = "row" style="font-size:13px;margin-top:10px;margin-bottom:20px;line-height:30px;" >
+	    <span style="color:red;margin-left:30px;margin-right:10px;float:left;line-height:30px;">双向交互的用户</span>
+		<span id="two_way" style="margin-left:20px;float:left;"></span>
+		<a href="#" id="more_two_way" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+		<span style="color:red;margin-left:20px;margin-right:25px;float:left;line-height:30px;">他@的相关用户</span>
+		<span id="related" style="margin-left:20px;float:left;"></span>
+		<a href="#" id="more_related" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+    </div>
+	<div style="border-top:1px solid #ccc;width:100%;">
+    <span style="margin-left:20px;margin-top:10px;font-size:16px;font-weight:500;">社团倾向</span>
+	<ul style="font-size:13px;line-height:40px;margin-top:10px;">
+	    <li style="float:left;margin-left:20px;"><span style="color:red;">身份</span><span id="analyse_identify" style="margin-left:20px;margin-right:10px;"></span><a href="#" id="more_analyse_identify">更多</a></li>
+	    <li style="float:left;margin-left:20px;"><span style="color:red;">话题</span><span id="analyse_topic" style="margin-left:20px;margin-right:10px;"></span><a href="#" id="more_analyse_topic">更多</a></li>
+	</ul>
+	</div >
+	<div style="border-top:1px solid #ccc;width:100%;float:left;padding-left:20px;line-height:40px;">
+	    <span>注：分析范围为已入库用户。</span>
 	</div>
+</div>
+
+
+<div class="tweetinfo" style="float:left;width:730px;border:1px solid #77ACF4;background:#fff;margin-top:10px;margin-left:22px;" >
+    <h4 class="title" style="background:#77ACF4;color:#fff;">发帖内容</h4>
+    <div style="width:100%;margin-top:10px;">
+	    <span style= "color:red;margin-left:20px;font-size:16px;float:left;">排序指标</span>
+		<ul style="float:left;">
+			<li>
+		        <input type="radio" name="mode_choose" value="by_tome" checked="checked">
+                <span class="" style="">时间</span>
+			</li>
+			<li>
+                <input type="radio" name="mode_choose" value="by_retweet">
+                <span class="" style="">转发数</span>
+			</li>
+			<li>
+				<input type="radio" name="mode_choose" value="by_comment" checked="checked">
+				<span class="" style="">评论数</span>
+			</li>
+			<li>
+                <input type="radio" name="mode_choose" value="by_sensitive">
+                <span class="" style="">敏感性</span>
+			</li>
+		</ul>
 	</div>
-	<!-- end #page -->
+    <span style= "color:red;width:100%;margin-left:20px;font-size:16px;float:left;margin-bottom:10px;">相关微博</span>
+    <div class="tang-scrollpanel-content" style="margintop:10px;">
+	    <ul>
+		    <li class="item">
+			    <div class="weibo_detail" style="width:100%">
+				    <p style="text-align:left;margin-bottom:0;">1、昵称:<a class="undlin" target="_blank" href="http://weibo.com/u/1189729754">闾丘露薇</a>(中国 香港)&nbsp;&nbsp;发布内容：&nbsp;&nbsp;忽然想到，从上海合作组织成立到现在，只有哈萨克斯坦的总统纳扎尔巴耶夫每届都会见到哈。从89年到现在。阿斯塔纳的标志，那座塔，官方说法，是总统梦中得到的灵感，醒来之后的设计。</p>
+					<div class="weibo_info" style="width:100%">
+					    <div class="weibo_pz">
+					    <div id="topweibo_mid" class="hidden">3619988537724799</div>
+					    <a class="retweet_count" href="javascript:;" target="_blank">转发数(141)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="comment_count" href="javascript:;" target="_blank">评论数(116)</a></div><div class="m"><u>2013-09-07 20:13:04</u>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/1189729754/A8nZzwpzx">微博</a>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/u/1189729754">用户</a>;</div></div></div></li>
+			<li class="item"><div class="weibo_detail" style="width:100%"><p style="text-align:left;margin-bottom:0;">2、昵称:<a class="undlin" target="_blank" href="http://weibo.com/u/1189729754">闾丘露薇</a>(中国 香港)&nbsp;&nbsp;发布内容：&nbsp;&nbsp;澳大利亚新总理阿博特一家。工党执政六年后，保守党回归。阿博特读牛津时的同学，纽约时报专栏作家Kristof在twitter感叹，读书时同学们很喜欢阿博特，只是觉得他太保守，担心他无法在澳大利亚政坛生存。结果，人家当选总理了， 是不是Oz变了？</p><div class="weibo_info" style="width:100%"><div class="weibo_pz"><div id="topweibo_mid" class="hidden">3620033433959954</div><a class="retweet_count" href="javascript:;" target="_blank">转发数(90)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="comment_count" href="javascript:;" target="_blank">评论数(52)</a></div><div class="m"><u>2013-09-07 23:11:31</u>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/1189729754/A8p9ZgCae">微博</a>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/u/1189729754">用户</a>;</div></div></div></li>
+			<li class="item"><div class="weibo_detail" style="width:100%"><p style="text-align:left;margin-bottom:0;">3、昵称:<a class="undlin" target="_blank" href="http://weibo.com/u/1189729754">闾丘露薇</a>(中国 香港)&nbsp;&nbsp;发布内容：&nbsp;&nbsp;请教：为何我的首页页面连我自己发的微博都看不到？</p><div class="weibo_info" style="width:100%"><div class="weibo_pz"><div id="topweibo_mid" class="hidden">3619993894087520</div><a class="retweet_count" href="javascript:;" target="_blank">转发数(21)</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="comment_count" href="javascript:;" target="_blank">评论数(70)</a></div><div class="m"><u>2013-09-07 20:34:22</u>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/1189729754/A8o8dh9lK">微博</a>&nbsp;-&nbsp;<a target="_blank" href="http://weibo.com/u/1189729754">用户</a>;</div></div></div></li>
+			<div id="TANGRAM_54__slider" class="tang-ui tang-slider tang-slider-vtl" style="height: 100%;"><div id="TANGRAM_56__view" class="tang-view" style="width: 6px;"><div class="tang-content"><div id="TANGRAM_56__inner" class="tang-inner"><div id="TANGRAM_56__process" class="tang-process tang-process-undefined" style="height: 0px;"></div></div></div><a id="TANGRAM_56__knob" href="javascript:;" class="tang-knob" style="top: 0%; left: 0px;"></a></div><div class="tang-corner tang-start" id="TANGRAM_54__arrowTop"></div><div class="tang-corner tang-last" id="TANGRAM_54__arrowBottom"></div></div>
+	    </ul>
+	</div>
 </div>
 <div id="float-wrap" class="hidden"></div>
 
@@ -222,160 +259,353 @@ Personal.prototype = {   //群组搜索
 	},
 	personData:function(data){
 		personalData = data ;
-        //console.log(data);
-        var contact_url = '/index/contact/?uid=' + uid;
-        $('#contact').attr('href', contact_url)
         var homepage_url = 'http://weibo.com/u/' + uid;
-        $('#homepage').attr('href', homepage_url)
-        var APsum = document.getElementById('APsum');
-        APsum.innerHTML = personalData.all_count;
-        var IPsum = document.getElementById('IPsum');
-        IPsum.innerHTML = personalData.all_count;
-        var FPsum = document.getElementById('FPsum');
-        FPsum.innerHTML = personalData.all_count;
+        document.getElementById('homepage').innerHTML = homepage_url;
+		var UID = document.getElementById('uid');
+		UID.innerHTML = personalData.uid;
+        var Uname = document.getElementById('uname');
+		if(personalData.nick_name == 'unknown'){
+		    Uname.innerHTML = '未知';
+		}else{
+			Uname.innerHTML = personalData.nick_name;
+		}
+        var Verfi = document.getElementById('verf');
+        var verf = personalData.verified_type;
+        var Verf_type = document.getElementById('verf_type');
+        if(verf != -1 && verf != 0 && verf != 1 && verf != 2 && verf != 3 && verf != 4 && verf != 5 && verf != 6 && verf != 7 && verf != 8 && verf != 200 && verf != 220 && verf != 400 ){
+		    Verfi.innerHTML = "否";
+            Verf_type.innerHTML = '无';
+		}else{
+		    Verfi.innerHTML = "是";
+			Verf_type.innerHTML = personalData.verified_type_ch;
+		}
+        var Fansum = document.getElementById('fansum');
+        Fansum.innerHTML = personalData.fansnum;
+		var Attentionsum = document.getElementById('attentionsum');
+        Attentionsum.innerHTML = personalData.friendsnum;
+		var Weibosum = document.getElementById('weibosum');
+        Weibosum.innerHTML = personalData.statusnum;
+		var Loca = document.getElementById('location');
+		Loca.innerHTML = personalData.user_location;
+		var Descrip = document.getElementById('description');
+		Descrip.innerHTML = personalData.description;
         var img = document.getElementById('portraitImg');
-        //console.log(personalData.photo_url);
         if(personalData.photo_url == "unknown"){
             img.src =  "http://tp2.sinaimg.cn/1878376757/50/0/1";
         }else{
             img.src = personalData.photo_url;
         }
-        var influencePower = document.getElementById('FPnum');
-        if(personalData.influence){
-            influencePower.innerHTML = personalData.influence.toFixed(2);
-        }else{
-            influencePower.innerHTML = "无此数据";
-        }
-        var importantPower = document.getElementById('IPnum');
-        if(personalData.importance){
-            importantPower.innerHTML = personalData.importance.toFixed(2);
-        }else{
-            importantPower.innertHTML = "无此数据";
-        }
-        var activePower = document.getElementById('APnum');
-        if(personalData.activeness){
-            activePower.innerHTML = personalData.activeness.toFixed(2);
-        }else{
-            activePower.innerHTML = "无此数据";
-        }
-        var nickName = document.getElementById('nickname');
-        if(personalData.uname){
-            if (personalData.uname == 'unknown') {
-                nickName.innerHTML = '未知';
-            }
-            else{
-                nickName.innerHTML = personalData.uname;
-            }
-        }else{
-            nickName.innerHTML = "无此数据";
-        }
-        var detailPortrait = document.getElementById('portraitDetail');
-        if(!personalData.description ){
-            detailPortrait.innerHTML = "无此数据";
-        }else{
-            detailPortrait.innerHTML = personalData.description;
-        }
-        var I_rank = document.getElementById('IPrank');
-        if(personalData.importance_rank){
-            I_rank.innerHTML = personalData.importance_rank;
-        }else{
-            I_rank.innerHTML = "无此数据";
-        }
-        var A_rank = document.getElementById('APrank');
-        if(personalData.activeness_rank){
-            A_rank.innerHTML = personalData.activeness_rank;
-        }else{
-            A_rank.innerHTML = "无此数据";
-        }
-        var F_rank = document.getElementById('FPrank');
-        if(personalData.influence_rank){
-            F_rank.innerHTML = personalData.influence_rank;
-        }else{
-            F_rank.innerHTML = "无此数据";
-        }
-        var uid_div = document.getElementById('userId');
-        if(personalData.uid){
-            uid_div.innerHTML = personalData.uid;
-        }else{
-            uid_div.innerHTML = "无此数据";
-        }
-            
-        var userlocation = document.getElementById('userLocation');
-        if(personalData.location){
-            if(personalData.location == 'unknown'){
-                userlocation.innerHTML = "无此数据";
-            }else{
-                userlocation.innerHTML = personalData.location;
-            }
-        }else{
-            userlocation.innerHTML = "无此数据";
-        }
-        var gender = document.getElementById('userGender');
-        if(personalData.gender){
-            gendernum = personalData.gender;
-            if (gendernum==1){
-                gender.innerHTML = '男';
-            }else{
-                gender.innerHTML = '女';
-            }
-        }else{
-            gender.innerHTML = "无此数据";
-        }
-        var fans = document.getElementById('userFans');
-        if(personalData.fansnum){
-            fans.innerHTML = personalData.fansnum;
-        }else{
-            fans.innerHTML = "无此数据";
-        }
-            
-        var friends = document.getElementById('userFriend');
-        if( personalData.friendsnum){
-            friends.innerHTML = personalData.friendsnum;
-        }else{
-            friends.innerHTML = "无此数据";
-        }
-            
-        var pattern = document.getElementById('userWeibo');
-        if(personalData.statusnum){
-            pattern.innerHTML = personalData.statusnum;
-        }else{
-            pattern.innerHTML = "无此数据";
-        }
-		
 	},
-    remarkData:function(data){
+    overallData:function(data){
         //console.log(data);
-        if (data == ''){
-            $('#extraDetail').html('暂无');
-        }
-        else{
-            $('#extraDetail').html(data);
-        }
+		
+		//活跃度
+        var AP = document.getElementById('activePower');
+        if(data.activeness[0] !=""){
+		    AP.innerHTML = data.activeness[0].toFixed(2);
+		}else{
+		    AP.innerHTML = '0';
+		}
+		var AR = document.getElementById('activeness_rank');
+		if(data.activeness[1] !=""){
+		    AR.innerHTML = data.activeness[1];
+		}else{
+		    AR.innerHTML = '0';
+		}
+		var HA = document.getElementById('Hactiveness');
+		if(data.activeness[2] !=""){
+		    HA.innerHTML = data.activeness[2].toFixed(0);
+		}else{
+		    HA.innerHTML = '0';
+		}
+		var LA = document.getElementById('Lactiveness');
+		if(data.activeness[3] !=""){
+		    LA.innerHTML = data.activeness[3].toFixed(0);
+		}else{
+		    LA.innerHTML = '0';
+		}
+		var AT = document.getElementById('activeness_total');
+		if(data.activeness[4] !=""){
+		    AT.innerHTML = data.activeness[4];
+		}else{
+		    AT.innerHTML = '0';
+		}
+		
+		//重要度
+		var IP = document.getElementById('importantPower');
+        if(data.importance[0] !=""){
+		    IP.innerHTML = data.importance[0].toFixed(2);
+		}else{
+		    IP.innerHTML = '0';
+		}
+		var IR = document.getElementById('importance_rank');
+		if(data.importance[1] !=""){
+		    IR.innerHTML = data.importance[1];
+		}else{
+		    IR.innerHTML = '0';
+		}
+		var HI = document.getElementById('Himportance');
+		if(data.importance[2] !=""){
+		    HI.innerHTML = data.importance[2].toFixed(0);
+		}else{
+		    HI.innerHTML = '0';
+		}
+		var LI = document.getElementById('Limportance');
+		if(data.importance[3] !=""){
+		    LI.innerHTML = data.importance[3].toFixed(0);
+		}else{
+		    LI.innerHTML = '0';
+		}
+		var IT = document.getElementById('importance');
+		if(data.importance[4] !=""){
+		    IT.innerHTML = data.importance[4];
+		}else{
+		    IT.innerHTML = '0';
+		}
+		
+		//影响力
+		var FP = document.getElementById('influencePower');
+        if(data.influence[0] !=""){
+		    FP.innerHTML = data.influence[0].toFixed(2);
+		}else{
+		    FP.innerHTML = '0';
+		}
+		var FR = document.getElementById('influence_rank');
+		if(data.influence[1] !=""){
+		    FR.innerHTML = data.influence[1];
+		}else{
+		    FR.innerHTML = '0';
+		}
+		var HF = document.getElementById('Hinfluence');
+		if(data.influence[2] !=""){
+		    HF.innerHTML = data.influence[2].toFixed(0);
+		}else{
+		    HF.innerHTML = '0';
+		}
+		var LF = document.getElementById('Linfluence');
+		if(data.influence[3] !=""){
+		    LF.innerHTML = data.influence[3].toFixed(0);
+		}else{
+		    LF.innerHTML = '0';
+		}
+		var FT = document.getElementById('influence');
+		if(data.influence[4] !=""){
+		    FT.innerHTML = data.influence[4];
+		}else{
+		    FT.innerHTML = '0';
+		}
+		
+		
+		//敏感度 
+		var SP = document.getElementById('sensitivePower');
+        if(data.sensitive[0] !=""){
+		    SP.innerHTML = data.sensitive[0].toFixed(2);
+		}else{
+		    SP.innerHTML = '0';
+		}
+		var SR = document.getElementById('sensitive_rank');
+		if(data.sensitive[1] !=""){
+		    SR.innerHTML = data.sensitive[1];
+		}else{
+		    SR.innerHTML = '0';
+		}
+		var HS = document.getElementById('Hsensitiveness');
+		if(data.sensitive[2] !=""){
+		    HS.innerHTML = data.sensitive[2].toFixed(0);
+		}else{
+		    HS.innerHTML = '0';
+		}
+		var LS = document.getElementById('Lsensitiveness');
+		if(data.sensitive[3] !=""){
+		    LS.innerHTML = data.sensitive[3].toFixed(0);
+		}else{
+		    LS.innerHTML = '0';
+		}
+		var ST = document.getElementById('sensitiveness');
+		if(data.sensitive[4] !=""){
+		    ST.innerHTML = data.sensitive[4];
+		}else{
+		    ST.innerHTML = '0';
+		}
     },
-    historyData:function(data){
+
+    locationData:function(data){
         //console.log(data);
-        histData = data;
+		//当前位置
+        var CIP = document.getElementById('cur_ip');
+        if(data.now_ip[0]!=""){
+		    CIP.innerHTML = data.now_ip[0];
+		}else{
+		    CIP.innerHTML = "暂无数据";
+		}
+		var CL = document.getElementById('cur_loca');
+        if(data.now_ip[1]!=""){
+		    CL.innerHTML = data.now_ip[1];
+		}else{
+		    CL.innerHTML = "暂无数据";
+		}
+		//异常位置
+		var ABIP = document.getElementById('ab_ip');
+        if(data.abnormal_ip[0]!=""){
+		    ABIP.innerHTML = data.abnormal_ip[0];
+		}else{
+		    ABIP.innerHTML = "暂无数据";
+		}
+		var ABL = document.getElementById('ab_loca');
+        if(data.abnormal_ip[1]!=""){
+		    ABL.innerHTML = data.abnormal_ip[1];
+		}else{
+		    ABL.innerHTML = "暂无数据";
+		}
+		//活跃位置
+		var MIP = document.getElementById('act_ip');
+        if(data.main_ip[0]!=""){
+		    MIP.innerHTML = data.main_ip[0];
+		}else{
+		    MIP.innerHTML = "暂无数据";
+		}
+		var ML = document.getElementById('act_loca');
+        if(data.main_ip[1]!=""){
+		    ML.innerHTML = data.main_ip[1];
+		}else{
+		    ML.innerHTML = "暂无数据";
+		}
+		
+		//家庭位置
+		var HIP = document.getElementById('fam_ip');
+        if(data.home_ip[0]!=""){
+		    HIP.innerHTML = data.home_ip[0];
+		}else{
+		    HIP.innerHTML = "暂无数据";
+		}
+		var HL = document.getElementById('fam_loca');
+        if(data.home_ip[1]!=""){
+		    HL.innerHTML = data.home_ip[1];
+		}else{
+		    HL.innerHTML = "暂无数据";
+		}
+		
+		//工作位置
+		var JIP = document.getElementById('work_ip');
+        if(data.job_ip[0]!=""){
+		    JIP.innerHTML = data.job_ip[0];
+		}else{
+		    JIP.innerHTML = "暂无数据";
+		}
+		var JL = document.getElementById('work_loca');
+        if(data.job_ip[1]!=""){
+		    JL.innerHTML = data.job_ip[1];
+		}else{
+		    JL.innerHTML = "暂无数据";
+		}
     },
+	attentionData:function(data){
+        //console.log(data);
+		var Domain = document.getElementById('identify');
+		if(data.tendency.domain !=""){
+		    Domain.innerHTML = data.tendency.domain;
+		}else{
+		    Domain.innerHTML = "暂无数据";
+		}
+		var Topic = document.getElementById('topic_zh');
+		if(data.tendency.topic !=""){
+		    Topic.innerHTML = data.tendency.topic;
+		}else{
+		    Topic.innerHTML = "暂无数据";
+		}
+    },
+
+	socialData:function(data){
+        console.log(data);
+		Draw(data.top_retweet_comment,'retweet');
+        Draw(data.top_be_retweet_comment,'retweeted');
+		Draw(data.top_interaction,'two_way');
+		Draw(data.top_mention,'related');
+		var topics = document.getElementById('analyse_topic');
+		if(data.in_topic.length>3){
+		    topics.innerHTML = data.in_topic[0][0] +'&nbsp&nbsp' +data.in_topic[1][0]+'&nbsp&nbsp' +data.in_topic[2][0];
+		}else if(data.in_topic.length>0 && data.in_topic.length<=3){
+		    var html ='';
+		    for(var i=0;i<data.in_topic.length;i++){
+			    html = html + data.in_topic[i][0] +'&nbsp&nbsp';
+			}
+			topics.innerHTML = html;
+			$('more_retweet').attr('display','none');
+		}else if(data.in_topic.length==0){
+		    topics.innerHTML = '暂无数据';
+		}
+		
+		var domains = document.getElementById('analyse_identify');
+		if(data.in_domain.length>=4){
+		    domains.innerHTML = data.in_domain[0][0] +'&nbsp&nbsp' +data.in_domain[1][0]+'&nbsp&nbsp' +data.in_domain[2][0];
+		}else if(data.in_domain.length<=3 &&data.in_domain.length==0){
+		    var html ='';
+		    for(var i=0;i<data.in_domain.length;i++){
+			    html = html + data.in_domain[i][0] +'&nbsp&nbsp';
+			}
+			domains.innerHTML = html;
+			$('more_analyse_identify').attr('display','none');
+		}else if(data.in_domain.length==0){
+		    domains.innerHTML = '暂无数据';
+		}
+		
+    },
+	
 }
-var global_tag_vector = new Array(); //全局标签化向量
+
+
+function Draw(data,div){
+        console.log(data);
+        $('#'+div).empty();
+		if(data.length==0){
+		    document.getElementById(div).innerHTML = "暂无数据";
+			$('#more_'+div).attr('display','none');
+		}else if(data.length>0 && data.length <6){
+			var html = '';
+			for(var i=0;i<data.length;i++){
+			    if(data[i][2]=='unknown'){
+				    data[i][2] = "http://tp2.sinaimg.cn/1878376757/50/0/1";
+				}
+				if(data[i][1]=='unknown'){
+				    data[i][1] = "未知";
+				}
+			    html = html + '<span class="img-photo" style="margin-left:5px;display:block;float:left;"><img id="portraitImg" src="'+ data[i][2] + '"alt="'+data[i][1]+'" width="30" height="30"></span>';
+			}
+			$('#more_'+div).attr('display','none');
+			$('#'+div).append(html);
+		}else if(data.length>5){
+			var html = '';
+			for(var i=0;i<5;i++){
+			    if(data[i][2]=='unknown'){
+				    data[i][2] = "http://tp2.sinaimg.cn/1878376757/50/0/1";
+				}
+				if(data[i][1]=='unknown'){
+				    data[i][1] = "未知";
+				}
+			    html = html + '<span class="img-photo" style="margin-left:5px;display:block;float:left;"><img id="portraitImg" src="'+ data[i][2]+ '" alt="'+data[i][1]+'" width="30" height="30"></span>';
+			}
+			$('#'+div).append(html);
+		}
+
+}
+//var global_tag_vector = new Array(); //全局标签化向量
 
 var uid = "{{ uid }}";
 var Personal = new Personal();
 var personalData; // global data
 var histData;
-var url = "/attribute/portrait_attribute/?uid=" + uid;
+var url = "/attribute/new_user_profile/?uid=" + uid;
 Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.personData);
-var url = "/attribute/get_remark/?uid=" + uid;
-Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.remarkData);
-var url = "/attribute/history_activeness_influence/?uid=" + uid;
-Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.historyData);
-var url = "/attribute/current_tag_vector/?uid=" + uid;
-Personal.call_sync_ajax_request(url, Personal.ajax_method, currentData);
+var url = "/attribute/new_user_evaluate/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.overallData);
+var url = "/attribute/new_user_location/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.locationData);
+var url = "/attribute/new_user_portrait/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.attentionData);
+var url = "/attribute/new_user_social/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.socialData);
 
-function currentData(data){
-    //console.log(data);
-    //global_tag_vector.push(['昨日影响力评价',data[0]]);
-}
+/*
 function bind_status_option(){
     $('#status_option').change(function(){
         //console.log($(this).val());
@@ -496,66 +726,17 @@ function bind_remark_edit(Personal){
     });
 }
 bind_remark_edit(Personal);
-
+*/
 	
 </script>
 
 <script type="text/javascript" src="/static/js/portrait/show_tag.js"></script> 
 
-<div class="soft_function" id="detail" style='display:none;'>
-    <p><a style="font-size:15px;margin-left:15px;" href='#basicpage' onclick="$('#detail').css('display','none');">收起详细属性</a></p>
-	<div class="soft_con_icon">
-		<ul>
-			<li><a id="pic_fun_adm" href="#detail"><img src="/static/personal/images/activity.png"/><p style="color:#008dd9">活动特征</p></a></li>
-            <li><a id="pic_fun_crm" href="#detail"><img  src="/static/personal/images/language.png"/><p>偏好特征</p></a></li>
-            <li><a id="pic_fun_project" href="#detail"><img  src="/static/personal/images/basic.png"/><p>影响力特征</p></a></li>
-			<li><a id="pic_fun_k" href="#detail"><img  src="/static/personal/images/social.png"/><p>社交特征</p></a></li>
-			<li><a id="pic_fun_mobile" href="#detail"><img  src="/static/personal/images/thought.png"/><p>思想特征</p></a></li>
 
-		</ul>
-	</div> 
-
-	<div class="soft_con1" style="background:url(/static/personal/images/line_select_001.gif);"></div>
-
-	<div class="soft_con">
-
-		<div id="xzgl" class="soft_con2">
-            {% include "portrait/detail/activity.html"%}
-        </div>
-	
-		<div id="crm" class="soft_con2" style="display:none">
-            {% include "portrait/detail/language.html"%}
-        </div>
-	
-		<div id="xmgl" class="soft_con2" style="display:none">
-            {% include "portrait/detail/basic.html"%}
-		</div>
-		<div id="zsgl" class="soft_con2" style="display:none">
-            {% include "portrait/detail/social.html"%}
-		</div>
-	
-		<div id="ydbg" class="soft_con2" style="display:none">
-            {% include "portrait/detail/thought.html"%}
-        </div>
-	</div>
-	
-</div>
 
 {% endblock main %}
 
 {% block Own_js %}
 {{ super() }}
-<script>
-    $('#vector_table').empty();
-    var html = '';
-    for (var i = 0;i < global_tag_vector.length; i++){
-        var unit = global_tag_vector[i];
-        html += '<li class="li_1"><span class="pt_title">';
-        html += unit[0] + '</span><span class="pt_detail">';
-        html += unit[1] + '</span></li>';
-    }
-    //console.log('tagvector');
-    //console.log(global_tag_vector);
-    $('#vector_table').html(html);
-</script>
+
 {% endblock Own_js%}

@@ -21,7 +21,7 @@
 }
 #basicwrapper p, #basicwrapper ul, #basicwrapper ol {
 	margin-top: 0;
-	line-height: 180%;
+	/* line-height: 180%; */
 }
 /*
 a {
@@ -49,8 +49,33 @@ a {
 	/*padding: 0;*/
 }
 
+.overall_evaluation {
+   /* height:650px;*/
+	margin-bottom: 25px;
+	padding: 0px;
+	background: #FFFFFF;
+	border: 1px solid #77ACF4;
+    width:730px;
+    margin-left:22px;
+}
+.overall_evaluation .title {
+	height: 38px;
+	margin-bottom: 10px;
+	/*padding: 12px 0 0 20px;*/
+	background: #77ACF4;
+	border: 1px solid #77ACF4;
+	letter-spacing: -.5px;
+	color: #FFFFFF;
+}
+/*
+.post .title a {
+	color: #48390E;
+	border: none;
+}
+*/
+
 .framepost {
-    height:650px;
+    height:560px;
 	margin-bottom: 25px;
 	padding: 0px;
 	background: #FFFFFF;
@@ -65,12 +90,6 @@ a {
 	letter-spacing: -.5px;
 	color: #FFFFFF;
 }
-/*
-.post .title a {
-	color: #48390E;
-	border: none;
-}
-*/
 .framepost .meta {
 	padding-bottom: 5px;
 	padding-left: 20px;
@@ -148,4 +167,42 @@ a {
 #framesidebar a:hover {
 	text-decoration: underline;
 }
-
+.basicinfo {
+    width:245px;
+    float:left;
+    border:1px solid #77ACF4;
+    background:#fff;
+}
+.basicinfo ul li{
+    font-size:13px;
+    line-height:30px;
+    margin-left:20px;
+}
+.preinfo ul li{
+    float:left;
+    margin-left:40px;
+    font-size:13px;
+    line-height:30px;
+}
+.locationinfo ul li{
+    font-size:13px;
+    line-height:37px;
+    margin-left:10px;
+}
+.attentioninfo ul li{
+    font-size:13px;
+    line-height:30px;
+    margin-left:10px;
+}
+h4{
+    margin:0;
+    padding:0;
+    line-height:40px;
+}
+.tweetinfo ul li{
+    float:left;
+    margin-left:20px;
+}
+.gray{
+    color:gray;
+}

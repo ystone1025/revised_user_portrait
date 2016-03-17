@@ -1,109 +1,167 @@
-function Base(){
-    this.advanced_search_url = "/index/search_result/?stype=2&";
-}
-Base.prototype.simple_search_url = function (term){
-    return "/index/search_result/?stype=1&term=" + term;
-}
-
-
-function bindSearchFunc(that){ 
-    $("#keyword").bind('keyup', function(e){
-        var ev = document.all?window.event:e;
-        if (ev.keyCode == 13){
-            var term = $("#keyword").val();
-            var simple_url = "/index/search_result/?stype=1&term=" + term;
-            //console.log(simple_url);
-            window.location.href = simple_url;
+function bindAdvanced(){
+    $("#show_advanced").off("click").click(function(){
+        if (($('#supersearch')).is(':hidden')){
+            $(this).html('收起高级搜索');
+            $("#supersearch").css('display', 'block');
         }
-    }).bind('keydown', function(e){
-        var ev = document.all?window.event:e;
-        if (ev.keyCode == 13){
-            return false;
+        else{
+            $(this).html('高级搜索');
+            $("#supersearch").css('display', 'none');
         }
     });
-    $("#simple_search").click(function(){
-        var term = $("#keyword").val();
-        var simple_url = that.simple_search_url(term);
-        console.log(simple_url);
-        window.location.href = simple_url;
-    });
-    $("#bluebtn").off("click").click(function(){
-        var advanced_url = that.advanced_search_url;
-        $("#float-wrap").addClass("hidden");
-        $("#supersearch").addClass("hidden");
-        advanced_url += get_base_input_data();
-        window.location.href = advanced_url;
+    $('#commit_search').click(function(){
+        if ($('#supersearch').is(':hidden')){
+            var url = '/attribute/portrait_search/?stype=1';
+            url += get_simple_par();
+        }
+        else{
+            var url = '/attribute/portrait_search/?stype=2';
+            url += get_advanced_par();
+        }
+        console.log(url);
+        draw_conditions(url);
+        var url = '/attribute/portrait_search/?stype=1';
+        base_call_ajax_request(url, draw_search_results);
+        window.location.href = '#search_result';
     });
 }
-function get_base_input_data(){
+function replace_space(data){
+  for(var i in data){
+    if(data[i]===""||data[i]==="unknown"){
+      data[i] = "未知";
+    }
+  }
+  return data;
+}
+function draw_conditions(url){
+    $("#search_result").css("margin-top", "40px");
+    $('#conditions').empty();
+    var html = '';
+    var pre_name = 'uname';
+    var pre_value = 'test';
+
+    var fix_result = process_par(pre_name, pre_value);
+    //console.log(fix_result);
+    var fix_name = fix_result[0];
+    var fix_value = fix_result[1];
+    // console.log(fix_name);
+    // console.log(fix_value);
+    if (fix_value){
+        if (fix_value.indexOf(',') >= 0){
+            var term_list = fix_value.split(',');
+            for (var j = 0; j < term_list.length;j++){
+                html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ term_list[j] + '</span>';
+            }
+        }
+        else{
+            html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ fix_value + '</span>';
+        }
+    }
+    $('#conditions').html(html);
+    return;
+}
+function process_par(name, value){
+    var result = new Array();
+    if(name=='term'){
+        result[0] = '用户ID或昵称';
+        result[1] = value;
+    }
+    else if(name=='location'){
+        result[0] = '注册地';
+        result[1] = value;
+    }
+    else if(name=='keywords'){
+        result[0] = '关键词';
+        result[1] = value;
+    }
+    else if(name=='hashtag'){
+        result[0] = '微话题';
+        result[1] = value;
+    }
+    else if(name=='psycho_status_by_emotion'){
+        result[0] = '语言特征';
+        result[1] = value;
+    }
+    else if(name=='psycho_status_by_word'){
+        result[0] = '性格特征';
+        result[1] = value;
+    }
+    else if(name=='domain'){
+        result[0] = '领域';
+        result[1] = value;
+    }
+    else if(name=='topic'){
+        result[0] = '话题';
+        result[1] = value;
+    }
+    else if(name=='tag'){
+        result[0] = '标签';
+        result[1] = '';
+        var term_list = value.split(',');
+        for (var i = 0;i < term_list.length;i++){
+            result[1] += (term_list[i].replace(':', '--') + ',');
+        }
+        result[1] = result[1].substring(0, result[1].length-1);
+    }
+    else{
+        result[0] = '';
+        result[1] = '';
+    }
+    return result;
+}
+function get_simple_par(){
+    var str = '&term=' + $('#term').val();
+    return str
+}
+function get_advanced_par(){
     var temp='';
     var input_value;
     var input_name;
     $('.ad-search').each(function(){
-        input_name = $(this).attr('name')+'=';
-        input_value = $(this).val()+'&';
+        input_name = '&' + $(this).attr('name');
+        input_value = '=' + $(this).val();
         temp += input_name;
         temp += input_value;;
     });
-    temp = temp.substring(0, temp.length-1);
-    
-    var psycho_status_by_emotion_url = '&psycho_status_by_emotion=';
+    /*
+    var psycho_status_by_emotion = new Array();
     $("[name='psycho_status_by_emotion']:checked").each(function(){
-        if($(this).val()=='未知'){
-            $(this).val() = '其他';
-        }
-        psycho_status_by_emotion_url += $(this).val() + ',';
+        psycho_status_by_emotion.push($(this).val());
     });
-    temp += psycho_status_by_emotion_url;
-    temp = temp.substring(0, temp.length-1);
-
-    var psycho_status_by_word_url = '&psycho_status_by_word=';
-    $("[name='psycho_status_by_word']:checked").each(function(){
-        if($(this).val()=='未知'){
-            $(this).val() = '其他';
-        }
-        psycho_status_by_word_url += $(this).val() + ',';
-    });
-    temp += psycho_status_by_word_url;
-    temp = temp.substring(0, temp.length-1);
+    temp += '&psycho_status_by_emotion=' + psycho_status_by_emotion.join(',');
     
-    var domain_url = '&domain=';
+    var psycho_status_by_word = new Array();
+    $("[name='psycho_status_by_word']:checked").each(function(){
+        psycho_status_by_word.push($(this).val());
+    });
+    temp += '&psycho_status_by_word=' + psycho_status_by_word.join(',');
+    */
+    var domain = new Array();
     $("[name='domain']:checked").each(function(){
-        domain_url += $(this).val() + ',';
+        domain.push($(this).val());
     });
-    temp += domain_url;
-    temp = temp.substring(0, temp.length-1);
+    temp += '&domain=' + domain.join(',');
 
-    var topic_url = '&topic=';
+    var topic = new Array();
     $("[name='topic']:checked").each(function(){
-        topic_url += $(this).val() + ',';
+        topic += $(this).val() + ',';
     });
-    temp += topic_url;
-    temp = temp.substring(0, temp.length-1);
+    temp += '&topic=' + topic.join(',');
 
-    var tag_url = '&tag=';
-    $('#tags').children("span").each(function(){
-        var text = $(this).html();
-        text = text.split('&')[0];
-        tag_url += text +',';
-    });
-    console.log(tag_url)
-    temp += tag_url;
-    temp = temp.substring(0, temp.length-1);
-    //console.log(temp)
+    temp += '&tag=' + $('[name="tag_type"]').val();
+    temp += ':' + $('[name="tag_name"]').val();
+
     return temp;
 }
-
 function base_call_ajax_request(url, callback){
     $.ajax({
         url:url,
         type:"get",
         dataType: "json",
-        async: true,
+        async: false,
         success: callback
     })
 }
-
 function draw_value_option(data){
     //console.log(data);
     if (data == 'no attribute'){
@@ -120,57 +178,26 @@ function draw_value_option(data){
 function getAttributeName(){
     var attribute_name_url = '/tag/show_attribute_name/';
     base_call_ajax_request(attribute_name_url, draw_name_option);
-    
     function draw_name_option(data){
         // console.log(data);
         $('[name=tag_type]').empty();
         var html = '';
+        html += '<option value="" checked>不限</option>';
         for (var i=0;i<data.length;i++){
             html += '<option value="' + data[i] + '">' + data[i] + '</option>';
         }
         $('[name=tag_type]').html(html);
-
+        /*
         var attribute_value_url = '/tag/show_attribute_value/?attribute_name=';
         attribute_value_url += data[0];
         base_call_ajax_request(attribute_value_url, draw_value_option);
-
+        */
         $('[name=tag_type]').change(function(){
-            // console.log($(this).val());
             var attribute_value_url = '/tag/show_attribute_value/?attribute_name=';
             attribute_value_url += $(this).val();
             base_call_ajax_request(attribute_value_url, draw_value_option);
         });
     }
-
 }
-function bindAddFunction(){
-    var chosen = new Array();
-    $('#tag_add').click(function(){
-        var type = $('[name=tag_type]').val();
-        var name = $('[name=tag_name]').val();
-        var check_str = type + ':' + name;
-        if (chosen[check_str]){
-        }
-        else{
-            var html = '';
-            html += '<span class="mouse" style="margin-right:40px;">'+ check_str;
-            html += '&nbsp;<a class="cross" href="#">X</a></span>';
-            $('#tags').append(html);
-            chosen[check_str] = '1';
-
-            $('.mouse>a').click(function(){
-                var text = $(this).parent().html();
-                text = text.split('&')[0];
-                delete chosen[text];
-                $(this).parent().remove();
-            });
-        }
-
-    });
-}
-
-
-var base = new Base();
-bindSearchFunc(base);
 getAttributeName();
-bindAddFunction();
+bindAdvanced();
