@@ -27,13 +27,11 @@ function draw_conditions(url){
         if (fix_value.indexOf(',') >= 0){
             var term_list = fix_value.split(',');
             for (var j = 0; j < term_list.length;j++){
-                html += '<span class="mouse" id=choose_' + pre_name + '_' + j +' style="margin-left:10px">'+ fix_name + ':'+ term_list[j];
-                html += '&nbsp;<a class="cross" href="#">X</a></span>';
+                html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ term_list[j] + '</span>';
             }
         }
         else{
-            html += '<span class="mouse" id=choose_' + pre_name + ' style="margin-left:10px">'+ fix_name + ':'+ fix_value;
-            html += '&nbsp;<a class="cross" href="#">X</a></span>';
+            html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ fix_value + '</span>';
         }
     }
     $('#conditions').html(html);
@@ -141,7 +139,7 @@ function base_call_ajax_request(url, callback){
         url:url,
         type:"get",
         dataType: "json",
-        async: true,
+        async: false,
         success: callback
     })
 }
