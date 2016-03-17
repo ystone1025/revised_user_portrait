@@ -19,6 +19,10 @@ def loading():
 def user_rank():
     return render_template('portrait/user_rank.html')
 
+@mod.route('/mood_detect/')
+def mood_detect():
+    return render_template('portrait/mood_detect.html')
+
 @mod.route('/social_sensing/')
 def social_sensing():
     return render_template('portrait/social_sensing.html')
