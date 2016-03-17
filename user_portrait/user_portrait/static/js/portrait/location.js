@@ -40,6 +40,7 @@ function activity_call_ajax_request(url, callback){
     });
 }
 function geo_track(data){
+    console.log(data);
     var geo_data = data.week_geo_track;
 	var date = [];
 	var citys = [];
@@ -300,13 +301,13 @@ function draw_daily_ip_table(ip_data){
     $('#total_IP_rank').empty();
     var html = '';
     html += '<table class="table table-striped table-bordered bootstrap-datatable datatable responsive">';
-    html += '<tr><th style="text-align:center">排名</th>';
+    html += '<tr><th style="text-align:center;width:100px;">排名</th>';
     for (var i = 0; i < 5; i++){
         var s = i.toString();
         var m = i + 1;
         html += '<th style="width:170px;text-align:center">' + m + '</th>';
     }
-    html += '<th style="text-align:center"></th>';
+    html += '<th style="text-align:center;width:100px;"></th>';
     html += '</tr>';
     // daily
     location_geo = ip_data.all_day_top;
@@ -352,7 +353,7 @@ function draw_daily_ip_table(ip_data){
     html += '<th style="text-align:center">12:00-16:00</th>';
     html += '<th style="text-align:center">16:00-20:00</th>';
     html += '<th style="text-align:center">20:00-24:00</th>';
-    html += '<th style="text-align:center"></th></tr>';
+    html += '<th style="text-align:center;" ></th></tr>';
 
     location_geo = ip_data.day_ip;
     html += '<tr>';
@@ -429,7 +430,7 @@ function draw_activeness_chart(data){
     var timeline = data.time_line;
     var activeness = data.activeness;
     for (var i = 0;i < timeline.length;i++){
-        data_time.push(timeline[i]);
+        data_time.push(timeline[i].substr(5,6));
     }
     for (var i = 0;i < activeness.length;i++){
         data_count.push(parseFloat(activeness[i].toFixed(2)));

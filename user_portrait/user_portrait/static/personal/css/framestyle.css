@@ -21,7 +21,7 @@
 }
 #basicwrapper p, #basicwrapper ul, #basicwrapper ol {
 	margin-top: 0;
-	line-height: 180%;
+	/* line-height: 180%; */
 }
 /*
 a {

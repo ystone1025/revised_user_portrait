@@ -10,9 +10,24 @@
 
 {% block head_js %}
 {{ super() }}
+<style type="text/css">
+.terms{
+    /*height:30px;width:237px;float:left;*/
+    margin-bottom: 5px;
+    margin-left: 2px;
+  
+}
+.t-title{
+    /*height:30px;width:237px;float:left;*/
+    margin-left: 2px;
+  
+}
+</style>
+
 <script type="text/javascript">
 $(function(){
     /**软件功能切换js**/
+     activity_load();
     $(" .portrait_button").click(function(){
         var x = $(this).attr("title");
         // var x=$(this).parent().index();
@@ -21,7 +36,6 @@ $(function(){
         if(x==0){
            $("#xzgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==1){
-            influence_load();
            $("#crm").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==2){
             influence_load();
@@ -42,7 +56,7 @@ $(function(){
 人物详细属性
 {% endblock head_title %}
 {% block main %}
-<div id="basicwrapper">
+<div id="basicwrapper" style="width:1100px;">
 	<!-- end #menu -->
 	<div id="basicpage">
 	<div id="basicpage-bgtop">
@@ -59,51 +73,51 @@ $(function(){
               </div>
             <h3  style="padding:5px;margin-top:10px;">个人注册信息</h3>
             <li>
-            <ul style="padding:0px;height:350px;">
-              <div >
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">用户ID</span>
-                    <span class="fleft lineh42 mright38" id="userId" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">昵称</span>
-                    <span class="fleft lineh42 mright38" id="username" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">是否认证</span>
-                    <span class="fleft lineh42 mright38" id="verified" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">认证类型</span>
-                    <span class="fleft lineh42 mright38" id="vertype" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">粉丝数</span>
-                    <span class="fleft lineh42 mright38" id="userFans" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">关注数</span>
-                    <span class="fleft lineh42 mright38" id="userFriend" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">微博数</span>
-                    <span class="fleft lineh42 mright38" id="userWeibo" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">注册地</span>
-                    <span class="fleft lineh42 mright38" id="userLocation" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">个人描述</span>
-                    <span class="fleft lineh42 mright38" id="userdes" ></span>
-                </div>
-                <div style="height:30px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">微博主页</span>
-                    <span class="fleft lineh42 mright38" id="uhome" ></span>
-                </div>
-            </div>
-        </ul>
-        </li>
+                <ul style="padding:0px;height:350px;">
+                    <div >
+                        <div class="terms"  >
+                            <span class="t-title">用户ID：</span>
+                            <span  id="userId" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title">昵称：</span>
+                            <span  id="username" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title">是否认证：</span>
+                            <span  id="verified" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title">认证类型：</span>
+                            <span  id="vertype" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title">粉丝数：</span>
+                            <span  id="userFans" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title">关注数：</span>
+                            <span  id="userFriend" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title">微博数：</span>
+                            <span  id="userWeibo" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title" >注册地：</span>
+                            <span  id="userLocation" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title" style="    float: left;" >个人描述：</span>
+                            <span   style="    display: block;    width: 165px;    float: left;" id="userdes" ></span>
+                        </div>
+                        <div class="terms">
+                            <span class="t-title" style="    float: left;" >微博主页：</span>
+                            <span  style="   margin-left:20px" id="uhome" ></span>
+                        </div>
+                    </div>
+                </ul>
+            </li>
         </div>
         <div style="margin-left:300px;">
             <button class="portrait_button" type='button' style="margin-right:10px;" title="0" >活动特征</button>
@@ -116,193 +130,188 @@ $(function(){
 <script type="text/javascript">
  function Personal(){
     this.ajax_method = 'GET';
-}
-Personal.prototype = {   //群组搜索
-    call_sync_ajax_request:function(url, method, callback){
-        $.ajax({
-          url: url,
-          type: method,
-          dataType: 'json',
-          async: false,
-          success:callback
-        });
-    },
-    personData:function(data){
-        personalData = data ;
-        var uid_div = document.getElementById('userId');
-        if(personalData.uid){
-            console.log(personalData.uid)
-            uid_div.innerHTML = personalData.uid;
-        }else{
-            uid_div.innerHTML = "无此数据";
-        }
-        var img = document.getElementById('portraitImg');
-        if(personalData.photo_url == "unknown"){
-            img.src =  "http://tp2.sinaimg.cn/1878376757/50/0/1";
-        }else{
-            img.src = personalData.photo_url;
-        }
-        var nickName = document.getElementById('username');
-        if(personalData.uname){
-            if (personalData.uname == 'unknown') {
-                nickName.innerHTML = '未知';
+    }
+    Personal.prototype = {   //群组搜索
+        call_sync_ajax_request:function(url, method, callback){
+            $.ajax({
+              url: url,
+              type: method,
+              dataType: 'json',
+              async: false,
+              success:callback
+            });
+        },
+        personData:function(data){
+            personalData = data ;
+            var uid_div = document.getElementById('userId');
+            if(personalData.uid){
+                console.log(personalData.uid)
+                uid_div.innerHTML = personalData.uid;
+            }else{
+                uid_div.innerHTML = "无此数据";
+            }
+            var img = document.getElementById('portraitImg');
+            if(personalData.photo_url == "unknown"){
+                img.src =  "http://tp2.sinaimg.cn/1878376757/50/0/1";
+            }else{
+                img.src = personalData.photo_url;
+            }
+            var nickName = document.getElementById('username');
+            if(personalData.uname){
+                if (personalData.uname == 'unknown') {
+                    nickName.innerHTML = '未知';
+                }
+                else{
+                    nickName.innerHTML = personalData.uname;
+                }
+            }else{
+                nickName.innerHTML = "无此数据";
+            }
+            var u_verified = document.getElementById('verified');
+            if(personalData.verified){
+                u_verified.innerHTML = personalData.verified;
+            }else{
+                u_verified.innerHTML = "无此数据";
+            }
+            var u_vertype = document.getElementById('vertype');
+            if(personalData.verified_type){
+                u_vertype.innerHTML = personalData.verified_type;
+            }else{
+                u_vertype.innerHTML = "无此数据";
+            }
+            var fans = document.getElementById('userFans');
+            if(personalData.fansnum){
+                fans.innerHTML = personalData.fansnum;
+            }else{
+                fans.innerHTML = "无此数据";
+            }
+            var friends = document.getElementById('userFriend');
+            if( personalData.friendsnum){
+                friends.innerHTML = personalData.friendsnum;
+            }else{
+                friends.innerHTML = "无此数据";
+            }
+                
+            var pattern = document.getElementById('userWeibo');
+            if(personalData.statusnum){
+                pattern.innerHTML = personalData.statusnum;
+            }else{
+                pattern.innerHTML = "无此数据";
+            }
+            var userlocation = document.getElementById('userLocation');
+            if(personalData.location){
+                if(personalData.location == 'unknown'){
+                    userlocation.innerHTML = "无此数据";
+                }else{
+                    userlocation.innerHTML = personalData.location;
+                }
+            }else{
+                userlocation.innerHTML = "无此数据";
+            }
+            var detailPortrait = document.getElementById('userdes');
+            if(!personalData.description ){
+                detailPortrait.innerHTML = "无此数据";
+            }else{
+                detailPortrait.innerHTML = personalData.description;
+            }       
+            var homepage = document.getElementById('uhome');
+            if(!personalData.uid ){
+                homepage.innerHTML = "无此数据";
+            }else{
+                homepage.innerHTML = 'http://weibo.com/u/'+personalData.uid;
+            } 
+        },
+        remarkData:function(data){
+            //console.log(data);
+            if (data == ''){
+                $('#extraDetail').html('暂无');
             }
             else{
-                nickName.innerHTML = personalData.uname;
+                $('#extraDetail').html(data);
             }
-        }else{
-            nickName.innerHTML = "无此数据";
-        }
-        var u_verified = document.getElementById('verified');
-        if(personalData.verified){
-            u_verified.innerHTML = personalData.verified;
-        }else{
-            u_verified.innerHTML = "无此数据";
-        }
-        var u_vertype = document.getElementById('vertype');
-        if(personalData.verified_type){
-            u_vertype.innerHTML = personalData.verified_type;
-        }else{
-            u_vertype.innerHTML = "无此数据";
-        }
-        var fans = document.getElementById('userFans');
-        if(personalData.fansnum){
-            fans.innerHTML = personalData.fansnum;
-        }else{
-            fans.innerHTML = "无此数据";
-        }
-        var friends = document.getElementById('userFriend');
-        if( personalData.friendsnum){
-            friends.innerHTML = personalData.friendsnum;
-        }else{
-            friends.innerHTML = "无此数据";
-        }
-            
-        var pattern = document.getElementById('userWeibo');
-        if(personalData.statusnum){
-            pattern.innerHTML = personalData.statusnum;
-        }else{
-            pattern.innerHTML = "无此数据";
-        }
-        var userlocation = document.getElementById('userLocation');
-        if(personalData.location){
-            if(personalData.location == 'unknown'){
-                userlocation.innerHTML = "无此数据";
-            }else{
-                userlocation.innerHTML = personalData.location;
-            }
-        }else{
-            userlocation.innerHTML = "无此数据";
-        }
-        var detailPortrait = document.getElementById('userdes');
-        if(!personalData.description ){
-            detailPortrait.innerHTML = "无此数据";
-        }else{
-            detailPortrait.innerHTML = personalData.description;
-        }       
-    },
-    remarkData:function(data){
+        },
+        historyData:function(data){
+            //console.log(data);
+            histData = data;
+        },
+    }
+    var global_tag_vector = new Array(); //全局标签化向量
+
+    var uid = "{{ uid }}";
+    var uid = '2659121381';
+    var Personal = new Personal();
+    var personalData; // global data
+    var histData;
+    var url = "/attribute/portrait_attribute/?uid=" + uid;
+    Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.personData);
+    var url = "/attribute/get_remark/?uid=" + uid;
+    Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.remarkData);
+    var url = "/attribute/history_activeness_influence/?uid=" + uid;
+    Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.historyData);
+    var url = "/attribute/current_tag_vector/?uid=" + uid;
+    Personal.call_sync_ajax_request(url, Personal.ajax_method, currentData);
+
+
+
+    function currentData(data){
         //console.log(data);
-        if (data == ''){
-            $('#extraDetail').html('暂无');
-        }
-        else{
-            $('#extraDetail').html(data);
-        }
-    },
-    historyData:function(data){
-        //console.log(data);
-        histData = data;
-    },
-}
-var global_tag_vector = new Array(); //全局标签化向量
+        //global_tag_vector.push(['昨日影响力评价',data[0]]);
+    }
 
-var uid = "{{ uid }}";
-var uid = '2659121381';
-var Personal = new Personal();
-var personalData; // global data
-var histData;
-var url = "/attribute/portrait_attribute/?uid=" + uid;
-console.log(url);
-Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.personData);
-var url = "/attribute/get_remark/?uid=" + uid;
-Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.remarkData);
-var url = "/attribute/history_activeness_influence/?uid=" + uid;
-Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.historyData);
-var url = "/attribute/current_tag_vector/?uid=" + uid;
-Personal.call_sync_ajax_request(url, Personal.ajax_method, currentData);
+    var global_detail_flag = false;
+    function tag_call_ajax_request(url, callback){
+        $.ajax({
+            url:url,
+            type:"GET",
+            dataType:'json',
+            // async:true,
+            // beforeSend:function(){
+            //     $('.loading_mask').showLoading();
+            // },
+            // complete:function(){
+            //     $('.loading_mask').hideLoading();
+            // },
+            success:callback,
+        });
+    }
 
-
-
-function currentData(data){
-    //console.log(data);
-    //global_tag_vector.push(['昨日影响力评价',data[0]]);
-}
-
-var global_detail_flag = false;
-function tag_call_ajax_request(url, callback){
-    $.ajax({
-        url:url,
-        type:"GET",
-        dataType:'json',
-        // async:true,
-        // beforeSend:function(){
-        //     $('.loading_mask').showLoading();
-        // },
-        // complete:function(){
-        //     $('.loading_mask').hideLoading();
-        // },
-        success:callback,
-    });
-}
-
-function person_call_ajax_request(url, callback){
-    $.ajax({
-        url:url,
-        type:"GET",
-        dataType:'json',
-        // async:true,
-        // beforeSend:function(){
-        //     $('.soft_con_icon').showLoading();
-        // },
-        // complete:function(){
-        //     $('.soft_con_icon').hideLoading();
-        // },
-        success:callback,
-    });
-}
-    
+    function person_call_ajax_request(url, callback){
+        $.ajax({
+            url:url,
+            type:"GET",
+            dataType:'json',
+            // async:true,
+            // beforeSend:function(){
+            //     $('.soft_con_icon').showLoading();
+            // },
+            // complete:function(){
+            //     $('.soft_con_icon').hideLoading();
+            // },
+            success:callback,
+        });
+    }      
 </script>
 <script type="text/javascript" src="/static/js/portrait/show_tag.js"></script> 
-
-        <!-- <div id="framecontent" style="margin-top:20px;"> -->
-        <div style="margin-left:10px;margin-top:20px;float:left;width:750px;">
-            
-            <!-- <div class="soft_con"> -->
-                <div id="xzgl" >
-                    {% include "portrait/detail/activity.html"%}
-                </div>
-            
-                <div id="crm" style="display:none">
-                    {% include "portrait/detail/language.html"%}
-                </div>
-            
-                <div id="xmgl" style="display:none">
-                    {% include "portrait/detail/basic.html"%}
-                </div>
-                <div id="zsgl" style="display:none">
-                    {% include "portrait/detail/social.html"%}
-                </div>
-            
-                <div id="ydbg" style="display:none">
-                    {% include "portrait/detail/thought.html"%}
-                </div>
-            <!-- </div> -->
-        <!--<div style="clear: both;">&nbsp;</div>-->
+        <div style="margin-left:10px;margin-top:20px;float:left;width:850px;">     
+            <div id="xzgl" >
+                {% include "portrait/detail/activity.html"%}
+            </div>
+        
+            <div id="crm" style="display:none">
+                {% include "portrait/detail/language.html"%}
+            </div>
+        
+            <div id="xmgl" style="display:none">
+                {% include "portrait/detail/basic.html"%}
+            </div>
+            <div id="zsgl" style="display:none">
+                {% include "portrait/detail/social.html"%}
+            </div>
+        
+            <div id="ydbg" style="display:none">
+                {% include "portrait/detail/thought.html"%}
+            </div>
         </div>
-        <!-- end #content -->
-		<!-- end #sidebar -->
-		<!--<div style="clear: both;">&nbsp;</div>-->
 	</div>
 	</div>
 	</div>
