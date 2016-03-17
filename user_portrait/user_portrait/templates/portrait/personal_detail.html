@@ -21,12 +21,16 @@ $(function(){
         if(x==0){
            $("#xzgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==1){
+            influence_load();
            $("#crm").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==2){
+            influence_load();
            $("#xmgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==3){
+            social_load();
            $("#zsgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else{
+            thought_load();
            $("#ydbg").css({"display":"block"}).siblings().css({"display":"none"});
         }
     });
