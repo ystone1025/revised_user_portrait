@@ -38,7 +38,9 @@ $(function(){
 });
 </script>
 {% endblock head_js %}
-
+{% block head_title %}
+人物详细属性
+{% endblock head_title %}
 {% block main %}
 <div id="basicwrapper">
 	<!-- end #menu -->
@@ -47,45 +49,57 @@ $(function(){
     <div id="basicpage-bgbtm">
         <div id="framesidebar" >
             <div ><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="170" height="170" /></span></div>
-            <h3  style="padding:5px;">个人注册信息</h3>
-            <li>
-            <ul style="padding:0px;height:350px;">
             <div >
-                <div style="width:300px;height:70px; margin-bottom: 8px;">
+                <div style="width:300px;height:30px; margin-bottom: 8px;">
                   <div style="width:640px; float:left;">
                       <span class="nickname" id="nickname"></span>
-                    <a style="font-size:15px;margin-left:15px;" href='#detail' onclick="$('#detail').css('display','block');">返回基本属性</a>
-                    <div class="PersonPre" style="margin-bottom:5px;">
-                        <!--<span class="lightw">个人描述：</span>-->
-                        <span class="" style="font-family: "宋体";" id="portraitDetail"></span>
-                    </div>
+                    <a style="font-size:15px;margin-left:15px;margin-left:150px;" href='#detail'>返回基本属性</a>
                   </div>
                 </div>
               </div>
+            <h3  style="padding:5px;margin-top:10px;">个人注册信息</h3>
+            <li>
+            <ul style="padding:0px;height:350px;">
               <div >
-                <div style="height:40px;width:237px;float:left;">
+                <div style="height:30px;width:237px;float:left;">
                     <span class="lightw fleft lineh42 mright38">用户ID</span>
                     <span class="fleft lineh42 mright38" id="userId" ></span>
                 </div>
-                <div style="height:40px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">注册地</span>
-                    <span class="fleft lineh42 mright38" id="userLocation" ></span>
+                <div style="height:30px;width:237px;float:left;">
+                    <span class="lightw fleft lineh42 mright38">昵称</span>
+                    <span class="fleft lineh42 mright38" id="username" ></span>
                 </div>
-                <div style="height:40px;width:237px;float:left;">
-                    <span class="lightw fleft lineh42 mright38">性&nbsp;&nbsp;&nbsp;别</span>
-                    <span class="fleft lineh42 mright38" id="userGender" ></span>
+                <div style="height:30px;width:237px;float:left;">
+                    <span class="lightw fleft lineh42 mright38">是否认证</span>
+                    <span class="fleft lineh42 mright38" id="verified" ></span>
                 </div>
-                <div style="height:40px;width:237px;float:left;">
+                <div style="height:30px;width:237px;float:left;">
+                    <span class="lightw fleft lineh42 mright38">认证类型</span>
+                    <span class="fleft lineh42 mright38" id="vertype" ></span>
+                </div>
+                <div style="height:30px;width:237px;float:left;">
                     <span class="lightw fleft lineh42 mright38">粉丝数</span>
                     <span class="fleft lineh42 mright38" id="userFans" ></span>
                 </div>
-                <div style="height:40px;width:237px;float:left;">
+                <div style="height:30px;width:237px;float:left;">
                     <span class="lightw fleft lineh42 mright38">关注数</span>
                     <span class="fleft lineh42 mright38" id="userFriend" ></span>
                 </div>
-                <div style="height:40px;width:237px;float:left;">
+                <div style="height:30px;width:237px;float:left;">
                     <span class="lightw fleft lineh42 mright38">微博数</span>
                     <span class="fleft lineh42 mright38" id="userWeibo" ></span>
+                </div>
+                <div style="height:30px;width:237px;float:left;">
+                    <span class="lightw fleft lineh42 mright38">注册地</span>
+                    <span class="fleft lineh42 mright38" id="userLocation" ></span>
+                </div>
+                <div style="height:30px;width:237px;float:left;">
+                    <span class="lightw fleft lineh42 mright38">个人描述</span>
+                    <span class="fleft lineh42 mright38" id="userdes" ></span>
+                </div>
+                <div style="height:30px;width:237px;float:left;">
+                    <span class="lightw fleft lineh42 mright38">微博主页</span>
+                    <span class="fleft lineh42 mright38" id="uhome" ></span>
                 </div>
             </div>
         </ul>
@@ -98,49 +112,10 @@ $(function(){
             <button class="portrait_button" type='button' style="margin-right:10px;" title="3" >社交特征</button>
             <button class="portrait_button" type='button' style="margin-right:10px;" title="4" >思想特征</button>
         </div>
-        <div id="framecontent" style="margin-top:20px;">
-            <div class="framepost">
-                <h3 class="title">系统画像信息</h3>
-                <div class="entry">
-                    <div class="soft_con">
-                        <div id="xzgl" class="soft_con2">
-                            {% include "portrait/detail/activity.html"%}
-                        </div>
-                    
-                        <div id="crm" class="soft_con2" style="display:none">
-                            {% include "portrait/detail/language.html"%}
-                        </div>
-                    
-                        <div id="xmgl" class="soft_con2" style="display:none">
-                            {% include "portrait/detail/basic.html"%}
-                        </div>
-                        <div id="zsgl" class="soft_con2" style="display:none">
-                            {% include "portrait/detail/social.html"%}
-                        </div>
-                    
-                        <div id="ydbg" class="soft_con2" style="display:none">
-                            {% include "portrait/detail/thought.html"%}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <!--<div style="clear: both;">&nbsp;</div>-->
-        </div>
-        <!-- end #content -->
-		<!-- end #sidebar -->
-		<!--<div style="clear: both;">&nbsp;</div>-->
-	</div>
-	</div>
-	</div>
-	<!-- end #page -->
-</div>
-<div id="float-wrap" class="hidden"></div>
-
-
 
 <script type="text/javascript">
  function Personal(){
-	this.ajax_method = 'GET';
+    this.ajax_method = 'GET';
 }
 Personal.prototype = {   //群组搜索
     call_sync_ajax_request:function(url, method, callback){
@@ -151,42 +126,23 @@ Personal.prototype = {   //群组搜索
           async: false,
           success:callback
         });
-	},
-	personData:function(data){
-		personalData = data ;
-        //console.log(data);
-        var APsum = document.getElementById('APsum');
-        APsum.innerHTML = personalData.all_count;
-        var IPsum = document.getElementById('IPsum');
-        IPsum.innerHTML = personalData.all_count;
-        var FPsum = document.getElementById('FPsum');
-        FPsum.innerHTML = personalData.all_count;
+    },
+    personData:function(data){
+        personalData = data ;
+        var uid_div = document.getElementById('userId');
+        if(personalData.uid){
+            console.log(personalData.uid)
+            uid_div.innerHTML = personalData.uid;
+        }else{
+            uid_div.innerHTML = "无此数据";
+        }
         var img = document.getElementById('portraitImg');
-        //console.log(personalData.photo_url);
         if(personalData.photo_url == "unknown"){
             img.src =  "http://tp2.sinaimg.cn/1878376757/50/0/1";
         }else{
             img.src = personalData.photo_url;
         }
-        var influencePower = document.getElementById('FPnum');
-        if(personalData.influence){
-            influencePower.innerHTML = personalData.influence.toFixed(2);
-        }else{
-            influencePower.innerHTML = "无此数据";
-        }
-        var importantPower = document.getElementById('IPnum');
-        if(personalData.importance){
-            importantPower.innerHTML = personalData.importance.toFixed(2);
-        }else{
-            importantPower.innertHTML = "无此数据";
-        }
-        var activePower = document.getElementById('APnum');
-        if(personalData.activeness){
-            activePower.innerHTML = personalData.activeness.toFixed(2);
-        }else{
-            activePower.innerHTML = "无此数据";
-        }
-        var nickName = document.getElementById('nickname');
+        var nickName = document.getElementById('username');
         if(personalData.uname){
             if (personalData.uname == 'unknown') {
                 nickName.innerHTML = '未知';
@@ -197,57 +153,17 @@ Personal.prototype = {   //群组搜索
         }else{
             nickName.innerHTML = "无此数据";
         }
-        var detailPortrait = document.getElementById('portraitDetail');
-        if(!personalData.description ){
-            detailPortrait.innerHTML = "无此数据";
+        var u_verified = document.getElementById('verified');
+        if(personalData.verified){
+            u_verified.innerHTML = personalData.verified;
         }else{
-            detailPortrait.innerHTML = personalData.description;
+            u_verified.innerHTML = "无此数据";
         }
-        var I_rank = document.getElementById('IPrank');
-        if(personalData.importance_rank){
-            I_rank.innerHTML = personalData.importance_rank;
+        var u_vertype = document.getElementById('vertype');
+        if(personalData.verified_type){
+            u_vertype.innerHTML = personalData.verified_type;
         }else{
-            I_rank.innerHTML = "无此数据";
-        }
-        var A_rank = document.getElementById('APrank');
-        if(personalData.activeness_rank){
-            A_rank.innerHTML = personalData.activeness_rank;
-        }else{
-            A_rank.innerHTML = "无此数据";
-        }
-        var F_rank = document.getElementById('FPrank');
-        if(personalData.influence_rank){
-            F_rank.innerHTML = personalData.influence_rank;
-        }else{
-            F_rank.innerHTML = "无此数据";
-        }
-        var uid_div = document.getElementById('userId');
-        if(personalData.uid){
-            uid_div.innerHTML = personalData.uid;
-        }else{
-            uid_div.innerHTML = "无此数据";
-        }
-            
-        var userlocation = document.getElementById('userLocation');
-        if(personalData.location){
-            if(personalData.location == 'unknown'){
-                userlocation.innerHTML = "无此数据";
-            }else{
-                userlocation.innerHTML = personalData.location;
-            }
-        }else{
-            userlocation.innerHTML = "无此数据";
-        }
-        var gender = document.getElementById('userGender');
-        if(personalData.gender){
-            gendernum = personalData.gender;
-            if (gendernum==1){
-                gender.innerHTML = '男';
-            }else{
-                gender.innerHTML = '女';
-            }
-        }else{
-            gender.innerHTML = "无此数据";
+            u_vertype.innerHTML = "无此数据";
         }
         var fans = document.getElementById('userFans');
         if(personalData.fansnum){
@@ -255,7 +171,6 @@ Personal.prototype = {   //群组搜索
         }else{
             fans.innerHTML = "无此数据";
         }
-            
         var friends = document.getElementById('userFriend');
         if( personalData.friendsnum){
             friends.innerHTML = personalData.friendsnum;
@@ -269,8 +184,23 @@ Personal.prototype = {   //群组搜索
         }else{
             pattern.innerHTML = "无此数据";
         }
-		
-	},
+        var userlocation = document.getElementById('userLocation');
+        if(personalData.location){
+            if(personalData.location == 'unknown'){
+                userlocation.innerHTML = "无此数据";
+            }else{
+                userlocation.innerHTML = personalData.location;
+            }
+        }else{
+            userlocation.innerHTML = "无此数据";
+        }
+        var detailPortrait = document.getElementById('userdes');
+        if(!personalData.description ){
+            detailPortrait.innerHTML = "无此数据";
+        }else{
+            detailPortrait.innerHTML = personalData.description;
+        }       
+    },
     remarkData:function(data){
         //console.log(data);
         if (data == ''){
@@ -288,17 +218,19 @@ Personal.prototype = {   //群组搜索
 var global_tag_vector = new Array(); //全局标签化向量
 
 var uid = "{{ uid }}";
+var uid = '2659121381';
 var Personal = new Personal();
 var personalData; // global data
 var histData;
-// var url = "/attribute/portrait_attribute/?uid=" + uid;
-// Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.personData);
-// var url = "/attribute/get_remark/?uid=" + uid;
-// Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.remarkData);
-// var url = "/attribute/history_activeness_influence/?uid=" + uid;
-// Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.historyData);
-// var url = "/attribute/current_tag_vector/?uid=" + uid;
-// Personal.call_sync_ajax_request(url, Personal.ajax_method, currentData);
+var url = "/attribute/portrait_attribute/?uid=" + uid;
+console.log(url);
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.personData);
+var url = "/attribute/get_remark/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.remarkData);
+var url = "/attribute/history_activeness_influence/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.historyData);
+var url = "/attribute/current_tag_vector/?uid=" + uid;
+Personal.call_sync_ajax_request(url, Personal.ajax_method, currentData);
 
 
 
@@ -306,131 +238,76 @@ function currentData(data){
     //console.log(data);
     //global_tag_vector.push(['昨日影响力评价',data[0]]);
 }
-function bind_status_option(){
-    $('#status_option').change(function(){
-        //console.log($(this).val());
-        if ($(this).val() == 'latest'){
-            var APsum = document.getElementById('APsum');
-            APsum.innerHTML = personalData.all_count;
-            var IPsum = document.getElementById('IPsum');
-            IPsum.innerHTML = personalData.all_count;
-            var FPsum = document.getElementById('FPsum');
-            FPsum.innerHTML = personalData.all_count;
-            var influencePower = document.getElementById('FPnum');
-            if(personalData.influence){
-                influencePower.innerHTML = personalData.influence.toFixed(2);
-            }else{
-                influencePower.innerHTML = "无此数据";
-            }
-            var importantPower = document.getElementById('IPnum');
-            if(personalData.importance){
-                importantPower.innerHTML = personalData.importance.toFixed(2);
-            }else{
-                importantPower.innertHTML = "无此数据";
-            }
-            var activePower = document.getElementById('APnum');
-            if(personalData.activeness){
-                activePower.innerHTML = personalData.activeness.toFixed(2);
-            }else{
-                activePower.innerHTML = "无此数据";
-            }
-            var I_rank = document.getElementById('IPrank');
-            if(personalData.importance_rank){
-                I_rank.innerHTML = personalData.importance_rank;
-            }else{
-                I_rank.innerHTML = "无此数据";
-            }
-            var A_rank = document.getElementById('APrank');
-            if(personalData.activeness_rank){
-                A_rank.innerHTML = personalData.activeness_rank;
-            }else{
-                A_rank.innerHTML = "无此数据";
-            }
-            var F_rank = document.getElementById('FPrank');
-            if(personalData.influence_rank){
-                F_rank.innerHTML = personalData.influence_rank;
-            }else{
-                F_rank.innerHTML = "无此数据";
-            }
-        }
-        else{
-            var hist_sum;
-            if (histData[6] > 10000){
-                hist_sum = Math.floor(histData[6]/10000) + '万';
-            }
-            else{
-                hist_sum = histData[6];
-            }
-            $('#APnum').html(histData[0].toFixed(2));
-            $('#APrank').html(histData[1]);
-            $('#APsum').html(hist_sum);
-            $('#FPnum').html(histData[2].toFixed(2));
-            $('#FPrank').html(histData[3]);
-            $('#FPsum').html(hist_sum);
-            $('#IPnum').html(histData[4].toFixed(2));
-            $('#IPrank').html(histData[5]);
-            $('#IPsum').html(hist_sum);
-        }
-    });
-}
-bind_status_option();
-function bind_remark_edit(Personal){
-    $('#extraDetail').click(function(){
-        var td = $(this);
-        var txt = td.html();
-        var input = "<input id='editremark' style='width:150px;' type='text' value='" + txt + "'/>";
-        td.html(input);
-        $('#editremark').click(function(){
-            return false;
-        });
-        $('#editremark').trigger('focus');
-        $('#editremark').bind('keyup', function(e){
-            var ev = document.all?window.event:e;
-            if (ev.keyCode == 13){
-                var newtxt = $(this).val();
-                if (newtxt == ''){
-                    td.html('暂无');
-                }
-                else{    
-                    td.html(newtxt);
-                }
-                if (newtxt != txt){
-                    var url = '/attribute/edit_remark/?uid=' + uid + '&remark=' + newtxt;
-                    Personal.call_sync_ajax_request(url, Personal.ajax_method, confirm_edit);
-                    //console.log('diff');
-                }
-            }
-        }).bind('keydown', function(e){
-            var ev = document.all?window.event:e;
-            if (ev.keyCode == 13){
-                return false;
-            }
-        });
-        $('#editremark').blur(function(){
-            var newtxt = $(this).val();
-            if (newtxt == ''){
-                td.html('暂无');
-            }
-            else{    
-                td.html(newtxt);
-            }
-            if (newtxt != txt){
-                var url = '/attribute/edit_remark/?uid=' + uid + '&remark=' + newtxt;
-                Personal.call_sync_ajax_request(url, Personal.ajax_method, confirm_edit);
-                //console.log('diff');
-            }
-        });
-        function confirm_edit(data){
-            //alert(data);
-        }
-    });
-}
-bind_remark_edit(Personal);
 
-	
+var global_detail_flag = false;
+function tag_call_ajax_request(url, callback){
+    $.ajax({
+        url:url,
+        type:"GET",
+        dataType:'json',
+        // async:true,
+        // beforeSend:function(){
+        //     $('.loading_mask').showLoading();
+        // },
+        // complete:function(){
+        //     $('.loading_mask').hideLoading();
+        // },
+        success:callback,
+    });
+}
+
+function person_call_ajax_request(url, callback){
+    $.ajax({
+        url:url,
+        type:"GET",
+        dataType:'json',
+        // async:true,
+        // beforeSend:function(){
+        //     $('.soft_con_icon').showLoading();
+        // },
+        // complete:function(){
+        //     $('.soft_con_icon').hideLoading();
+        // },
+        success:callback,
+    });
+}
+    
 </script>
-
 <script type="text/javascript" src="/static/js/portrait/show_tag.js"></script> 
+
+        <!-- <div id="framecontent" style="margin-top:20px;"> -->
+        <div style="margin-left:10px;margin-top:20px;float:left;width:750px;">
+            
+            <!-- <div class="soft_con"> -->
+                <div id="xzgl" >
+                    {% include "portrait/detail/activity.html"%}
+                </div>
+            
+                <div id="crm" style="display:none">
+                    {% include "portrait/detail/language.html"%}
+                </div>
+            
+                <div id="xmgl" style="display:none">
+                    {% include "portrait/detail/basic.html"%}
+                </div>
+                <div id="zsgl" style="display:none">
+                    {% include "portrait/detail/social.html"%}
+                </div>
+            
+                <div id="ydbg" style="display:none">
+                    {% include "portrait/detail/thought.html"%}
+                </div>
+            <!-- </div> -->
+        <!--<div style="clear: both;">&nbsp;</div>-->
+        </div>
+        <!-- end #content -->
+		<!-- end #sidebar -->
+		<!--<div style="clear: both;">&nbsp;</div>-->
+	</div>
+	</div>
+	</div>
+</div>
+<div id="float-wrap" class="hidden"></div>
 
 {% endblock main %}
 

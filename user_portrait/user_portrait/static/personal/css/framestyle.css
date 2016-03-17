@@ -72,6 +72,23 @@ a {
 	border: none;
 }
 */
+
+.framepost {
+    height:560px;
+	margin-bottom: 25px;
+	padding: 0px;
+	background: #FFFFFF;
+	border: 1px solid #77ACF4;
+}
+.framepost .title {
+	height: 38px;
+	margin-bottom: 10px;
+	padding: 12px 0 0 20px;
+	background: #77ACF4;
+	border: 1px solid #77ACF4;
+	letter-spacing: -.5px;
+	color: #FFFFFF;
+}
 .framepost .meta {
 	padding-bottom: 5px;
 	padding-left: 20px;

@@ -67,7 +67,7 @@ margin:10px;
 overflow-y:scroll;
 }
 </style>
-<div style="width:1000px;">
+<div style="width:750px;">
   
     <div class="modal fade" id="language_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -88,51 +88,54 @@ overflow-y:scroll;
         </div>
       </div>
     </div>
-    <div style="margin:0px;height:10px;width:1000px;">
+    <div style="margin:0px;height:10px;width:750px;">
         <div style="float:right;cursor: pointer" type="button" data-toggle="modal" data-target="#language_info"><u>计算说明</u></div>
     </div>  
-  <div style="margin-left:20px;width:450px;">
+
+
+  <div style="margin-left:20px;width:48%;float:left">
     <div class="showmore" id="key_more" style="float:right;margin-top:30px;font-size:16px;"><a style="cursor:pointer; color:#555555;"  id="showmore_keyWords"><u>查看更多</u></a></div>
-    <!-- <div style="margin-right:-50px;font-size:16px;"> -->
     <h3>关键词</h3>
-    <!-- </div> -->
     <hr>
-    <div id="Language" style="width:300px;height:280px;margin:30px 40px;margin:-10px 50px 0px 20px;"></div>
+    <div id="Language" style="width:360px;height:280px;margin:30px 40px;margin:-10px 50px 0px 20px;"></div>
     
   </div>
-  <div style="margin-left:80px;width:450px;">
+  <div style="float:left;width:48%;">
     <div class="showmore" id="hash_more" style="float:right;margin-top:30px;font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showmore_hashtagWords"><u>查看更多</u></a></div>
     <h3>事件标签</h3>
     <hr>
-    <div id="hashtag_words" style="width:300px;height:280px;margin-top:10px;float:left;margin-left:-50px;margin:-30px 50px 0px 75px;"></div>
+    <div id="hashtag_words" style="width:360px;height:280px;margin-top:10px;margin:-10px 50px 0px 20px;"></div>
   </div>
   <div id="float-wrap" class="hidden"></div>
+
   <div id="more_keyWords" class="hidden">
   	<h3 class="title">关键词排名<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
   	<div id="key_WordList"></div>
   </div>
   <div id="more_hashtagWords" class="hidden">
-      <h3 class="title">hashtag排名<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
+      <h3 class="title">微话题排名<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
       <div id="hashtag_WordList"></div>
   </div>
-  <div id="" style="width:1000px;">
-  	<div id="" style="width:490px;margin-left:20px;">
-      <span id="preference_domain_title" ><h3>用户领域分析</h3></span>
-      <hr style="width:450px;">
-      <div id="preference_domain" style="width:490px;height:300px;"></div>
-  	</div>
-    <div style="margin-left:40px;width:450px;">
-      <div class="showmore" id="topic_more" style="float:right;margin-top:30px;font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showmore_topic"><u>查看更多</u></a></div>
-      <div id="more_topic" class="hidden">
-        <h3 class="title">用户话题<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
-        <div id="topic_WordList"></div>
-      </div>
-      <h3>用户话题分布</h3>
-      <hr>
-      <div id="user_topic" style="height:300px;width:400px;"></div>
+
+	<div id="" style="float:left;width: 48%;">
+    <span id="preference_domain_title" ><h3>用户领域分析</h3></span>
+    <hr>
+    <div id="preference_domain" style="width:360px;height:280px;"></div>
+	</div>
+
+  <div style="width:48%;float:left;">
+    <div class="showmore" id="topic_more" style="float:right;margin-top:30px;font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showmore_topic"><u>查看更多</u></a></div>
+    <div id="more_topic" class="hidden">
+      <h3 class="title">用户话题<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
+      <div id="topic_WordList"></div>
     </div>
+    <h3>用户话题分布</h3>
+    <hr>
+    <div id="user_topic" style="height:280px;width:360px;"></div>
   </div>
-  <div id="preference_conclusion" style="width:100%;"></div>
+
+
+  <div id="preference_conclusion" style="width:100%;float:left"></div>
 </div>
 <script src="/static/js/portrait/language.js"></script>
                     
