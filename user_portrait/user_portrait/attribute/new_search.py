@@ -82,7 +82,7 @@ def new_get_user_portrait(uid, admin_user):
         except:
             sensitive_words_dict = {}
         sort_sensitive_words = sorted(sensitive_words_dict.items(), key=lambda x:x[1], reverse=True)
-        results['attention_information'] = {'sensitive_words': sort_sensitive_words}
+        results['attention_information'] = {'sensitive_dict': sort_sensitive_words}
         #keywords
         sort_keywords = json.loads(user_portrait_result['keywords'])
         results['attention_information']['keywords'] = sorted(sort_keywords)
@@ -162,6 +162,32 @@ def get_evaluate_max_min_now(history_dict, evaluate_index):
     results = [now_evaluate_value, now_evaluate_rank, max_value, min_value]
     return results
 
+#use to get user influence week ave
+#return week ave rank
+def get_influence_week_ave_rank(week_ave):
+    evaluate_index_key = 'bci_week_ave'
+    query_body = {
+        'query':{
+            'range':{
+                evaluate_index_key: {
+                    'gte': week_ave,
+                    'lt': MAX_VALUE
+                    }
+                }
+            }
+        }
+    index_name = COPY_USER_PORTRAIT_INFLUENCE
+    index_type = COPY_USER_PORTRAIT_INFLUENCE_TYPE
+    week_ave_rank = ES_COPY_USER_PORTRAIT.count(index=index_name, doc_type=index_type,\
+            body=query_body)
+    if week_ave_rank['_shards']['successful'] != 0:
+        rank = week_ave_rank['count']
+    else:
+        rank = ''
+    return rank
+
+
+
 #use to get user evaluate index
 #return result: [now_evaluate_value, now_evaluate_rank, max_value, min_value, all_count]
 def new_get_user_evaluate(uid):
@@ -185,8 +211,12 @@ def new_get_user_evaluate(uid):
         influence_history = []
     #get max value/min value/week ave value
     if influence_history:
+        week_ave = influence_history['bci_week_ave']
+        week_ave_rank = get_influence_week_ave_rank(week_ave)
+        influence_item = [week_ave, week_ave_rank]
         influence_max_min_now_list =  get_evaluate_max_min_now(influence_history, 'bci')
         influence_max_min_now_list.append(all_count)
+        influence_item.extend(influence_max_min_now_list[2:])
         results['influence'] = influence_max_min_now_list
     else:
         results['influence'] = ['', '', '', '', all_count]

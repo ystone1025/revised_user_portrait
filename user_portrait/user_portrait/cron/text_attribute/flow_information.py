@@ -13,7 +13,8 @@ reload(sys)
 sys.path.append('../../')
 from global_utils import R_CLUSTER_FLOW2 as r_cluster
 from global_utils import flow_text_index_name_pre, flow_text_index_type, es_flow_text
-from parameter import DAY, MAX_VALUE
+from global_utils import R_ADMIN as r_sensitive
+from parameter import DAY, MAX_VALUE, sensitive_score_dict
 from parameter import RUN_TYPE, RUN_TEST_TIME, WEEK
 from time_utils import datetime2ts, ts2datetime, ts2date
 
@@ -40,11 +41,13 @@ def get_flow_information(uid_list):
         #compute hashtag and geo
         hashtag_results = r_cluster.hmget('hashtag_'+str(ts), uid_list)
         ip_results = r_cluster.hmget('new_ip_'+str(ts), uid_list)
+        #compute sensitive_words
+        sensitive_results = r_cluster.hmget('sensitive_'+str(ts), uid_list)
         count = 0 
         for uid in uid_list:
             #init iter_results[uid]
             if uid not in iter_results:
-                iter_results[uid] = {'hashtag':{}, 'geo':{},'geo_track':[],'keywords':{}}
+                iter_results[uid] = {'hashtag':{}, 'geo':{},'geo_track':[],'keywords':{}, 'sensitive':{}}
             #compute hashtag
             hashtag_item = hashtag_results[count]
             if hashtag_item:
@@ -56,6 +59,17 @@ def get_flow_information(uid_list):
                     iter_results[uid]['hashtag'][hashtag] += uid_hashtag_dict[hashtag]
                 except:
                     iter_results[uid]['hashtag'][hashtag] = uid_hashtag_dict[hashtag]
+            #compute sensitive
+            sensitive_item = sensitive_results[count]
+            if sensitive_item:
+                uid_sensitive_dict = json.loads(sensitive_item)
+            else:
+                uid_sensitive_dict = {}
+            for sensitive_word in uid_sensitive_dict:
+                try:
+                    iter_results[uid]['sensitive'][sensitive_word] += uid_sensitive_dict[sensitive_word]
+                except:
+                    iter_results[uid]['sensitive'][sensitive_word] = uid_sensitive_dict[sensitive_word]
             #compute geo
             uid_day_geo[uid] = {}
             ip_item = ip_results[count]
@@ -102,6 +116,22 @@ def get_flow_information(uid_list):
         hashtag_dict = iter_results[uid]['hashtag']
         results[uid]['hashtag_dict'] = json.dumps(hashtag_dict)
         results[uid]['hashtag'] = '&'.join(hashtag_dict.keys())
+        #sensitive words
+        sensitive_word_dict = iter_results[uid]['sensitive']
+        results[uid]['sensitive_dict'] = json.dumps(sensitive_word_dict)
+        results[uid]['sensitive_string'] = '&'.join(sensitive_word_dict.keys())
+        sensitive_score = 0
+        for item in sensitive_word_dict:
+            k = item
+            v = sensitive_word_dict[k]
+            tmp_stage = r_sensitive.hget('sensitive_words', k)
+            if tmp_stage:
+                sensitive_score += v * sensitive_score_dict[str(tmp_stage)]
+        results[uid]['sensitive'] = sensitive_score
+        print 'sensitive_dict:', results[uid]['sensitive_dict']
+        print 'sensitive_string:', results[uid]['sensitive_string']
+        print 'sensitive:', results[uid]['sensitive']
+        #geo
         geo_dict = iter_results[uid]['geo']
         geo_track_list = iter_results[uid]['geo_track']
         results[uid]['activity_geo_dict'] = json.dumps(geo_track_list)
@@ -138,11 +168,13 @@ def get_flow_information_v2(uid_list, all_user_keywords_dict):
         #compute hashtag and geo
         hashtag_results = r_cluster.hmget('hashtag_'+str(ts), uid_list)
         ip_results = r_cluster.hmget('new_ip_'+str(ts), uid_list)
+        #compute sensitive_words
+        sensitive_results = r_cluster.hmget('sensitive_'+str(ts), uid_list)
         count = 0 
         for uid in uid_list:
             #init iter_results[uid]
             if uid not in iter_results:
-                iter_results[uid] = {'hashtag':{}, 'geo':{},'geo_track':[],'keywords':{}}
+                iter_results[uid] = {'hashtag':{}, 'geo':{},'geo_track':[],'keywords':{}, 'sensitive':{}}
             #compute hashtag
             hashtag_item = hashtag_results[count]
             if hashtag_item:
@@ -154,6 +186,17 @@ def get_flow_information_v2(uid_list, all_user_keywords_dict):
                     iter_results[uid]['hashtag'][hashtag] += uid_hashtag_dict[hashtag]
                 except:
                     iter_results[uid]['hashtag'][hashtag] = uid_hashtag_dict[hashtag]
+            #compute sensitive
+            sensitive_item = sensitive_results[count]
+            if sensitive_item:
+                uid_sensitive_dict = json.loads(sensitive_item)
+            else:
+                uid_sensitive_dict = {}
+            for sensitive_word in uid_sensitive_dict:
+                try:
+                    iter_results[uid]['sensitive'][sensitive_word] += uid_sensitive_dict[sensitive_word]
+                except:
+                    iter_results[uid]['sensitive'][sensitive_word] = uid_sensitive_dict[sensitive_word]
             #compute geo
             uid_day_geo[uid] = {}
             ip_item = ip_results[count]
@@ -179,9 +222,24 @@ def get_flow_information_v2(uid_list, all_user_keywords_dict):
     #get keywords top
     for uid in uid_list:
         results[uid] = {}
+        #hashtag
         hashtag_dict = iter_results[uid]['hashtag']
         results[uid]['hashtag_dict'] = json.dumps(hashtag_dict)
         results[uid]['hashtag'] = '&'.join(hashtag_dict.keys())
+        #sensitive words
+        sensitive_word_dict = iter_results[uid]['sensitive']
+        results[uid]['sensitive_dict'] = json.dumps(sensitive_word_dict)
+        results[uid]['sensitive_string'] = '&'.join(sensitive_word_dict.keys())
+        sensitive_score = 0
+        for k, v in sensitive_word_dict:
+            tmp_stage = r_sensitive.hget('sensitive_words', k)
+            if tmp_stage:
+                sensitive_score += v * sensitive_score_dict[str(tmp_stage)]
+        results[uid]['sensitive'] = sensitive_score
+        print 'sensitive_dict:', results[uid]['sensitive_dict']
+        print 'sensitive_string:', results[uid]['sensitive_string']
+        print 'sensitive:', results[uid]['sensitive']
+        #geo
         geo_dict = iter_results[uid]['geo']
         geo_track_list = iter_results[uid]['geo_track']
         results[uid]['activity_geo_dict'] = json.dumps(geo_track_list)

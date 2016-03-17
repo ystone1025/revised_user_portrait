@@ -28,10 +28,10 @@ def read_user_weibo():
     count = 0
     for line in reader:
         count += 1
-        '''
+        
         if count>=10:
             break
-        '''
+        
         weibo = dict()
         user = line[0]
         weibo['uname'] = 'unknown'
@@ -153,6 +153,6 @@ def read_flow_text(uid_list):
     return  word_dict,weibo_list        
 
 if __name__=='__main__':
-    #read_user_weibo()
-    word_dict,weibo_list = read_flow_text(['2098261223','2991483613'])
+    read_user_weibo()
+    #word_dict,weibo_list = read_flow_text(['2098261223','2991483613'])
     
