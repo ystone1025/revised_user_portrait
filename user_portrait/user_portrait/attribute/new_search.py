@@ -85,7 +85,7 @@ def new_get_user_portrait(uid, admin_user):
         results['attention_information'] = {'sensitive_dict': sort_sensitive_words}
         #keywords
         sort_keywords = json.loads(user_portrait_result['keywords'])
-        results['attention_information']['keywords'] = sorted(sort_keywords)
+        results['attention_information']['keywords'] = sort_keywords
         #hashtag
         hashtag_dict = json.loads(user_portrait_result['hashtag_dict'])
         sort_hashtag = sorted(hashtag_dict.items(), key=lambda x:x[1], reverse=True)

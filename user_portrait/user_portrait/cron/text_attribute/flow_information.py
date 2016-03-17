@@ -128,9 +128,9 @@ def get_flow_information(uid_list):
             if tmp_stage:
                 sensitive_score += v * sensitive_score_dict[str(tmp_stage)]
         results[uid]['sensitive'] = sensitive_score
-        print 'sensitive_dict:', results[uid]['sensitive_dict']
-        print 'sensitive_string:', results[uid]['sensitive_string']
-        print 'sensitive:', results[uid]['sensitive']
+        #print 'sensitive_dict:', results[uid]['sensitive_dict']
+        #print 'sensitive_string:', results[uid]['sensitive_string']
+        #print 'sensitive:', results[uid]['sensitive']
         #geo
         geo_dict = iter_results[uid]['geo']
         geo_track_list = iter_results[uid]['geo_track']
@@ -231,14 +231,16 @@ def get_flow_information_v2(uid_list, all_user_keywords_dict):
         results[uid]['sensitive_dict'] = json.dumps(sensitive_word_dict)
         results[uid]['sensitive_string'] = '&'.join(sensitive_word_dict.keys())
         sensitive_score = 0
-        for k, v in sensitive_word_dict:
+        for sensitive_item in sensitive_word_dict:
+            k = sensitive_item
+            v = sensitive_word_dict[sensitive_item]
             tmp_stage = r_sensitive.hget('sensitive_words', k)
             if tmp_stage:
                 sensitive_score += v * sensitive_score_dict[str(tmp_stage)]
         results[uid]['sensitive'] = sensitive_score
-        print 'sensitive_dict:', results[uid]['sensitive_dict']
-        print 'sensitive_string:', results[uid]['sensitive_string']
-        print 'sensitive:', results[uid]['sensitive']
+        #print 'sensitive_dict:', results[uid]['sensitive_dict']
+        #print 'sensitive_string:', results[uid]['sensitive_string']
+        #print 'sensitive:', results[uid]['sensitive']
         #geo
         geo_dict = iter_results[uid]['geo']
         geo_track_list = iter_results[uid]['geo_track']
