@@ -9,6 +9,29 @@ function bindAdvanced(){
             $("#supersearch").css('display', 'none');
         }
     });
+    $('#commit_search').click(function(){
+        if ($('#supersearch').is(':hidden')){
+            var url = '/attribute/portrait_search/?stype=1';
+            url += get_simple_par();
+        }
+        else{
+            var url = '/attribute/portrait_search/?stype=2';
+            url += get_advanced_par();
+        }
+        console.log(url);
+        draw_conditions(url);
+        var url = '/attribute/portrait_search/?stype=1';
+        base_call_ajax_request(url, draw_search_results);
+        window.location.href = '#search_result';
+    });
+}
+function replace_space(data){
+  for(var i in data){
+    if(data[i]===""||data[i]==="unknown"){
+      data[i] = "未知";
+    }
+  }
+  return data;
 }
 function draw_conditions(url){
     $("#search_result").css("margin-top", "40px");
@@ -39,12 +62,8 @@ function draw_conditions(url){
 }
 function process_par(name, value){
     var result = new Array();
-    if (name == 'uid'){
-        result[0] = '用户ID';
-        result[1] = value;
-    }
-    else if(name=='uname'){
-        result[0] = '昵称';
+    if(name=='term'){
+        result[0] = '用户ID或昵称';
         result[1] = value;
     }
     else if(name=='location'){
@@ -56,15 +75,15 @@ function process_par(name, value){
         result[1] = value;
     }
     else if(name=='hashtag'){
-        result[0] = 'hashtag';
+        result[0] = '微话题';
         result[1] = value;
     }
     else if(name=='psycho_status_by_emotion'){
-        result[0] = '性格（语言）';
+        result[0] = '语言特征';
         result[1] = value;
     }
     else if(name=='psycho_status_by_word'){
-        result[0] = '性格（情绪）';
+        result[0] = '性格特征';
         result[1] = value;
     }
     else if(name=='domain'){
@@ -91,7 +110,7 @@ function process_par(name, value){
     return result;
 }
 function get_simple_par(){
-    var str = '&uname=' + $('#uname').val();
+    var str = '&term=' + $('#term').val();
     return str
 }
 function get_advanced_par(){
@@ -104,7 +123,7 @@ function get_advanced_par(){
         temp += input_name;
         temp += input_value;;
     });
-    
+    /*
     var psycho_status_by_emotion = new Array();
     $("[name='psycho_status_by_emotion']:checked").each(function(){
         psycho_status_by_emotion.push($(this).val());
@@ -116,7 +135,7 @@ function get_advanced_par(){
         psycho_status_by_word.push($(this).val());
     });
     temp += '&psycho_status_by_word=' + psycho_status_by_word.join(',');
-    
+    */
     var domain = new Array();
     $("[name='domain']:checked").each(function(){
         domain.push($(this).val());

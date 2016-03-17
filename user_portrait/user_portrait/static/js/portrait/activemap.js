@@ -190,7 +190,7 @@ function location_all(){
         var m = i + 1;
         html += '<th style="text-align:center">' + m + '</th>';
     }
-    html += '<th style="text-align:center"></th>';
+    html += '<th style="text-align:center;"></th>';
     html += '</tr>';
 
     var url = '/attribute/location/?uid='+uid+'&time_type=day';
@@ -257,6 +257,8 @@ function location_all(){
         function bind_map(){
             $('#month_track').click(function(){
                 $('#map').css('display', 'block');
+                var div0 = document.getElementById('active_geo');
+                div0.style.height="1800px";
                 month_process(data.month_track, true);
             });
             $('#total_daily_ip_map').click(function(){
