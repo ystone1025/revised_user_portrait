@@ -55,7 +55,7 @@ function draw_rank_table(data){
 		"sPaginationType": "bootstrap",
 		//"aoColumnDefs":[ {"bSortable": false, "aTargets":[1]}],
 		"oLanguage": {
-		    "sLengthMenu": "_MENU_ 每页",
+		    "sLengthMenu": "每页 _MENU_ 条 ",
 		}
     });
 }

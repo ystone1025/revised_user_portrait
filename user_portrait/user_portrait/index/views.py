@@ -19,6 +19,10 @@ def loading():
 def user_rank():
     return render_template('portrait/user_rank.html')
 
+@mod.route('/mood_detect/')
+def mood_detect():
+    return render_template('portrait/mood_detect.html')
+
 @mod.route('/social_sensing/')
 def social_sensing():
     return render_template('portrait/social_sensing.html')
@@ -44,11 +48,11 @@ def contrast():
     
     return render_template('portrait/compare.html')
 
-@mod.route('/personal/')
-def personal():
+@mod.route('/personal_detail/')
+def personal_detail():
     uid = request.args.get('uid', '1642591402')
 
-    return render_template('portrait/personal.html', uid=uid)
+    return render_template('portrait/personal_detail.html', uid=uid)
 
 @mod.route('/recommend_in/')
 def recommend_in():
