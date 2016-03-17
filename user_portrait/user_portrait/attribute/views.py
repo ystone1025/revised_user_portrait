@@ -75,7 +75,7 @@ def ajax_new_user_evaluate():
 # url for new user_portrait overview
 # location
 # write in version: 16-03-15
-@mod.route('new_user_location')
+@mod.route('/new_user_location/')
 def ajax_new_user_location():
     uid = request.args.get('uid', '')
     results = new_get_user_location(uid)
@@ -86,25 +86,26 @@ def ajax_new_user_location():
 # url for new user_portrait overview
 # social
 # write in version: 16-03-15
-@mod.route('new_user_social')
+@mod.route('/new_user_social/')
 def ajax_new_user_social():
     uid =request.args.get('uid', '')
     results = new_get_user_social(uid)
-    if not result:
+    if not results:
         results = {}
     return json.dumps(results)
 
 # url for new user_portrait overview
 # weibo
 # write in version: 16-03-15
-@mod.route('new_user_weibo')
+@mod.route('/new_user_weibo/')
 def ajax_new_user_weibo():
     uid = request.args.get('uid', '')
     sort_type = request.args.get('sort_type', '')
     results = new_get_user_weibo(uid, sort_type)
-    if not result:
+    if not results:
         results = {}
     return json.dumps(results)
+
 
 @mod.route('/portrait_attribute/')
 def ajax_portrait_attribute():
