@@ -157,24 +157,24 @@ a {
     background:#fff;
 }
 .basicinfo ul li{
-    font-size:14px;
+    font-size:13px;
     line-height:30px;
     margin-left:20px;
 }
 .preinfo ul li{
     float:left;
     margin-left:40px;
-    font-size:14px;
+    font-size:13px;
     line-height:30px;
 }
 .locationinfo ul li{
-    font-size:14px;
-    line-height:45px;
+    font-size:13px;
+    line-height:37px;
     margin-left:10px;
 }
 .attentioninfo ul li{
-    font-size:14px;
-    line-height:75px;
+    font-size:13px;
+    line-height:30px;
     margin-left:10px;
 }
 h4{
@@ -185,4 +185,7 @@ h4{
 .tweetinfo ul li{
     float:left;
     margin-left:20px;
+}
+.gray{
+    color:gray;
 }
