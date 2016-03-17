@@ -2,6 +2,7 @@ function draw_search_results(data){
     console.log(data);
     $('#search_result').empty();
     var user_url ;
+    var contact_url;
     //console.log(user_url);
     var html = '';
     html += '<table class="table table-striped table-bordered bootstrap-datatable datatable responsive">';
@@ -16,6 +17,7 @@ function draw_search_results(data){
           item[j] = item[j].toFixed(2);
       }
       user_url = '/index/personal/?uid=' + item[0];
+      contact_url = '/index/contact/?uid=' + item[0];
       html += '<tr id=' + item[0] +'>';
       html += '<td class="center" name="uids"><a href='+ user_url+ '  target="_blank">'+ item[0] +'</td>';
       html += '<td class="center">'+ item[1] +'</td>';
@@ -24,7 +26,7 @@ function draw_search_results(data){
       html += '<td class="center" style="width:100px;">'+ item[4] +'</td>';
       html += '<td class="center" style="width:100px;">'+ item[5] +'</td>';
       html += '<td class="center" style="width:100px;">'+ item[6] +'</td>';
-      html += '<td class="center" style="width:120px;"><a class="portrait_href" href=' + user_url + ' target="_blank">查看人物属性页</a></td>';
+      html += '<td class="center" style="width:120px;"><a class="portrait_href" href=' + contact_url + ' target="_blank">关联分析</a></td>';
       html += '</tr>';
     }
     html += '</tbody>';
