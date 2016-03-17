@@ -55,7 +55,8 @@ a {
 	padding: 0px;
 	background: #FFFFFF;
 	border: 1px solid #77ACF4;
-    width:900px;
+    width:730px;
+    margin-left:22px;
 }
 .overall_evaluation .title {
 	height: 38px;
@@ -192,4 +193,13 @@ a {
     font-size:14px;
     line-height:75px;
     margin-left:10px;
+}
+h4{
+    margin:0;
+    padding:0;
+    line-height:40px;
+}
+.tweetinfo ul li{
+    float:left;
+    margin-left:20px;
 }

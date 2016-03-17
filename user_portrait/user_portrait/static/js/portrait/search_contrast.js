@@ -24,12 +24,13 @@ function draw_search_results(data){
       html += '<td class="center" style="width:100px;">'+ item[4] +'</td>';
       html += '<td class="center" style="width:100px;">'+ item[5] +'</td>';
       html += '<td class="center" style="width:100px;">'+ item[6] +'</td>';
-      html += '<td class="center" style="width:120px;"><a class="portrait_href" href=' + user_url + ' target="_blank">查看人物属性页</a></td>';
+      html += '<td class="center" style="text-align:center;width:60px;"><input name="search_result_option" class="search_result_option" type="checkbox" value="' + item[0] + '" /></td>';
       html += '</tr>';
     }
     html += '</tbody>';
     html += '</table>';
     $('#search_result').append(html);
+    post_draw();
     $('.datatable').dataTable({
         "sDom": "<'row'<'col-md-6'l ><'col-md-6'f>r>t<'row'<'col-md-12'i><'col-md-12 center-block'p>>",
         "sPaginationType": "bootstrap",
@@ -37,6 +38,41 @@ function draw_search_results(data){
         //"aoColumnDefs":[ {"bSortable": false, "aTargets":[7]}],
         "oLanguage": {
             "sLengthMenu": "每页&nbsp; _MENU_ 条"
+        }
+    });
+}
+var choose_contrast_uid = new Array();
+function post_draw(){
+    $('input[name="search_result_option"]').change(function(){
+        var uid = $(this).val();
+        if ($(this).is(':checked')){
+            if (choose_contrast_uid.length > 2){
+                alert('选择对比的人数不能超过3人！');
+                choose_contrast_uid.push(uid);
+            }
+            else{
+                choose_contrast_uid.push(uid);
+            }
+        }
+        else{
+            for(var i = 0;i < choose_contrast_uid.length;i++){
+                if (choose_contrast_uid[i] == uid){
+                    choose_contrast_uid.splice(i,1);
+                    break;
+                }
+            }
+        }
+    });
+    $('#commit_contrast').css('display', 'block');
+    $('#commit_contrast').click(function(){
+        if (choose_contrast_uid.length < 1){
+          alert("请选择至少1个用户!");
+        }
+        else if (choose_contrast_uid.length > 3){
+          alert("选择对比的人数不能超过3人!");
+        }
+        else{
+            window.open('/index/contrast/?uidlist=' + choose_contrast_uid.join(','));
         }
     });
 }
