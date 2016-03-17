@@ -15,7 +15,7 @@ from search_daily_info import search_origin_attribute, search_retweeted_attribut
 #use to get new user portrait overview
 from new_search import new_get_user_profile, new_get_user_portrait,\
         new_get_user_evaluate, new_get_user_location, new_get_user_social,\
-        new_get_user_weibo
+        new_get_user_weibo, new_get_weibo_tree
 #from search_mid import index_mid
 from user_portrait.search_user_profile import es_get_source
 from user_portrait.global_utils import es_user_portrait as es
@@ -105,6 +105,18 @@ def ajax_new_user_weibo():
     if not results:
         results = {}
     return json.dumps(results)
+
+# url for new user_portrait overview
+# weibo reposts tree
+# write in version: 16-03-15
+@mod.route('/new_weibo_tree/')
+def ajax_new_weibo_tree():
+    mid = request.args.get('mid', '')
+    weibo_timestamp = request.args.get('timestamp', '')
+    results = new_get_weibo_tree(mid, weibo_timestamp)
+    if not results:
+        results = ''
+    return results
 
 
 @mod.route('/portrait_attribute/')
