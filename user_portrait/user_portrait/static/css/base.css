@@ -424,6 +424,7 @@ display:none;
 	text-decoration:none;
 	z-index:20;
     padding-top:28px;
+    color:#fff;
 }
 #nav li:first-child a {
 	'''background:url(../images/bg-menu.png) no-repeat left top;'''
