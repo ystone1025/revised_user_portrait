@@ -12,6 +12,7 @@ from user_portrait.time_utils import ts2datetime, datetime2ts
 from user_portrait.parameter import DAY, WEEK, MAX_VALUE, SENTIMENT_FIRST, SENTIMENT_SECOND
 from user_portrait.parameter import RUN_TYPE, RUN_TEST_TIME
 
+WEEK = 7
 
 #use to get evaluate max
 def get_evaluate_max():

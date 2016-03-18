@@ -23,6 +23,7 @@ from time_utils import ts2datetime, datetime2ts
 from parameter import DAY, WEEK, RUN_TYPE
 from parameter import RUN_TEST_TIME
 
+WEEK = 7
 
 test_ts = datetime2ts(RUN_TEST_TIME)
 
