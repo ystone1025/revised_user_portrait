@@ -7,12 +7,19 @@
 
 .city-picker-span {
     position: relative;
+    float:right;
+    margin-right:40px;
     display: block;
     outline: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border-width:1px;
+    border-style:solid;
+    border-image:none;
+    border-color:#9b9b9d #dcdcdc #dce7eb;
+    border-radius:3px;
     border-bottom: 1px solid #ccc;
-    background-color: #fff;
-    color: #ccc;
+    background-color: #fbfcfc;
+    color: #5f5f5f;
     cursor: pointer;
 }
 
@@ -32,7 +39,7 @@
 
 .city-picker-span.focus,
 .city-picker-span.open {
-    border-bottom-color: #46A4FF;
+    /*border-bottom-color: #46A4FF;*/
 }
 
 .city-picker-span.open > .arrow {
@@ -52,8 +59,6 @@
 .city-picker-dropdown {
     position: absolute;
     width: 315px;
-    left: -9999px;
-    top: -9999px;
     outline: 0;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     z-index: 999999;

@@ -223,7 +223,7 @@ text-indent:40px;
 #supersearch .title {
 	font-size: 20px;
 	color: #3F3F3F;
-	border-bottom: 1px solid #E2E2E6;
+	/*border-bottom: 1px solid #E2E2E6;*/
 	padding-left: 10px;
 	font-family: "Microsoft YaHei UI";
     margin-top:10px;
