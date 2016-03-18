@@ -36,16 +36,22 @@ $(function(){
         if(x==0){
            $("#xzgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==1){
-           $("#crm").css({"display":"block"}).siblings().css({"display":"none"});
+           $("#crm ").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==2){
             influence_load();
            $("#xmgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==3){
             social_load();
            $("#zsgl").css({"display":"block"}).siblings().css({"display":"none"});
-        }else{
+        }else if(x==4){
             thought_load();
            $("#ydbg").css({"display":"block"}).siblings().css({"display":"none"});
+        }else if(x==5){
+            thought_load();
+           $("#qxtz").css({"display":"block"}).siblings().css({"display":"none"});
+        }else if(x==6){
+
+           $("#bqtz").css({"display":"block"}).siblings().css({"display":"none"});
         }
     });
     
@@ -61,17 +67,17 @@ $(function(){
 	<div id="basicpage">
 	<div id="basicpage-bgtop">
     <div id="basicpage-bgbtm">
-        <div id="framesidebar" >
-            <div ><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="170" height="170" /></span></div>
+        <div id="framesidebar" style="margin-top:50px;" >
+            <div ><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="120" height="120" /></span></div>
             <div >
-                <div style="width:300px;height:30px; margin-bottom: 8px;">
+                <div style="width:300px;height:30px; margin-bottom: 77px;">
                   <div style="width:640px; float:left;">
                       <span class="nickname" id="nickname"></span>
-                    <a style="font-size:15px;margin-left:15px;margin-left:150px;" href='#detail'>返回基本属性</a>
+                    <a style="font-size:15px;margin-left:15px;margin-left:60px;margin-top:5px;" href='#detail'>返回基本属性</a>
                   </div>
                 </div>
               </div>
-            <h3  style="padding:5px;margin-top:10px;">个人注册信息</h3>
+            <h3  style="padding:5px;margin-top:10px;color:white">个人注册信息</h3>
             <li>
                 <ul style="padding:0px;height:350px;">
                     <div >
@@ -119,12 +125,34 @@ $(function(){
                 </ul>
             </li>
         </div>
-        <div style="margin-left:300px;">
-            <button class="portrait_button" type='button' style="margin-right:10px;" title="0" >活动特征</button>
-            <button class="portrait_button" type='button' style="margin-right:10px;" title="1" >偏好特征</button>
-            <button class="portrait_button" type='button' style="margin-right:10px;" title="2" >影响力特征</button>
-            <button class="portrait_button" type='button' style="margin-right:10px;" title="3" >社交特征</button>
-            <button class="portrait_button" type='button' style="margin-right:10px;" title="4" >思想特征</button>
+
+        <div id="framecontent" style="width:850px;">
+            <div class ="framepost" style="height:160px;">
+                <h3 class="title">整体评价</h3>
+                <div   style="float:left;">
+                    <div class = "row" style="font-size:13px; line-height:30px;" >
+                        <span style="color:red;margin-left:20px;font-size:13px;">活跃度</span> <span id="activePower" style="margin-left:20px;"></span>&nbsp(NO.<span id="activeness_rank"></span>/<span id="activeness_total"></span>)&nbsp <span class="gray">最高值</span><span id="Hactiveness"></span>/<span class="gray">最低值</span><span id="Lactiveness"></span>
+                        <span style="color:red;margin-left:20px;font-size:13px;">身份敏感度</span> <span id="importantPower" style="margin-left:20px;"></span>&nbsp(NO.<span id="importance_rank"></span>/<span id="importance"></span>)&nbsp <span class="gray">最高值</span><span id="Himportance"></span>/<span class="gray">最低值</span><span id="Limportance"></span>
+                    </div>
+                    <div class = "row" style="font-size:13px;line-height:30px;margin-top:10px;" >
+                        <span style="color:red;margin-left:20px;font-size:14px;">影响力</span> <span id="influencePower" style="margin-left:20px;"></span>&nbsp(NO.<span id="influence_rank"></span>/<span id="influence"></span>)&nbsp <span class="gray">最高值</span><span id="Hinfluence"></span>/<span class="gray">最低值</span><span id="Linfluence"></span>
+                        <span style="color:red;margin-left:20px;font-size:14px;">言论敏感度</span> <span id="sensitivePower" style="margin-left:20px;"></span>&nbsp(NO.<span id="sensitive_rank"></span>/<span id="sensitiveness"></span>)&nbsp <span class="gray">最高值</span><span id="Hsensitiveness"></span>/<span class="gray">最低值</span><span id="Lsensitiveness"></span>
+                    </div>
+                    <div style="border-top:1px solid #ccc;width:100%;float:left;padding-left:20px;line-height:40px;">
+                        <span>注：当前数值是通过计算近7日信息获得，最高、最低值统计范围为近30日。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-left:250px;">
+            <button class="portrait_button" type='button' style="margin-right:32px;" title="0" >活动特征</button>
+            <button class="portrait_button" type='button' style="margin-right:32px;" title="5" >倾向特征</button>
+            <button class="portrait_button" type='button' style="margin-right:32px;" title="1" >偏好特征</button>
+            <button class="portrait_button" type='button' style="margin-right:32px;" title="2" >影响力特征</button>
+            <button class="portrait_button" type='button' style="margin-right:32px;" title="3" >社交特征</button>
+            <button class="portrait_button" type='button' style="margin-right:32px;" title="4" >思想特征</button>
+            <button class="portrait_button" type='button'  title="6" >标签特征</button>
         </div>
 
 <script type="text/javascript">
@@ -221,6 +249,138 @@ $(function(){
                 homepage.innerHTML = 'http://weibo.com/u/'+personalData.uid;
             } 
         },
+        overallData0:function(data){
+        //console.log(data);
+        
+        //活跃度
+        var AP = document.getElementById('activePower');
+        if(data.activeness[0] !=""){
+            AP.innerHTML = data.activeness[0].toFixed(2);
+        }else{
+            AP.innerHTML = '0';
+        }
+        var AR = document.getElementById('activeness_rank');
+        if(data.activeness[1] !=""){
+            AR.innerHTML = data.activeness[1];
+        }else{
+            AR.innerHTML = '0';
+        }
+        var HA = document.getElementById('Hactiveness');
+        if(data.activeness[2] !=""){
+            HA.innerHTML = data.activeness[2].toFixed(0);
+        }else{
+            HA.innerHTML = '0';
+        }
+        var LA = document.getElementById('Lactiveness');
+        if(data.activeness[3] !=""){
+            LA.innerHTML = data.activeness[3].toFixed(0);
+        }else{
+            LA.innerHTML = '0';
+        }
+        var AT = document.getElementById('activeness_total');
+        if(data.activeness[4] !=""){
+            AT.innerHTML = data.activeness[4];
+        }else{
+            AT.innerHTML = '0';
+        }
+        
+        //重要度
+        var IP = document.getElementById('importantPower');
+        if(data.importance[0] !=""){
+            IP.innerHTML = data.importance[0].toFixed(2);
+        }else{
+            IP.innerHTML = '0';
+        }
+        var IR = document.getElementById('importance_rank');
+        if(data.importance[1] !=""){
+            IR.innerHTML = data.importance[1];
+        }else{
+            IR.innerHTML = '0';
+        }
+        var HI = document.getElementById('Himportance');
+        if(data.importance[2] !=""){
+            HI.innerHTML = data.importance[2].toFixed(0);
+        }else{
+            HI.innerHTML = '0';
+        }
+        var LI = document.getElementById('Limportance');
+        if(data.importance[3] !=""){
+            LI.innerHTML = data.importance[3].toFixed(0);
+        }else{
+            LI.innerHTML = '0';
+        }
+        var IT = document.getElementById('importance');
+        if(data.importance[4] !=""){
+            IT.innerHTML = data.importance[4];
+        }else{
+            IT.innerHTML = '0';
+        }
+        
+        //影响力
+        var FP = document.getElementById('influencePower');
+        if(data.influence[0] !=""){
+            FP.innerHTML = data.influence[0].toFixed(2);
+        }else{
+            FP.innerHTML = '0';
+        }
+        var FR = document.getElementById('influence_rank');
+        if(data.influence[1] !=""){
+            FR.innerHTML = data.influence[1];
+        }else{
+            FR.innerHTML = '0';
+        }
+        var HF = document.getElementById('Hinfluence');
+        if(data.influence[2] !=""){
+            HF.innerHTML = data.influence[2].toFixed(0);
+        }else{
+            HF.innerHTML = '0';
+        }
+        var LF = document.getElementById('Linfluence');
+        if(data.influence[3] !=""){
+            LF.innerHTML = data.influence[3].toFixed(0);
+        }else{
+            LF.innerHTML = '0';
+        }
+        var FT = document.getElementById('influence');
+        if(data.influence[4] !=""){
+            FT.innerHTML = data.influence[4];
+        }else{
+            FT.innerHTML = '0';
+        }
+        
+        
+        //敏感度 
+        var SP = document.getElementById('sensitivePower');
+        if(data.sensitive[0] !=""){
+            SP.innerHTML = data.sensitive[0].toFixed(2);
+        }else{
+            SP.innerHTML = '0';
+        }
+        var SR = document.getElementById('sensitive_rank');
+        if(data.sensitive[1] !=""){
+            SR.innerHTML = data.sensitive[1];
+        }else{
+            SR.innerHTML = '0';
+        }
+        var HS = document.getElementById('Hsensitiveness');
+        if(data.sensitive[2] !=""){
+            HS.innerHTML = data.sensitive[2].toFixed(0);
+        }else{
+            HS.innerHTML = '0';
+        }
+        var LS = document.getElementById('Lsensitiveness');
+        if(data.sensitive[3] !=""){
+            LS.innerHTML = data.sensitive[3].toFixed(0);
+        }else{
+            LS.innerHTML = '0';
+        }
+        var ST = document.getElementById('sensitiveness');
+        if(data.sensitive[4] !=""){
+            ST.innerHTML = data.sensitive[4];
+        }else{
+            ST.innerHTML = '0';
+        }
+    },
         remarkData:function(data){
             //console.log(data);
             if (data == ''){
@@ -251,7 +411,8 @@ $(function(){
     var url = "/attribute/current_tag_vector/?uid=" + uid;
     Personal.call_sync_ajax_request(url, Personal.ajax_method, currentData);
 
-
+    var url = "/attribute/new_user_evaluate/?uid=" + uid;
+    Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.overallData0)
 
     function currentData(data){
         //console.log(data);
@@ -296,7 +457,9 @@ $(function(){
             <div id="xzgl" >
                 {% include "portrait/detail/activity.html"%}
             </div>
-        
+            <div id="qxtz"  style="display:none">
+                {% include "portrait/detail/preference.html"%}
+            </div>
             <div id="crm" style="display:none">
                 {% include "portrait/detail/language.html"%}
             </div>
@@ -307,9 +470,11 @@ $(function(){
             <div id="zsgl" style="display:none">
                 {% include "portrait/detail/social.html"%}
             </div>
-        
             <div id="ydbg" style="display:none">
                 {% include "portrait/detail/thought.html"%}
+            </div>
+            <div id="ybtz" style="display:none">
+                {% include "portrait/detail/de_tag.html"%}
             </div>
         </div>
 	</div>
