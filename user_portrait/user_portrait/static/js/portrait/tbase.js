@@ -21,8 +21,8 @@ function bindAdvanced(){
         console.log(url);
         draw_conditions(url);
         var url = '/attribute/portrait_search/?stype=1';
-        base_call_ajax_request(url, draw_search_results);
-        window.location.href = '#search_result';
+        //base_call_ajax_request(url, draw_search_results);
+        //window.location.href = '#search_result';
     });
 }
 function replace_space(data){
@@ -37,26 +37,37 @@ function draw_conditions(url){
     $("#search_result").css("margin-top", "40px");
     $('#conditions').empty();
     var html = '';
-    var pre_name = 'uname';
-    var pre_value = 'test';
-
-    var fix_result = process_par(pre_name, pre_value);
-    //console.log(fix_result);
-    var fix_name = fix_result[0];
-    var fix_value = fix_result[1];
-    // console.log(fix_name);
-    // console.log(fix_value);
-    if (fix_value){
-        if (fix_value.indexOf(',') >= 0){
-            var term_list = fix_value.split(',');
-            for (var j = 0; j < term_list.length;j++){
-                html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ term_list[j] + '</span>';
-            }
+    var par_url = url.split('?')[1];
+    var par_list = par_url.split('&');
+    for (var i = 0;i < par_list.length;i++){
+        var pair = par_list[i].split('=');
+        var pre_name = pair[0];
+        var pre_value;
+        if (pair[1]){
+            pre_value = pair[1];
         }
         else{
-            html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ fix_value + '</span>';
+            pre_value = '';
+        }
+        var fix_result = process_par(pre_name, pre_value);
+        //console.log(fix_result);
+        var fix_name = fix_result[0];
+        var fix_value = fix_result[1];
+        // console.log(fix_name);
+        // console.log(fix_value);
+        if (fix_value){
+            if (fix_value.indexOf(',') >= 0){
+                var term_list = fix_value.split(',');
+                for (var j = 0; j < term_list.length;j++){
+                    html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ term_list[j] + '</span>';
+                }
+            }
+            else{
+                html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ fix_value + '</span>';
+            }
         }
     }
+
     $('#conditions').html(html);
     return;
 }
@@ -87,11 +98,11 @@ function process_par(name, value){
         result[1] = value;
     }
     else if(name=='domain'){
-        result[0] = '领域';
+        result[0] = '身份';
         result[1] = value;
     }
     else if(name=='topic'){
-        result[0] = '话题';
+        result[0] = '领域';
         result[1] = value;
     }
     else if(name=='tag'){
@@ -119,9 +130,13 @@ function get_advanced_par(){
     var input_name;
     $('.ad-search').each(function(){
         input_name = '&' + $(this).attr('name');
-        input_value = '=' + $(this).val();
         temp += input_name;
-        temp += input_value;;
+        input_value = '=' + $(this).val();
+        if (input_name == '&location'){
+            input_value = input_value.replace('省','');
+            input_value = input_value.replace('市','');
+        }
+        temp += input_value;
     });
     /*
     var psycho_status_by_emotion = new Array();
@@ -144,12 +159,16 @@ function get_advanced_par(){
 
     var topic = new Array();
     $("[name='topic']:checked").each(function(){
-        topic += $(this).val() + ',';
+        topic.push($(this).val());
     });
     temp += '&topic=' + topic.join(',');
-
-    temp += '&tag=' + $('[name="tag_type"]').val();
-    temp += ':' + $('[name="tag_name"]').val();
+    
+    var tag_type = $('[name="tag_type"]').val();
+    if (tag_type != ''){
+        temp += '&tag=' + tag_type;
+        var tag_value = $('[name="tag_name"]').val();
+        temp += ':' + tag_value;
+    }
 
     return temp;
 }
@@ -199,6 +218,11 @@ function getAttributeName(){
         });
     }
 }
-//$('[data-toggle="city-picker"]').citypicker();
+$('[data-toggle="city-picker"]').citypicker({
+    placeholder: '请选择省/市',
+    level: 'city',
+});
+$('.city-picker-dropdown').css('left','932px');
+$('.city-picker-dropdown').css('top','618px');
 getAttributeName();
 bindAdvanced();
