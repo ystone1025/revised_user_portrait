@@ -13,6 +13,8 @@ from user_portrait.parameter import DAY, WEEK, MAX_VALUE, SENTIMENT_FIRST, SENTI
 from user_portrait.parameter import RUN_TYPE, RUN_TEST_TIME
 from user_portrait.parameter import IDENTIFY_ATTRIBUTE_LIST as identify_attribute_list
 
+WEEK = 7
+
 #use to get evaluate max
 def get_evaluate_max():
     max_result = {}
