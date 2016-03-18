@@ -47,7 +47,12 @@ def group_analysis():
 def contrast():
     
     return render_template('portrait/compare.html')
+@mod.route('/personal/')
+#@login_required
+def personal():
+    uid = request.args.get('uid', '1642591402')
 
+    return render_template('portrait/personal.html', uid=uid)
 @mod.route('/personal_detail/')
 def personal_detail():
     uid = request.args.get('uid', '1642591402')

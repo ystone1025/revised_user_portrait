@@ -36,3 +36,25 @@
   margin-left:60px;
   padding-left:90px;
 }
+#pageGro .pageUp{
+    text-indent:23px;
+    /*border:1px solid #999;*/
+    cursor:pointer;
+}
+#pageGro span ul li.on{
+    color:#fff;
+    background:#3c90d9;
+    border:1px solid #3c90d9;
+}
+#pageGro span ul li{
+    width:22px;
+    text-align:center;
+    border:1px solid #999;
+    cursor:pointer;
+}
+#pageGro .pageDown{
+    text-indent:5px;
+    width:63px;
+    /*border:1px solid #999;*/
+    cursor:poointer;
+}

@@ -7,16 +7,7 @@
  *
  * Date: 2016-02-29T12:11:36.473Z
  */
-
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as anonymous module.
-        define('ChineseDistricts', [], factory);
-    } else {
-        // Browser globals.
-        factory();
-    }
-})(function () {
+(function ($) {
 
     var ChineseDistricts = {
             //86: {
@@ -4060,7 +4051,15 @@
     if (typeof window !== 'undefined') {
         window.ChineseDistricts = ChineseDistricts;
     }
-
     return ChineseDistricts;
 
+})(jQuery);
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as anonymous module.
+        define('ChineseDistricts', [], factory);
+    } else {
+        // Browser globals.
+        factory();
+    }
 });
