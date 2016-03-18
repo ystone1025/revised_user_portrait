@@ -16,6 +16,7 @@ from time_utils import datetime2ts, ts2datetime
 from parameter import DAY, RUN_TYPE, RUN_TEST_TIME
 from parameter import RECOMMEND_IN_SENSITIVE_TOP, RECOMMEND_IN_BLACK_USER1, RECOMMEND_IN_BLACK_USER2
 
+
 def search_from_es(date):
     index_time = 'bci_' + ''.join(date.split('-'))
     index_type = 'bci'
@@ -30,7 +31,7 @@ def search_from_es(date):
         result = ES_DAILY_RANK.search(index=index_time, doc_type=index_type, body=query_body)['hits']['hits']
     except:
         print 'cron/recommend_in/recommend_in.py&error-1&'
-        return None, None
+        return set([]), []
     user_set = []
     user_set = [user_dict['_id'] for user_dict in result]
     return set(user_set), result
@@ -139,7 +140,7 @@ def main():
     hashname_submit = "submit_recomment_" + date
     if results:
         for uid in results:
-            r.hset(hashname_submit, uid, json.dumps({"system":1, "operation":"system"}))
+            r.hset(hashname_submit, uid, json.dumps({"system":1, "operation":"system", "status":"2"}))
     #status = save_recommentation2redis(date, results)
     #if status != True:
     #    print 'cron/recommend_in/recommend_in.py&error-3&'

@@ -142,6 +142,7 @@ def admin_recommentation_in(input_ts):
         for i in len(recomment_results):
             tmp_data = json.loads(r.hget(hashname_submit, uid))
             recommend_list = (tmp_data['operation']).split('&')
+            #results[i].append(tmp_data['status'])
             results[i].append(tmp_data['system'])
             results[i].append(recommend_list)
             results[i].append(len(recommend_list))
@@ -162,10 +163,12 @@ def new_identify_in(data, date, submit_user):
     for item in data:
         date = item[0] # identify the date form '2013-09-01' with web
         uid = item[1]
-        status = item[2]
+        #status = item[2]
         if uid in auto_recomment_set:
             tmp = json.loads(hget(hashname_submit, uid))
             tmp['operation'] = tmp['operation'] & submit_user
+            #if int(tmp['status']) == 2: # 如果需要紧急
+            #    tmp['status'] = status
         else:
             tmp = {"system":"0", "operation":submit_user}
         r.hset(hashname_submit, uid, json.dumps(tmp))
