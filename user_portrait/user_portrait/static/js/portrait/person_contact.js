@@ -31,11 +31,13 @@ Search_weibo.prototype = {
       user_lable_html += '</tr></thead>';
       user_lable_html += '<tbody>';
       for (key in data){
-       user_lable_html += '<tr>';
-       user_lable_html += '<th class="center" style="text-align:center"><a target="_blank" href="/index/personal/?uid=' + key + '">' + key +'</a></th>'; 
-       user_lable_html += '<th class="center" style="text-align:center">' + data[key] + '</th>';
-       user_lable_html += '<th class="center" style="text-align:center"><input name="in_status" class="in_status" type="checkbox" value="' + key + '"/></th>';
-       user_lable_html += '</tr>';   
+          if (key != ''){
+           user_lable_html += '<tr>';
+           user_lable_html += '<th class="center" style="text-align:center"><a target="_blank" href="/index/personal/?uid=' + key + '">' + key +'</a></th>'; 
+           user_lable_html += '<th class="center" style="text-align:center">' + data[key] + '</th>';
+           user_lable_html += '<th class="center" style="text-align:center"><input name="in_status" class="in_status" type="checkbox" value="' + key + '"/></th>';
+           user_lable_html += '</tr>';
+          }
       }    
       user_lable_html += '</tbody>';
       user_lable_html += '</table>';     
