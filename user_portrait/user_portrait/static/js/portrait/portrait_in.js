@@ -108,14 +108,14 @@ Search_weibo_recommend.prototype = {
 
         $('#hashtag').empty();
         if(data['hashtag'].length==0){
-          $('#hashtag').append('<h4 style="text-align:center">HashTag</h4><div style="text-align:center">暂无数据！</div>');
+          $('#hashtag').append('<h4 style="text-align:center">微话题</h4><div style="text-align:center">暂无数据！</div>');
         }
         else{
           $('#in_detail').css('height','300px');
           var hashtag_html = '';
-          hashtag_html += '<h4 style="text-align:center">HashTag</h4>';
+          hashtag_html += '<h4 style="text-align:center">微话题</h4>';
           hashtag_html += '<table class="table table-striped table-bordered bootstrap-datatable datatable responsive">';
-          hashtag_html += '<thead><tr><th style="text-align:center;vertical-align:middle;width:80px">排名</th><th style="text-align:center;vertical-align:middle;width:200px">HashTag</th><th style="text-align:center;vertical-align:middle;width:80px">微博数</th></tr></thead>';
+          hashtag_html += '<thead><tr><th style="text-align:center;vertical-align:middle;width:80px">排名</th><th style="text-align:center;vertical-align:middle;width:200px">微话题</th><th style="text-align:center;vertical-align:middle;width:80px">微博数</th></tr></thead>';
           hashtag_html += '<tbody>';
           for(var n in data['hashtag']){
             if(parseInt(n)<5){
@@ -169,6 +169,7 @@ function bindOption(){
                   recommend_uids.push(temp_list[i]);
               }
           }
+          //console.log(recommend_uids);
           var recommend_date = $("#recommend_date_select").val()
           var uids_trans = '';
           for(var i in recommend_uids){

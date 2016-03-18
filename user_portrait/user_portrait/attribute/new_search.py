@@ -74,6 +74,7 @@ def new_get_user_portrait(uid, admin_user):
         results['tag_remark'] = {}
         results['attention_information'] = {}
         results['tendency'] = {}
+        results['group_tag'] = []
     else:
         #step1: get attention_information
         #sensitive words
@@ -112,6 +113,18 @@ def new_get_user_portrait(uid, admin_user):
         except:
             remark = ''
         results['tag_remark']['remark'] = remark
+        #step4: get group_tag information
+        results['group_tag'] = []
+        try:
+            group_tag = user_portrait_result['group']
+        except:
+            group_tag = ''
+        if group_tag:
+            group_tag_list = group_tag.split('&')
+            for group_tag in group_tag_list:
+                group_tag_item_list = group_tag.split('-')
+                if group_tag_item_list[0] == admin_user:
+                    results['group_tag'].append(group_tag_item_list[1])
 
     return results
 
@@ -615,6 +628,26 @@ def new_get_user_social(uid):
 
     return results
 
+
+#use to get sensitive words
+def new_get_sensitive_words(uid):
+    try:
+        user_portrait_result = es_user_portrait.get(index=portrait_index_name, doc_type=portrait_index_type,\
+                id=uid)['_source']
+    except:
+        user_portrait_result = {}
+    if user_portrait_result:
+        try:
+            sensitive_dict = json.loads(es_user_portrait['sensitive_dict'])
+        except:
+            sensitive_dict = {}
+    else:
+        sensitive_dict = {}
+    sort_sensitive_dict = sorted(sensitive_dict.items(), key=lambda x:x[1], reverse=True)
+    
+    return sort_sensitive_dict
+
+
 #use to get user weibo
 #sort_type = timestamp/retweet_count/comment_count/sensitive
 def new_get_user_weibo(uid, sort_type):
@@ -669,6 +702,59 @@ def new_get_user_weibo(uid, sort_type):
         city = ip2city(ip)
         results.append([mid, uid, text, ip, city,timestamp, date, retweet_count, comment_count, sensitive_score])
 
+    return results
+
+
+#use to get evaluate history trend
+#input: history_dict, evaluate_index
+#output: {'timeline':[], 'evaluate_index':[]}
+def get_evaluate_trend(history_dict, evaluate_index):
+    results = {}
+    date_evaluate_dict = {}
+    for item in history_dict:
+        item_list = item.split('_')
+        if len(item_list) == 2 and item_list[0]==evaluate_index:
+            evaluate_ts = int(item_list[1])
+            date_evaluate_dict[evaluate_ts] = history_dict[item]
+    sort_date_evaluate_list = sorted(date_evaluate_dict.items(), key=lambda x:x[0])
+    timeline = [item[0] for item in sort_date_evaluate_list]
+    evaluate_index = [item[1] for item in sort_date_evaluate_list]
+    results = {'timeline': timeline, 'evaluate_index':evaluate_index}
+    return results
+
+
+
+#get influence trend
+#write in version: 16-03-18
+#output: results = {'timeline':[], 'evaluate_index':[]}
+def new_get_influence_trend(uid):
+    results = {}
+    try:
+        influence_history = ES_COPY_USER_PORTRAIT.get(index=COPY_USER_PORTRAIT_INFLUENCE, doc_type=COPY_USER_PORTRAIT_INFLUENCE_TYPE,\
+                id=uid)['_source']
+    except:
+        influence_history = {}
+    if influence_history:
+        results = get_evaluate_trend(influence_history, 'bci')
+    else:
+        results = {}
+    return results
+
+
+#get activeness trend
+#write in version: 16-03-18
+#output: results = {'timeline':[], 'evaluate_index':[]}
+def new_get_activeness_trend(uid):
+    results = {}
+    try:
+        activeness_history = ES_COPY_USER_PORTRAIT.get(index=COPY_USER_PORTRAIT_ACTIVENESS, doc_type=COPY_USER_PORTRAIT_ACTIVENESS_TYPE,\
+                id=uid)['_source']
+    except:
+        activeness_history = {}
+    if activeness_history:
+        results = get_evaluate_trend(activeness_history, 'activeness')
+    else:
+        results = {}
     return results
 
 

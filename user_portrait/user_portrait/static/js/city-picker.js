@@ -8,18 +8,7 @@
  * Date: 2016-02-29T12:11:36.477Z
  */
 
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as anonymous module.
-        define(['jquery', 'ChineseDistricts'], factory);
-    } else if (typeof exports === 'object') {
-        // Node / CommonJS
-        factory(require('jquery'), require('ChineseDistricts'));
-    } else {
-        // Browser globals.
-        factory(jQuery, ChineseDistricts);
-    }
-})(function ($, ChineseDistricts) {
+(function ($) {
 
     'use strict';
 
@@ -66,7 +55,7 @@
                     (placeholder ? '<span class="placeholder">' + placeholder + '</span>' : '') +
                     '<span class="title"></span><div class="arrow"></div>' + '</span>',
 
-                dropdown = '<div class="city-picker-dropdown" style="left:0px;top:100%;' +
+                dropdown = '<div class="city-picker-dropdown" style="' +
                     this.getWidthStyle(p.width, true) + '">' +
                     '<div class="city-select-wrap">' +
                     '<div class="city-select-tab">' +
@@ -527,7 +516,7 @@
         simple: false,
         responsive: false,
         placeholder: '请选择省/市/区',
-        level: 'city',
+        level: 'district',
         province: '',
         city: '',
         district: ''
@@ -574,4 +563,16 @@
         return this;
     };
 
+})(jQuery);
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as anonymous module.
+        define(['jquery', 'ChineseDistricts'], factory);
+    } else if (typeof exports === 'object') {
+        // Node / CommonJS
+        factory(require('jquery'), require('ChineseDistricts'));
+    } else {
+        // Browser globals.
+        factory(jQuery, ChineseDistricts);
+    }
 });

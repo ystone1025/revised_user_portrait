@@ -162,15 +162,12 @@ if __name__ == "__main__":
             uid = item['uid']
             text = item['text']
             sentiment, keywords_list = triple_classifier(item)
-            print 'sentiment:', sentiment
             #step3: compute time_segment
             timestamp = item['timestamp']
-            print 'timestamp:', timestamp, ts2date(timestamp)
             date = ts2datetime(timestamp)
             date_ts = datetime2ts(date)
             time_segment = (timestamp - date_ts) / Fifteen
             new_timestamp = date_ts + time_segment * Fifteen
-            print 'new_timestamp:', new_timestamp, ts2date(new_timestamp)
             #step4: save to sentiment_all
             save_sentiment_all(date, new_timestamp, sentiment)
             #step5: save to sentiment in domain

@@ -168,7 +168,7 @@ EVENT_ABS_PATH = '/home/ubuntu8/huxiaoqian/user_portrait_151220/user_portrait/us
 
 #cron/text_attribute/character
 CH_ABS_PATH = '/home/ubuntu8/huxiaoqian/user_portrait_151220/user_portrait/user_portrait/cron/model_file/character'
-CHARACTER_TIME_GAP = WEEK
+CHARACTER_TIME_GAP = 7
 
 # pre-influence index
 pre_influence_index = "bci_"

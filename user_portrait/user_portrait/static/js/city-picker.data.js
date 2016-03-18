@@ -7,16 +7,7 @@
  *
  * Date: 2016-02-29T12:11:36.473Z
  */
-
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as anonymous module.
-        define('ChineseDistricts', [], factory);
-    } else {
-        // Browser globals.
-        factory();
-    }
-})(function () {
+(function ($) {
 
     var ChineseDistricts = {
             //86: {
@@ -63,7 +54,7 @@
                     {code: '350000', address: '福建省'},
                     {code: '620000', address: '甘肃省'},
                     {code: '440000', address: '广东省'},
-                    {code: '450000', address: '广西壮族自治区'},
+                    {code: '450000', address: '广西'},
                     {code: '520000', address: '贵州省'}],
                 'H-K': [
                     {code: '460000', address: '海南省'},
@@ -77,8 +68,8 @@
                     {code: '220000', address: '吉林省'}],
                 'L-S': [
                     {code: '210000', address: '辽宁省'},
-                    {code: '150000', address: '内蒙古自治区'},
-                    {code: '640000', address: '宁夏回族自治区'},
+                    {code: '150000', address: '内蒙古'},
+                    {code: '640000', address: '宁夏'},
                     {code: '630000', address: '青海省'},
                     {code: '370000', address: '山东省'},
                     {code: '310000', address: '上海市'},
@@ -87,8 +78,8 @@
                     {code: '510000', address: '四川省'}],
                 'T-Z': [
                     {code: '120000', address: '天津市'},
-                    {code: '650000', address: '新疆维吾尔自治区'},
-                    {code: '540000', address: '西藏自治区'},
+                    {code: '650000', address: '新疆'},
+                    {code: '540000', address: '西藏'},
                     {code: '530000', address: '云南省'},
                     {code: '330000', address: '浙江省'}]
             },
@@ -4060,7 +4051,15 @@
     if (typeof window !== 'undefined') {
         window.ChineseDistricts = ChineseDistricts;
     }
-
     return ChineseDistricts;
 
+})(jQuery);
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as anonymous module.
+        define('ChineseDistricts', [], factory);
+    } else {
+        // Browser globals.
+        factory();
+    }
 });

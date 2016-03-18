@@ -41,6 +41,7 @@ from user_portrait.parameter import RUN_TYPE, RUN_TEST_TIME
 
 r_beigin_ts = datetime2ts(R_BEGIN_TIME)
 
+WEEK = 7
 
 emotion_mark_dict = {'126': 'positive', '127':'negative', '128':'anxiety', '129':'angry'}
 link_ratio_threshold = [0, 0.5, 1]
