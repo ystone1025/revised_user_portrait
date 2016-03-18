@@ -64,6 +64,7 @@ function draw_user_in_table(data){
 
     }
 }
+
 //模态框入库用户
 function show_more_inuser(data){
     $('#inuser_WordList').empty();
@@ -99,7 +100,7 @@ function show_more_inuser(data){
 
 //出库用户列表
 function draw_user_out_table(data){
-    console.log(data);
+    //console.log(data);
     $('#out_user_title').css('display', 'block');
     $('#mood_out_user').empty();
     if(data.length == 0){
@@ -163,9 +164,11 @@ function show_more_outuser(data){
     });
 }
 
+//展示微博
 function Draw_get_top_weibo(data, div_name){
   var html = '';
   $('#' + div_name).empty();
+  console.log(div_name);
     if(data[0][3] == ''){
         html += "<div style='margin-left:10px;width:100%;height:100px;'>用户在昨天未发布任何微博</div>";
     }else{
@@ -225,60 +228,108 @@ function Draw_get_top_weibo(data, div_name){
       $('#'+div_name).append(html);
 }
 
-//显示相关微博
+//显示所有的相关微博
 function show_all_related_weibo(url) {
+    //$('#related_weibo').empty();
     var html = '';
-    html += '<div style="border-bottom: 3px solid #dddddd;height: 40px;line-height:40px;">';
+    //html += '<div style="border-bottom: 3px solid #dddddd;height: 40px;line-height:40px;">';
     html += '<span style="color:#983333;margin-left: 20px;"><b>排序指标</b></span>';
-    html += '<input type="radio" name="sort_weibo" value = "1" style="margin-left: 30px;"> 时间';
-    html += '<input type="radio" name="sort_weibo" value = "2" style="margin-left: 30px;"> 转发数';
-    html += '<input type="radio" name="sort_weibo" value = "3" style="margin-left: 30px;"> 评论数';
-    html += '</div>';
-    html += '<div id="related_weibo_text_0" style="width:100%;max-height: 300px;">'; 
-    html += '</div>';
-    $('#related_weibo0').append(html);
+    html += '<input type="radio" name="sort_radio_weibo" id="sort_by_time" value = "time" checked="checked" style="margin-left: 30px;"> 时间';
+    html += '<input type="radio" name="sort_radio_weibo" value = "retweet" style="margin-left: 30px;"> 转发数';
+    html += '<input type="radio" name="sort_radio_weibo" value = "comment" style="margin-left: 30px;"> 评论数';
+    //html += '<div id="related_weibo_text0" style="width:100%;max-height: 300px;">'; 
+    //html += '</div>';
+    $('#weibo_sort').append(html);
+    
+    var sub_html = '<div id="related_weibo_text0" class="shadow_weibo" style="width:100%;"></div>'; 
+    $('#sub_related_weibo').append(sub_html);
 
     var data2 = [['12','10','12','根本实现不了两会代表委员们应该提案:汽车分公母[笑cry]，男的开母车，母车限速；女的开公车，公车不要油门。','中国 北京 北京','2013-09-07 00:10:90','fgeeeesf','sfagvfd','sfagvfd','1234567890','昵称昵称'],
                  ['12','10','12','根本实现不了两会代表委员们应该提案:汽车分公母[笑cry]，男的开母车，母车限速；女的开公车，公车不要油门。','中国 北京 北京','2013-09-07 00:10:90','fgeeeesf','sfagvfd','sfagvfd','1234567890','昵称昵称'],
                  ['12','10','12','根本实现不了两会代表委员们应该提案:汽车分公母[笑cry]，男的开母车，母车限速；女的开公车，公车不要油门。','中国 北京 北京','2013-09-07 00:10:90','fgeeeesf','sfagvfd','sfagvfd','1234567890','昵称昵称']]
 
-    Draw_get_top_weibo(data2, "related_weibo_text_0");
+    var sort_type = $('input[name="sort_radio_weibo"]:checked').val();
+    console.log(sort_type);
+    Draw_get_top_weibo(data2, "related_weibo_text0");
+
+    $('input[name="sort_radio_weibo"]').off('click').click(function(){
+        var sort_type = $('input[name="sort_radio_weibo"]:checked').val();
+        console.log(sort_type);
+        if(sort_type == "time"){
+            alert('mmm1')
+            //Draw_get_top_weibo(data2, panel_name);
+        };
+        if(sort_type == "retweet"){
+            console.log('retweet1');
+        }
+        if(sort_type == "comment"){
+            console.log('comment1');
+        }
+    });
 }
 
-//选择相应的微博
+
+//选择相应的微博,获取点击的按钮的id，控制对应面板显示。
 function choose_related_weibo(url, index){
+    $('.portrait_button_choose').die('click').live("click", function (){
+    var data2 = [['12','10','12','根本实现不了两会代表委员们应该提案:汽车分公母[笑cry]，男的开母车，母车限速；女的开公车，公车不要油门。','中国 北京 北京','2013-09-07 00:10:90','fgeeeesf','sfagvfd','sfagvfd','1234567890','昵称昵称'],
+                 ['12','10','12','根本实现不了两会代表委员们应该提案:汽车分公母[笑cry]，男的开母车，母车限速；女的开公车，公车不要油门。','中国 北京 北京','2013-09-07 00:10:90','fgeeeesf','sfagvfd','sfagvfd','1234567890','昵称昵称'],
+                 ['12','10','12','根本实现不了两会代表委员们应该提案:汽车分公母[笑cry]，男的开母车，母车限速；女的开公车，公车不要油门。','中国 北京 北京','2013-09-07 00:10:90','fgeeeesf','sfagvfd','sfagvfd','1234567890','昵称昵称']]
 
-    $('#portrait_button_choose0').click(function(){
-        alert('aaa');
-    });
-    $('#portrait_button_choose1').click(function(){
-        alert('bbb');
-    });
-    $('#portrait_button_choose2').click(function(){
-        alert('ccc');
+        $('#sort_by_time').attr("checked",true);
+        click_id = $(this).attr('id');
+        click_id = click_id.split('choose');
+        var panel_name = 'related_weibo_text' + click_id[1];
+        console.log(panel_name);
+        $('.shadow_weibo').css('display', 'none');
+        $('#'+panel_name).css('display', 'block');
+
+        $('input[name="sort_radio_weibo"]').off('click').click(function(){
+            var sort_type = $('input[name="sort_radio_weibo"]:checked').val();
+            console.log(sort_type);
+            if(sort_type == "time"){
+                alert('mmm')
+                //Draw_get_top_weibo(data2, panel_name);
+            };
+            if(sort_type == "retweet"){
+                console.log('retweet');
+            }
+            if(sort_type == "comment"){
+                console.log('comment');
+            }
+        });
+
+        //console.log(sort_type);
+
     })
-
-
 }
+
 
 //相关主题
 function show_related_topic(data){
     $('#topic_key').empty();
+    $('input[name="sub_topic"]').attr("checked",false);
+    $('#sub_related_weibo_button').empty();
+    $('#sub_related_weibo').empty();
+
+    //话题表格
     var html = '';
-    html += '<table id="more_outuser_table" class="table table-striped">';
+    html += '<table id="more_topic_table" class="table table-striped">';
     html += '<tr><th style="text-align:center;width:200px;border-right:1px solid #CCCCCC">全部</th>';
     html += '<th style="text-align:center;">';
     for(var i=0;i<data.length;i++){
         html += '<span style="margin-right:20px;">'+data[i][0]+'</span>';
     };
     html += '</th></tr>';
+    html += '</table>';
+    $('#topic_key').append(html);
 
     //进一步计算子话题
     var call_flag = 0;
     var topic_count = 0;
-    $("input[name='sub_topic']").click(function(){
+    $("input[name='sub_topic']").off('click').click(function(){
         if($("input[name='sub_topic']:checked")){
-            console.log(call_flag);
+            //console.log(call_flag);
             if(call_flag == 0){
                 //call_ajax();
                 //有子话题的话请求数据，flag保证请求一次，同时在表格上加上子话题，加上按钮。写出各个按钮的url
@@ -292,23 +343,30 @@ function show_related_topic(data){
                         html += '<span style="margin-right:20px;">'+data2[j][s]+'</span>';
                     };
                     html += '</th></tr>';
-                    $('#more_outuser_table').append(html);
+                    $('#more_topic_table').append(html);
 
-                    var button_html = '<span id="portrait_button_choose'+(j+1)+'" class="portrait_button_choose" style="height:30px;cursor:pointer;margin-right:20px;text-align: center;line-height:30px;">话题' +(j+1)+ '</span>';
-                    $('#related_weibo_button').append(button_html);
 
-                    var tab_html = '<div id="related_weibo'+(j+1)+'" class="shadow" style="display:none;width:900px;margin-top:5px;border: 4px solid #dddddd;border-radius: 10px;"></div>';
-                    $('#related_weibo').append(tab_html);
                 };
             }
-            call_flag += 1;   
+ 
         }
+        if(call_flag == 0){
+            for(var j=0;j<topic_count;j++){
+                var button_html = '<span id="portrait_button_choose'+(j+1)+'" class="portrait_button_choose" style="height:30px;cursor:pointer;margin-right:20px;text-align: center;line-height:30px;">话题' +(j+1)+ '</span>';
+                $('#sub_related_weibo_button').append(button_html);
+
+                var tab_html = '<div id="related_weibo_text'+(j+1)+'" class="shadow_weibo" style="display:none;width:900px;">'+(j+1)+'</div>';
+                $('#sub_related_weibo').append(tab_html);
+            }
+            call_flag += 1;  
+        }
+
     });
-    html += '</table>';
-    $('#topic_key').append(html);
+
 
     //显示所有微博,请求数据
     var call_all_url;
+
     show_all_related_weibo(call_all_url);
 
     //点击事件选择微博，传有几个子话题
@@ -325,9 +383,10 @@ function show_detail(flag, time, sentiment){
     $('#click_sentiment').empty();
     $('#click_time').append(time);
     $('#click_sentiment').append(sentiment);
+    console.log(flag);
     if(flag == 0){
         draw_user_in_table(data);
-        $('#mood_out_all').empty;
+        $('#mood_out_all').empty();
         $('#mood_in_all').css('width', '900px');
     }else{
         $('#mood_in_all').css('width', '440px');
