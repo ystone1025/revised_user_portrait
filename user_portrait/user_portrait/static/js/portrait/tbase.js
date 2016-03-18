@@ -59,11 +59,11 @@ function draw_conditions(url){
             if (fix_value.indexOf(',') >= 0){
                 var term_list = fix_value.split(',');
                 for (var j = 0; j < term_list.length;j++){
-                    html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ term_list[j] + '</span>';
+                    html += '<span class="mouse" style="margin-left:10px">'+ fix_name + '：'+ term_list[j] + '</span>';
                 }
             }
             else{
-                html += '<span class="mouse" style="margin-left:10px">'+ fix_name + ':'+ fix_value + '</span>';
+                html += '<span class="mouse" style="margin-left:10px">'+ fix_name + '：'+ fix_value + '</span>';
             }
         }
     }
@@ -77,9 +77,9 @@ function process_par(name, value){
         result[0] = '用户ID或昵称';
         result[1] = value;
     }
-    else if(name=='location'){
-        result[0] = '注册地';
-        result[1] = value;
+    else if(name=='activity_geo'){
+        result[0] = '活跃地点';
+        result[1] = value.split('/').join(' ');
     }
     else if(name=='keywords'){
         result[0] = '关键词';
@@ -132,8 +132,9 @@ function get_advanced_par(){
         input_name = '&' + $(this).attr('name');
         temp += input_name;
         input_value = '=' + $(this).val();
-        if (input_name == '&location'){
+        if (input_name == '&activity_geo'){
             input_value = input_value.replace('省','');
+            input_value = input_value.replace('市','');
             input_value = input_value.replace('市','');
         }
         temp += input_value;
@@ -222,6 +223,7 @@ $('[data-toggle="city-picker"]').citypicker({
     placeholder: '请选择省/市',
     level: 'city',
 });
+$('.city-picker-span').css('height','42px');
 $('.city-picker-dropdown').css('left','932px');
 $('.city-picker-dropdown').css('top','618px');
 getAttributeName();
