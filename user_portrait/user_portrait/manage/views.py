@@ -59,30 +59,26 @@ def ajax_user_profile():
 @mod.route('/imagine/')
 def ajax_imagine():
     uid = request.args.get('uid', '') # uid
-    query_keywords = request.args.get('keywords','') # query dict and corresponding weight
+    query_keywords = request.args.get('keywords','') # 查询字段
+    query_weight = request.args.get('weight','') # 权重
+    size = request.args.get('size', 100)
     keywords_list = query_keywords.split(',')
-    query_weight = request.args.get('weight','')
     weight_list = query_weight.split(',')
 
     if len(keywords_list) != len(weight_list):
-        return "0"
-
-    # 'field' control search order
-    # order_list = ['importance', 'influence', 'activeness', 'default']
+        return json.dumps([])
 
     query_fields_dict = {}
     for i in range(len(keywords_list)):
         print type(keywords_list[i]), keywords_list[i]
         query_fields_dict[keywords_list[i]] = int(weight_list[i])
-    field = request.args.get('field', '')
-    query_fields_dict['field'] = field
 
-    size = request.args.get('size', 15)
     query_fields_dict['size'] = int(size)
 
+    result = []
     if uid and query_fields_dict:
         result = imagine(uid, query_fields_dict)
     if result:
         return json.dumps(result)
 
-    return "0"
+    return json.dumps([])

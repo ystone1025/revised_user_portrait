@@ -2,33 +2,44 @@
 
 import sys
 import json
+import math
 from elasticsearch import Elasticsearch
 from user_portrait.global_utils import es_user_portrait as es
 from user_portrait.global_utils import portrait_index_name, portrait_index_type
 from user_portrait.filter_uid import all_delete_uid
-"""
-reload(sys)
-sys.path.append('./../')
-from global_utils import es_user_portrait as es
-"""
+
+#use to get evaluate max
+def get_evaluate_max():
+    max_result = {}
+    evaluate_index = ['influence', 'activeness', 'importance']
+    for evaluate in evaluate_index:
+        query_body = {
+            'query':{
+                'match_all':{}
+                    },
+                'size':1,
+                'sort':[{evaluate: {'order': 'desc'}}]
+                }
+        try:
+            result = es.search(index=portrait_index_name, doc_type=portrait_index_type, body=query_body)['hits']['hits']
+        except Exception, e:
+            raise e
+        max_evaluate = result[0]['_source'][evaluate]
+        max_result[evaluate] = max_evaluate
+    return max_result
+
+
 def imagine(uid, query_fields_dict,index_name=portrait_index_name, doctype=portrait_index_type):
 
-    """
-    uid: search users relate to uid
-    query_fields_dict: defined search field weight
-    fields: domain, topic, keywords, psycho_status, psycho_feature, activity_geo, hashtag
-    for example: "domain": 2
-    domain, psycho_feature
-    """
     personal_info = es.get(index=portrait_index_name, doc_type=portrait_index_type, id=uid, _source=True)['_source']
 
-    keys_list = query_fields_dict.keys()
-    keys_list.remove('field')
+    keys_list = query_fields_dict.keys() #需要进行关联的键
     keys_list.remove('size')
 
     search_dict = {}
     iter_list = []
 
+    # 对搜索的键值进行过滤，去掉无用的键
     for iter_key in keys_list:
         if personal_info[iter_key] == '' or not personal_info[iter_key]:
             query_fields_dict.pop(iter_key)
@@ -48,13 +59,12 @@ def imagine(uid, query_fields_dict,index_name=portrait_index_name, doctype=portr
                         'must':[
                         ]
                     }
-                },
-                "field_value_factor":{
                 }
             }
         }
     }
 
+    """
     score_standard = {}
     score_standard["modifier"] = "log1p"
     if query_fields_dict['field'] == "activeness":
@@ -72,10 +82,10 @@ def imagine(uid, query_fields_dict,index_name=portrait_index_name, doctype=portr
         query_body['query']['function_score']['boost_mode'] = "sum"
 
     query_body['query']['function_score']['field_value_factor'] = score_standard
+    """
 
-    query_fields_dict.pop('field')
     number = es.count(index=index_name, doc_type=doctype, body=query_body)['count']
-    query_body['size'] = 100 # default number
+    query_body['size'] = 150 # default number
     query_number = query_fields_dict['size'] #  required number
     query_fields_dict.pop('size')
 
@@ -92,16 +102,31 @@ def imagine(uid, query_fields_dict,index_name=portrait_index_name, doctype=portr
 
     result = es.search(index=index_name, doc_type=doctype, body=query_body)['hits']['hits']
     field_list = ['uid','uname', 'activeness','importance', 'influence']
+    evaluate_index_list = ['activeness', 'importance', 'influence']
     return_list = []
     count = 0
+
+    if number > 1 and result:
+        if result[0]['_id'] != uid:
+            top_score = result[0]['_score']
+        else:
+            top_score = result[1]['_score']
+
+    #get evaluate max to normal
+    evaluate_max_dict = get_evaluate_max()
     for item in result:
         if uid == item['_id'] or uid in filter_uid:
             score = item['_score']
             continue
         info = []
         for field in field_list:
-            info.append(item['_source'][field])
-        info.append(item['_score'])
+            if field in evaluate_index_list:
+                value = item['_source'][field]
+                normal_value = math.log(value / evaluate_max_dict[field] * 9 + 1, 10) * 100
+            else:
+                normal_value = item['_source'][field]
+            info.append(normal_value)
+        info.append(item['_score']/top_score*100)
         return_list.append(info)
         count += 1
 
@@ -112,7 +137,12 @@ def imagine(uid, query_fields_dict,index_name=portrait_index_name, doctype=portr
 
     temp_list = []
     for field in field_list:
-        temp_list.append(personal_info[field])
+        if field in evaluate_index_list:
+            value = personal_info[field]
+            normal_value = math.log(value / evaluate_max_dict[field] * 9 + 1, 10) * 100
+        else:
+            normal_value = personal_info[field]
+        temp_list.append(normal_value)
 
     results = []
     results.append(temp_list)
