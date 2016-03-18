@@ -74,6 +74,7 @@ def new_get_user_portrait(uid, admin_user):
         results['tag_remark'] = {}
         results['attention_information'] = {}
         results['tendency'] = {}
+        results['group_tag'] = []
     else:
         #step1: get attention_information
         #sensitive words
@@ -112,6 +113,18 @@ def new_get_user_portrait(uid, admin_user):
         except:
             remark = ''
         results['tag_remark']['remark'] = remark
+        #step4: get group_tag information
+        results['group_tag'] = []
+        try:
+            group_tag = user_portrait_result['group']
+        except:
+            group_tag = ''
+        if group_tag:
+            group_tag_list = group_tag.split('&')
+            for group_tag in group_tag_list:
+                group_tag_item_list = group_tag.split('-')
+                if group_tag_item_list[0] == admin_user:
+                    results['group_tag'].append(group_tag_item_list[1])
 
     return results
 
@@ -614,6 +627,26 @@ def new_get_user_social(uid):
     results['in_topic'] = sort_topic_statis_dict
 
     return results
+
+
+#use to get sensitive words
+def new_get_sensitive_words(uid):
+    try:
+        user_portrait_result = es_user_portrait.get(index=portrait_index_name, doc_type=portrait_index_type,\
+                id=uid)['_source']
+    except:
+        user_portrait_result = {}
+    if user_portrait_result:
+        try:
+            sensitive_dict = json.loads(es_user_portrait['sensitive_dict'])
+        except:
+            sensitive_dict = {}
+    else:
+        sensitive_dict = {}
+    sort_sensitive_dict = sorted(sensitive_dict.items(), key=lambda x:x[1], reverse=True)
+    
+    return sort_sensitive_dict
+
 
 #use to get user weibo
 #sort_type = timestamp/retweet_count/comment_count/sensitive

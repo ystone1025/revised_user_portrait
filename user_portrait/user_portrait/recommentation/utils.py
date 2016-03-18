@@ -24,6 +24,8 @@ from user_portrait.time_utils import ts2datetime, datetime2ts
 from user_portrait.global_utils import portrait_index_name, portrait_index_type, profile_index_name, profile_index_type
 from user_portrait.parameter import DAY, WEEK, RUN_TYPE, RUN_TEST_TIME
 
+WEEK = 7
+
 #get user detail
 #output: uid, uname, location, fansnum, statusnum, influence
 def get_user_detail(date, input_result, status):

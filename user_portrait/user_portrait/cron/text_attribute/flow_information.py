@@ -20,6 +20,7 @@ from time_utils import datetime2ts, ts2datetime, ts2date
 
 test_ts = datetime2ts(RUN_TEST_TIME)
 
+WEEK = 7
 
 #use to get hashtag information from flow
 #wirte in version:15-12-08
