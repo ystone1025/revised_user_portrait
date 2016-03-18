@@ -200,8 +200,15 @@ def ajax_portrait_search():
                 condition_num += 1
         query.append({'bool':{'should':query_list}})
     else:
-        fuzz_item = ['uid', 'uname', 'location', 'activity_geo', 'keywords', 'hashtag']
+        query_list = []
+        fuzz_item = ['location', 'activity_geo', 'keywords', 'hashtag']
         multi_item = ['character_sentiment','character_text','domain','topic_string']
+        simple_fuzz_item = ['uid', 'uname']
+        item_data = request.args.get('term', '')
+        for item in simple_fuzz_item:
+            query_list.append({'wildcard':{item: '*'+item_data+'*'}})
+            condition_num += 1
+        query.append({'bool': {'should': query_list}}) 
         for item in fuzz_item:
             item_data = request.args.get(item, '')
             if item_data:
