@@ -153,6 +153,7 @@ def update_day_influence(uid_list, user_info_list):
 #input: uid_list
 def update_day_sensitive(uid_list):
     results = {}
+    all_results = {}
     now_ts = time.time()
     #run_type
     if RUN_TYPE == 1:
@@ -218,6 +219,7 @@ def update_attribute_day():
     user_info_list = {}
     start_ts = time.time()
     while True:
+        print 'start while'
         r_user_info = update_day_redis.rpop(UPDATE_DAY_REDIS_KEY)
         if r_user_info:
             r_user_info = json.loads(r_user_info)
@@ -250,15 +252,21 @@ def update_attribute_day():
     
     if user_info_list != {}:
         uid_list = user_info_list.keys()
+        print 'uid_list:', uid_list
         #get user_list hashtag_results
+        print 'get hashtag result'
         hashtag_results = update_day_hashtag(uid_list)
         #get user geo today
+        print 'get geo'
         geo_results = update_day_geo(uid_list, user_info_list)
         #get user activeness evaluate
+        print 'get activeness'
         activeness_results = update_day_activeness(geo_results, user_info_list)
         #get user influence
+        print 'get influence'
         influence_results = update_day_influence(uid_list, user_info_list)
         #get user sensitive
+        print 'get sensitive'
         sensitive_results = update_day_sensitive(uid_list)
 
         #update to es by bulk action
