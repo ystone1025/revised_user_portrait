@@ -12,6 +12,7 @@ from user_portrait.time_utils import ts2datetime, datetime2ts
 from user_portrait.parameter import DAY, WEEK, MAX_VALUE, SENTIMENT_FIRST, SENTIMENT_SECOND
 from user_portrait.parameter import RUN_TYPE, RUN_TEST_TIME
 
+
 #use to get evaluate max
 def get_evaluate_max():
     max_result = {}
@@ -43,10 +44,11 @@ def get_psycho_status(uid_list):
     #time for es_flow_text
     now_ts = time.time()
     now_date_ts = datetime2ts(ts2datetime(now_ts))
-    #test
-    now_date_ts = datetime2ts('2013-09-08')
-    start_date_ts = now_date_ts - DAY * WEEK
-    for i in range(0, WEEK):
+    #run_type
+    if RUN_TYPE == 0:
+        now_date_ts = datetime2ts('2013-09-08')
+    start_date_ts = now_date_ts - DAY * 7
+    for i in range(0, 7):
         iter_date_ts = start_date_ts + DAY * i
         flow_text_index_date = ts2datetime(iter_date_ts)
         flow_text_index_name = flow_text_index_name_pre + flow_text_index_date

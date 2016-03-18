@@ -162,5 +162,6 @@ index_info = {
 es.indices.put_mapping(index='user_portrait_1222', doc_type='user', \
         body={'properties':{'sensitive_dict':{'type':'string', 'index':'not_analyzed'}, \
         'sensitive_string':{'type':'string', 'analyzer':'my_analyzer'}, \
-        'sensitive':{'type': 'double'}}}, ignore=400)
+        'sensitive':{'type': 'double'}, 'group':{'type':'string', \
+        'analyzer': 'my_analyzer'}}}, ignore=400)
 

@@ -51,7 +51,7 @@ def ajax_new_user_profile():
     return json.dumps(results)
 
 # url for new user_portrait overview
-# tag information/sensitive_words&keywords&hashtag/domain&topic&character
+# tag information/sensitive_words&keywords&hashtag/domain&topic&character&group_tag
 # write in version: 16-03-15
 @mod.route('/new_user_portrait/')
 def ajax_new_user_portrait():
