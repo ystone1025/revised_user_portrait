@@ -74,6 +74,7 @@ def new_get_user_portrait(uid, admin_user):
         results['tag_remark'] = {}
         results['attention_information'] = {}
         results['tendency'] = {}
+        results['group_tag'] = []
     else:
         #step1: get attention_information
         #sensitive words
@@ -112,6 +113,18 @@ def new_get_user_portrait(uid, admin_user):
         except:
             remark = ''
         results['tag_remark']['remark'] = remark
+        #step4: get group_tag information
+        results['group_tag'] = []
+        try:
+            group_tag = user_portrait_result['group']
+        except:
+            group_tag = ''
+        if group_tag:
+            group_tag_list = group_tag.split('&')
+            for group_tag in group_tag_list:
+                group_tag_item_list = group_tag.split('-')
+                if group_tag_item_list[0] == admin_user:
+                    results['group_tag'].append(group_tag_item_list[1])
 
     return results
 
