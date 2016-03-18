@@ -21,8 +21,8 @@ function bindAdvanced(){
         console.log(url);
         draw_conditions(url);
         var url = '/attribute/portrait_search/?stype=1';
-        //base_call_ajax_request(url, draw_search_results);
-        //window.location.href = '#search_result';
+        base_call_ajax_request(url, draw_search_results);
+        window.location.href = '#search_result';
     });
 }
 function replace_space(data){
