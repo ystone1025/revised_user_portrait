@@ -86,8 +86,8 @@ a#showBtn.webpage:hover{
 	min-width: 970px;
 	max-width: 1500px;
 	padding-left: 15px;
-	margin-top: 0px;
-	'''background-image: url(../img/images/bg.jpg);'''
+	margin-top: -20px;
+	background-image: url(../img/images/bgcolor.jpg);
 	background-repeat: repeat;
     background-color:#4F91FF;
     position:relative;
@@ -403,13 +403,13 @@ display:none;
 	height:100px;
 	left:0;
 	overflow:hidden;
-	top:0;
+	top:-20px;
 }
 #nav li {
 	float:left;
 	position:relative;
 	z-index:10;
-    margin-right:25px;
+    margin-right:15px;
 }
 #nav li a {
 	'''background:url(../images/bg-menu.png) no-repeat center top;'''
@@ -452,13 +452,13 @@ display:none;
 	border-radius:8px; /*some css3*/
 	-moz-border-radius:8px;
 	-webkit-border-radius:8px;
-	transition:0.8s ease-in-out;
+	transition:0.4s ease-in-out;
 	box-shadow:2px 2px 3px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.5);
 	-webkit-box-shadow:2px 2px 3px rgba(0, 0, 0, 0.5);
-	-moz-transition:0.8s ease-in-out;
-	-o-transition:0.8s ease-in-out;
-	-webkit-transition:all 0.8s ease-in-out;
+	-moz-transition:0.4s ease-in-out;
+	-o-transition:0.4s ease-in-out;
+	-webkit-transition:all 0.4s ease-in-out;
 }
 #nav ul li {
 	width:130px;
