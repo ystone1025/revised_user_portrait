@@ -8,6 +8,8 @@ from user_portrait.parameter import DAY, WEEK,MAX_VALUE
 from user_portrait.time_utils import ts2datetime, datetime2ts
 from user_portrait.global_utils import es_flow_text, flow_text_index_name_pre, flow_text_index_type
 
+WEEK = 7
+
 #read blacklist user list
 def read_black_list():
     f = open('/home/ubuntu8/huxiaoqian/user_portrait/user_portrait/cron/text_attribute/black_list.csv', 'rb')

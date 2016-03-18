@@ -105,4 +105,5 @@ def get_mappings(index_name):
 
 if __name__=='__main__':
     index_name = 'flow_text_2013-09-07'
-    get_mappings(index_name)
+    #get_mappings(index_name)
+    es.indices.put_mapping(index='flow_text_2013-09-05', doc_type="text", body={"properties":{"comment":{"type": "long"}, "retweeted":{"type":"long"}}})

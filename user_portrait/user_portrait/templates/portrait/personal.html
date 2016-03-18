@@ -1024,18 +1024,18 @@ Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.attentionDat
 var url = "/attribute/new_user_social/?uid=" + uid;
 Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.socialData);
 var sort_type;
-/*
 $(function(){
-    $('#modechoose').click(function(){
-	    var box = document.getElementByName('mode_choose');
-		for(var i=0;i<box.length;i++){
-			if(box[i].checked){
-			    console.log(box[i].value);
-			}
+	$('#modechoose').click(function(){
+	var box = document.getElementsByName('mode_choose');
+	for(var i=0;i<box.length;i++){
+		if(box[i].checked){
+			sort_type = box[i].value;
+			console.log(sort_type);
 		}
-	});
+	}
+	})
 })
-*/
+
 var url = "/attribute/new_user_weibo/?uid="+uid+"&sort_type=timestamp";
 Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.weiboData);
 </script>

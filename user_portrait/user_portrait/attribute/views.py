@@ -16,7 +16,7 @@ from search_daily_info import search_origin_attribute, search_retweeted_attribut
 from new_search import new_get_user_profile, new_get_user_portrait,\
         new_get_user_evaluate, new_get_user_location, new_get_user_social,\
         new_get_user_weibo, new_get_weibo_tree, new_get_activeness_trend, \
-        new_get_influence_trend
+        new_get_influence_trend, new_get_sensitive_words
 #from search_mid import index_mid
 from user_portrait.search_user_profile import es_get_source
 from user_portrait.global_utils import es_user_portrait as es
@@ -51,7 +51,7 @@ def ajax_new_user_profile():
     return json.dumps(results)
 
 # url for new user_portrait overview
-# tag information/sensitive_words&keywords&hashtag/domain&topic&character
+# tag information/sensitive_words&keywords&hashtag/domain&topic&character&group_tag
 # write in version: 16-03-15
 @mod.route('/new_user_portrait/')
 def ajax_new_user_portrait():
@@ -106,6 +106,18 @@ def ajax_new_user_weibo():
     if not results:
         results = {}
     return json.dumps(results)
+
+# get user sensitive words
+# sensitive words
+# write in version: 16-03-18
+@mod.route('/new_sensitive_words/')
+def ajax_new_sensitive_words():
+    uid = request.args.get('uid', '')
+    results = new_get_sensitive_words(uid)
+    if not results:
+        results = {}
+    return json.dumps(results)
+
 
 # url for new user_portrait overview
 # weibo reposts tree
@@ -188,8 +200,15 @@ def ajax_portrait_search():
                 condition_num += 1
         query.append({'bool':{'should':query_list}})
     else:
-        fuzz_item = ['uid', 'uname', 'location', 'activity_geo', 'keywords', 'hashtag']
+        query_list = []
+        fuzz_item = ['location', 'activity_geo', 'keywords', 'hashtag']
         multi_item = ['character_sentiment','character_text','domain','topic_string']
+        simple_fuzz_item = ['uid', 'uname']
+        item_data = request.args.get('term', '')
+        for item in simple_fuzz_item:
+            query_list.append({'wildcard':{item: '*'+item_data+'*'}})
+            condition_num += 1
+        query.append({'bool': {'should': query_list}}) 
         for item in fuzz_item:
             item_data = request.args.get(item, '')
             if item_data:

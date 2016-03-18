@@ -24,7 +24,7 @@ from global_utils import es_user_portrait, es_user_profile, profile_index_name, 
 from parameter import DAY, WEEK, RUN_TYPE, RUN_TEST_TIME
 from time_utils import ts2datetime, datetime2ts
 
-
+WEEK = 7
 
 #compute activity time max_freq for activeness
 #write in version:15-12-08
