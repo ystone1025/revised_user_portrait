@@ -6,7 +6,7 @@ import time
 import json
 from flask import Blueprint, url_for, render_template, request, abort, flash, session, redirect
 from utils import show_out_uid,decide_out_uid, search_history_delete, show_all_out
-from utils import recommentation_in, identify_in, show_in_history, show_compute, identify_compute, recommentation_more_information, new_identify_in
+from utils import recommentation_in, identify_in, show_in_history, show_compute, identify_compute, recommentation_more_information, new_identify_in, admin_recommentation_in
 from user_portrait.global_utils import R_RECOMMENTATION_OUT as r_out
 from user_portrait.time_utils import datetime2ts, ts2datetime
 from user_portrait.parameter import RUN_TYPE, RUN_TEST_TIME, DAY
@@ -28,10 +28,9 @@ def ajax_recommentation_in():
     else:
         now_ts = test_time
     if now_ts - 3600*24*7 >= input_ts:
-        return None
+        return json.dumps([])
     else:
         results = recommentation_in(input_ts, recomment_type)
-
     return json.dumps(results)
 
 # show more information
@@ -52,7 +51,7 @@ def ajax_admin_recommentation_in():
     else:
         now_ts = test_time
     if now_ts - 3600*24*7 >= input_ts:
-        return None
+        return json.dumps([])
     else:
         results = admin_recommentation_in(input_ts)
 
@@ -103,6 +102,7 @@ def ajax_admin_identify_in():
 def ajax_show_in_history():
     results = {}
     date = request.args.get('date', '')
+    user_type = request.args.get("type", "")
     input_ts = datetime2ts(date)
     #run_type
     if RUN_TYPE == 1:
@@ -112,7 +112,7 @@ def ajax_show_in_history():
     if now_ts - 24*3600*7 > input_ts:
         return None
     else:
-        results = show_in_history(date)
+        results = show_in_history(date, user_type)
     return json.dumps(results)
 
 

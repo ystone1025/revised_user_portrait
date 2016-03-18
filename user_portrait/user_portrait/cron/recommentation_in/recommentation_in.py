@@ -15,7 +15,8 @@ from global_config import RECOMMENTATION_TOPK as k
 from time_utils import datetime2ts, ts2datetime
 from parameter import DAY, RUN_TYPE, RUN_TEST_TIME
 from parameter import RECOMMEND_IN_SENSITIVE_TOP, RECOMMEND_IN_BLACK_USER1, RECOMMEND_IN_BLACK_USER2
-
+RUN_TEST_TIME="2013-09-07"
+k = 2000
 
 def search_from_es(date):
     index_time = 'bci_' + ''.join(date.split('-'))
@@ -124,23 +125,24 @@ def main():
     candidate_results = filter_in(subtract_user_set)
     #step4: filter rules about ip count& reposts/bereposts count&activity count
     results = filter_rules(candidate_results)
-    hashname_influence = "recomment_" + date + "_influence"
+    new_date = ts2datetime(now_ts)
+    hashname_influence = "recomment_" + new_date + "_influence"
     if results:
         for uid in results:
             r.hset(hashname_influence, uid, "0")
     #step5: get sensitive user
     sensitive_user = list(get_sensitive_user(date))
-    hashname_sensitive = "recomment_" + date + "_sensitive"
+    hashname_sensitive = "recomment_" + new_date + "_sensitive"
     if sensitive_user:
         for uid in sensitive_user:
             r.hset(hashname_sensitive, uid, "0")
     results.extend(sensitive_user)
     results = set(results)
     #step6: write to recommentation csv/redis
-    hashname_submit = "submit_recomment_" + date
+    hashname_submit = "submit_recomment_" + new_date
     if results:
         for uid in results:
-            r.hset(hashname_submit, uid, json.dumps({"system":1, "operation":"system", "status":"2"}))
+            r.hset(hashname_submit, uid, json.dumps({"system":1, "operation":"system"}))
     #status = save_recommentation2redis(date, results)
     #if status != True:
     #    print 'cron/recommend_in/recommend_in.py&error-3&'
