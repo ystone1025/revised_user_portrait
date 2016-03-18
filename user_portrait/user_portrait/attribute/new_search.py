@@ -672,6 +672,59 @@ def new_get_user_weibo(uid, sort_type):
     return results
 
 
+#use to get evaluate history trend
+#input: history_dict, evaluate_index
+#output: {'timeline':[], 'evaluate_index':[]}
+def get_evaluate_trend(history_dict, evaluate_index):
+    results = {}
+    date_evaluate_dict = {}
+    for item in history_dict:
+        item_list = item.split('_')
+        if len(item_list) == 2 and item_list[0]==evaluate_index:
+            evaluate_ts = int(item_list[1])
+            date_evaluate_dict[evaluate_ts] = history_dict[item]
+    sort_date_evaluate_list = sorted(date_evaluate_dict.items(), key=lambda x:x[0])
+    timeline = [item[0] for item in sort_date_evaluate_list]
+    evaluate_index = [item[1] for item in sort_date_evaluate_list]
+    results = {'timeline': timeline, 'evaluate_index':evaluate_index}
+    return results
+
+
+
+#get influence trend
+#write in version: 16-03-18
+#output: results = {'timeline':[], 'evaluate_index':[]}
+def new_get_influence_trend(uid):
+    results = {}
+    try:
+        influence_history = ES_COPY_USER_PORTRAIT.get(index=COPY_USER_PORTRAIT_INFLUENCE, doc_type=COPY_USER_PORTRAIT_INFLUENCE_TYPE,\
+                id=uid)['_source']
+    except:
+        influence_history = {}
+    if influence_history:
+        results = get_evaluate_trend(influence_history, 'bci')
+    else:
+        results = {}
+    return results
+
+
+#get activeness trend
+#write in version: 16-03-18
+#output: results = {'timeline':[], 'evaluate_index':[]}
+def new_get_activeness_trend(uid):
+    results = {}
+    try:
+        activeness_history = ES_COPY_USER_PORTRAIT.get(index=COPY_USER_PORTRAIT_ACTIVENESS, doc_type=COPY_USER_PORTRAIT_ACTIVENESS_TYPE,\
+                id=uid)['_source']
+    except:
+        activeness_history = {}
+    if activeness_history:
+        results = get_evaluate_trend(activeness_history, 'activeness')
+    else:
+        results = {}
+    return results
+
+
 # identify the weibo exist in es
 def identify_weibo_exist(mid, weibo_timestamp):
     exist_mark = False
