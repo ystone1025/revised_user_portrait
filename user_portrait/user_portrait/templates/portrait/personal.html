@@ -95,38 +95,41 @@ $(function(){
 	
 	<div class="taginfo" style="float:left;width:245px;border:1px solid #77ACF4;background:#fff;margin-top:10px;" >
 		<h4 class="title" style="background:#77ACF4;color:#fff;">标签信息</h4>
-		<ul style="float:left;width:245px;">
-			<li style="float:left;margin-left:20px;font-size:14px;">已有标签</li>
-			<li style="float:left;">
-				<label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">重要：一级</label>
-				<label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">敏感：一级</label>
-			</li>
-			<li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">删除</span></li>
-		</ul>
-		<ul style="float:left;border-top:1px solid #ccc;width:245px;">
-			<li style="float:left;margin-left:20px;font-size:14px;margin-top:20px;">添加标签</li>
-			<li style="float:left;">
-				<span style= "width:100%;float:left;margin-left:20px;margin-top:10px;">
-					<span >选择类别：</span>
-					<span id="attribute_name_zh" style="margin-left:10px">
-						<select id="select_attribute_name">
-							<option value="重要">重要</option>
-							<option value="红">红</option>
-						</select>
+		<div >
+			<span style="margin-left:20px;line-height:40px;">个人标签</span>
+		    <ul style="float:left;width:245px;border-top:1px solid #ccc;">
+				<li style="float:left;margin-left:20px;font-size:14px;">已有标签</li>
+				<li style="float:left;">
+					<label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">重要：一级</label>
+					<label class="cols-label"><input name="" class=" fleft chosebox" type="checkbox" value="">敏感：一级</label>
+				</li>
+				<li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">删除</span></li>
+			</ul>
+			<ul style="float:left;width:220px;margin-left:10px;border-top:1px solid #ccc;">
+				<li style="float:left;margin-left:20px;font-size:14px;margin-top:20px;">添加标签</li>
+				<li style="float:left;">
+					<span style= "width:100%;float:left;margin-left:20px;margin-top:10px;">
+						<span >选择类别：</span>
+						<span id="attribute_name_zh" style="margin-left:10px">
+							<select id="select_attribute_name">
+								<option value="重要">重要</option>
+								<option value="红">红</option>
+							</select>
+						</span>
 					</span>
-				</span>
-				<span style= "width:100%;float:left;margin-top:10px;margin-left:20px;">
-					<span >选择标签：</span>
-					<span id="attribute_value_zh" style="margin-left:10px">
-						<select id="select_attribute_name">
-							<option value="重要">重要</option>
-							<option value="红">红</option>
-						</select>
+					<span style= "width:100%;float:left;margin-top:10px;margin-left:20px;">
+						<span >选择标签：</span>
+						<span id="attribute_value_zh" style="margin-left:10px">
+							<select id="select_attribute_name">
+								<option value="重要">重要</option>
+								<option value="红">红</option>
+							</select>
+						</span>
 					</span>
-				</span>
-			</li>
-			<li class="portrait_button" style="margin-right:15px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">添加</span></li>
-		</ul>
+				</li>
+				<li class="portrait_button" style="margin-right:0px;float:right;width:50px;height:30px;"><span style="padding-left:10px;line-height:30px;">添加</span></li>
+			</ul>
+		</div>
 		<ul style="float:left;border-top:1px solid #ccc;width:245px;padding-top:20px;">
 			<li style="float:left;margin-left:20px;">群组标签</li>
 			<li style="float:left;margin-left:40px;">暂无</li>
@@ -207,22 +210,22 @@ $(function(){
     <h4 class="title" style="background:#77ACF4;color:#fff;">发帖内容</h4>
     <div style="width:100%;margin-top:10px;">
 	    <span style= "color:red;margin-left:20px;font-size:16px;float:left;">相关微博</span>
-		<ul style="float:left;">
+		<ul style="float:left;" id="modechoose">
 			<li>
 		        <input type="radio" name="mode_choose" value="timestamp" checked="checked">
-                <span class="" style="">时间</span>
+                <span class="mode" style="">时间</span>
 			</li>
 			<li>
                 <input type="radio" name="mode_choose" value="retweet_count">
-                <span class="" style="">转发数</span>
+                <span class="mode" style="">转发数</span>
 			</li>
 			<li>
 				<input type="radio" name="mode_choose" value="count_count" >
-				<span class="" style="">评论数</span>
+				<span class="mode" style="">评论数</span>
 			</li>
 			<li>
                 <input type="radio" name="mode_choose" value="sensitive">
-                <span class="" style="">敏感性</span>
+                <span class="mode" style="">敏感性</span>
 			</li>
 		</ul>
 	</div>
@@ -232,7 +235,7 @@ $(function(){
     <div class="tang-scrollpanel-content" style="margintop:10px;">
 	    <div id='group_influ_weibo' style='overflow-x:hidden;width:730px;float:left;'>
  			<div id="group_influ_weibo_result" style="float:left;width:100%;"></div>
-            <div id="pageGro" class="cb" style="display:none;float:left;width:600px;height:60px;margin-left:250px;margin-top:40px;">
+            <div id="pageGro" class="cb" style="display:none;float:left;width:600px;height:60px;margin-left:200px;margin-top:40px;line-height:23px;">
                 <span class="pageUp" style="float:left;">上一页</span>
                 <span class="pageList" style="float:left;">
                     <ul>
@@ -243,7 +246,7 @@ $(function(){
                         <li>5</li>
                     </ul>
                 </span>
-                <span class="pageDown" style="margin-left:20px;">下一页</span>
+                <span class="pageDown" style="margin-left:20px;cursor:pointer;">下一页</span>
             </div>	       
         </div>
 	</div>
@@ -798,13 +801,13 @@ function DrawWeibo(data, div_name, sub_div_name){
           }
         }
     var pageCount = total_pages;
-    /*
-    if(pageCount>10){
-        page_icon(1,10,0, div_name);
+    
+    if(pageCount>5){
+        page_icon(1,5,0, div_name);
     }else{
         page_icon(1,pageCount,0, div_name);
     }
-    */
+    
     $("#"+div_name+" #pageGro li").live("click", function(){
         if(pageCount > 5){
             var pageNum = parseInt($(this).html());
@@ -844,7 +847,28 @@ function DrawWeibo(data, div_name, sub_div_name){
           end_row = data.length;
       }
         page_group_influ_weibo(start_row,end_row,data, sub_div_name);
-    })
+    });
+	
+	$("#" + div_name + " #pageGro .pageDown").off('click').click(function(){
+        if(pageCount > 5){
+            var pageNum = parseInt($("#"+div_name+" #pageGro li.on").html());
+            pageDown(pageNum,pageCount);
+        }else{
+            var index = $("#"+div_name+" #pageGro ul li.on").index();
+            if(index+1 < pageCount){
+                $("#"+div_name+" #pageGro li").removeClass("on");
+                $("#"+div_name+" #pageGro ul li").eq(index+1).addClass("on");
+            }
+        }
+      page = parseInt($("#"+div_name+" #pageGro li.on").html()) 
+      //console.log(page);
+      start_row = (page-1)* page_num;
+      end_row = start_row + page_num;
+      if (end_row > data.length){
+          end_row = data.length;
+      }
+        page_group_influ_weibo(start_row,end_row,data, sub_div_name);
+    });
 
 }
 
@@ -881,6 +905,73 @@ function page_group_influ_weibo(start_row,end_row,data, sub_div_name){
     }
     html += '</div>'; 
     $('#'+sub_div_name).append(html);
+}
+
+function pageGroup(pageNum,pageCount){
+	switch(pageNum){
+		case 1:
+			page_icon(1,5,0);
+		break;
+		case 2:
+			page_icon(1,5,1);
+		break;
+		case pageCount-1:
+			page_icon(pageCount-4,pageCount,3);
+		break;
+		case pageCount:
+			page_icon(pageCount-4,pageCount,4);
+		break;
+		default:
+			page_icon(pageNum-2,pageNum+2,2);
+		break;
+	}
+}
+function page_icon(page,count,eq){
+	var ul_html = "";
+	for(var i=page; i<=count; i++){
+		ul_html += "<li>"+i+"</li>";
+	}
+	$("#pageGro ul").html(ul_html);
+	$("#pageGro ul li").eq(eq).addClass("on");
+}
+
+function pageUp(pageNum,pageCount){
+	switch(pageNum){
+		case 1:
+		break;
+		case 2:
+			page_icon(1,5,0);
+		break;
+		case pageCount-1:
+			page_icon(pageCount-4,pageCount,2);
+		break;
+		case pageCount:
+			page_icon(pageCount-4,pageCount,3);
+		break;
+		default:
+			page_icon(pageNum-2,pageNum+2,1);
+		break;
+	}
+}
+
+//下一页
+function pageDown(pageNum,pageCount){
+	switch(pageNum){
+		case 1:
+			page_icon(1,5,1);
+		break;
+		case 2:
+			page_icon(1,5,2);
+		break;
+		case pageCount-1:
+			page_icon(pageCount-4,pageCount,4);
+		break;
+		case pageCount:
+		break;
+		default:
+			page_icon(pageNum-2,pageNum+2,3);
+		break;
+	}
 }
 //var global_tag_vector = new Array(); //全局标签化向量
 
@@ -932,16 +1023,20 @@ var url = "/attribute/new_user_portrait/?uid=" + uid;
 Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.attentionData);
 var url = "/attribute/new_user_social/?uid=" + uid;
 Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.socialData);
+var sort_type;
 /*
-var box = document.getElementByName('mode_choose');
-for (var i=0;i<box.length;i++){
-	if(box[i].checked){
-	    console.log(box[i].value);
-	}
-}
-//var sort_type = 
+$(function(){
+    $('#modechoose').click(function(){
+	    var box = document.getElementByName('mode_choose');
+		for(var i=0;i<box.length;i++){
+			if(box[i].checked){
+			    console.log(box[i].value);
+			}
+		}
+	});
+})
 */
-var url = "/attribute/new_user_weibo/?uid="+uid+"&sort_type=timestamp"
+var url = "/attribute/new_user_weibo/?uid="+uid+"&sort_type=timestamp";
 Personal.call_sync_ajax_request(url, Personal.ajax_method, Personal.weiboData);
 </script>
 
