@@ -6,7 +6,7 @@ import time
 import json
 from flask import Blueprint, url_for, render_template, request, abort, flash, session, redirect
 from utils import show_out_uid,decide_out_uid, search_history_delete, show_all_out
-from utils import recommentation_in, identify_in, show_in_history, show_compute, identify_compute, recommentation_more_information
+from utils import recommentation_in, identify_in, show_in_history, show_compute, identify_compute, recommentation_more_information, new_identify_in, admin_recommentation_in
 from user_portrait.global_utils import R_RECOMMENTATION_OUT as r_out
 from user_portrait.time_utils import datetime2ts, ts2datetime
 from user_portrait.parameter import RUN_TYPE, RUN_TEST_TIME, DAY
@@ -20,6 +20,7 @@ mod = Blueprint('recommentation', __name__, url_prefix='/recommentation')
 @mod.route('/show_in/')
 def ajax_recommentation_in():
     date = request.args.get('date', '') # '2013-09-01'
+    recomment_type = request.args.get('type', 'influence')
     input_ts = datetime2ts(date)
     #run_type
     if RUN_TYPE == 1:
@@ -27,10 +28,9 @@ def ajax_recommentation_in():
     else:
         now_ts = test_time
     if now_ts - 3600*24*7 >= input_ts:
-        return None
+        return json.dumps([])
     else:
-        results = recommentation_in(input_ts)
-
+        results = recommentation_in(input_ts, recomment_type)
     return json.dumps(results)
 
 # show more information
@@ -41,13 +41,47 @@ def ajax_recommentation_in_more():
     return json.dumps(result)
 
 
+@mod.route('/admin_show_in/') #向超级管理员展示推荐入库
+def ajax_admin_recommentation_in():
+    date = request.args.get('date', '') # '2013-09-01'
+    input_ts = datetime2ts(date)
+    #run_type
+    if RUN_TYPE == 1:
+        now_ts = time.time()
+    else:
+        now_ts = test_time
+    if now_ts - 3600*24*7 >= input_ts:
+        return json.dumps([])
+    else:
+        results = admin_recommentation_in(input_ts)
 
-# identify_in 
+    return json.dumps(results)
+
+# identify_in , recommend to admin
 # input:[(date, uid, status)]
 # deal :write to compute
 @mod.route('/identify_in/')
 def ajax_identify_in():
     results = 0 # mark fail
+    date = request.args.get('date', '') # date = '2013-09-07'
+    uid_string = request.args.get('uid_list', '')
+    uid_list = uid_string.split(',')
+    #status = request.args.get('status', '') # 1 compute right now; 2 appointment
+    submit_user = request.args.get('submit_user', '') # 提交人
+    data = []
+    if date and uid_list:
+        for uid in uid_list:
+            data.append([date, uid])
+        results = new_identify_in(data, date, submit_user)
+    else:
+        results = None
+    return json.dumps(results)
+
+
+# 超级管理员确认入库
+@mod.route('/admin_identify_in/')
+def ajax_admin_identify_in():
+    results = 0
     date = request.args.get('date', '') # date = '2013-09-07'
     uid_string = request.args.get('uid_list', '')
     uid_list = uid_string.split(',')
@@ -68,6 +102,7 @@ def ajax_identify_in():
 def ajax_show_in_history():
     results = {}
     date = request.args.get('date', '')
+    user_type = request.args.get("type", "")
     input_ts = datetime2ts(date)
     #run_type
     if RUN_TYPE == 1:
@@ -77,7 +112,7 @@ def ajax_show_in_history():
     if now_ts - 24*3600*7 > input_ts:
         return None
     else:
-        results = show_in_history(date)
+        results = show_in_history(date, user_type)
     return json.dumps(results)
 
 
