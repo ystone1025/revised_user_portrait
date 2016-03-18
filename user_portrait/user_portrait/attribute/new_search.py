@@ -615,6 +615,26 @@ def new_get_user_social(uid):
 
     return results
 
+
+#use to get sensitive words
+def new_get_sensitive_words(uid):
+    try:
+        user_portrait_result = es_user_portrait.get(index=portrait_index_name, doc_type=portrait_index_type,\
+                id=uid)['_source']
+    except:
+        user_portrait_result = {}
+    if user_portrait_result:
+        try:
+            sensitive_dict = json.loads(es_user_portrait['sensitive_dict'])
+        except:
+            sensitive_dict = {}
+    else:
+        sensitive_dict = {}
+    sort_sensitive_dict = sorted(sensitive_dict.items(), key=lambda x:x[1], reverse=True)
+    
+    return sort_sensitive_dict
+
+
 #use to get user weibo
 #sort_type = timestamp/retweet_count/comment_count/sensitive
 def new_get_user_weibo(uid, sort_type):
