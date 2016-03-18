@@ -31,8 +31,8 @@
 {% block main %}
 
 <div id="personal_head" style="font-family:Microsoft YaHei UI; font-size:16px;" >
-    <div class="PortraitImg" ><img id="portraitImg" src="" alt="" class="img-circle"></div>
-    <div class="nickname" id="nickname"></div>
+    <div class="PortraitImg" ><img id="portraitImg" style='cursor:pointer;' src="" alt="" class="img-circle"></div>
+    <div class="nickname" id="nickname" style="cursor:pointer;"></div>
 </div>
 <div id="float-wrap" class="hidden"></div>
 <div class='row'>
@@ -252,7 +252,10 @@
     }else{
         nickName.innerHTML = "无此数据";
     }
-    $('#personal_head').click(function(){
+    $('#nickname').click(function(){
+        window.open('/index/personal/?uid=' + uid);
+    });
+    $('#portraitImg').click(function(){
         window.open('/index/personal/?uid=' + uid);
     });
 </script>
