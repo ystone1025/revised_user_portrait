@@ -199,5 +199,6 @@ function getAttributeName(){
         });
     }
 }
+//$('[data-toggle="city-picker"]').citypicker();
 getAttributeName();
 bindAdvanced();
