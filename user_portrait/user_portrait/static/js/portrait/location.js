@@ -46,7 +46,7 @@ function geo_track(data){
 	var citys = [];
 	for(var key in geo_data){
 		date.push(getDate_zh(key));
-        citys.push(geo_data[key][0])
+        citys.push(geo_data[key][0]);
 	}
 	for(i=0;i<date.length;i++){
 		document.getElementById('d'+(i+1)).innerHTML = date[i];
@@ -58,8 +58,20 @@ function geo_track(data){
 			$('#city'+(i+1)).addClass('gray');
 			document.getElementById('city'+(i+1)).innerHTML = '未发布微博';
 		}
-		
 	}
+
+    $('#more_t_list').empty();
+    var html = '';
+    for(var key in geo_data){
+        console.log(key);
+        html += '<div style="margin-left:20px;float:left;">'
+        for( var i in geo_data[key]){
+           html += '<div>'+geo_data[key][i]+' </div>';
+        }
+        html +=  '</div>'
+    }
+    console.log(html);
+    $('#more_t_list').append(html);
 }
 
 

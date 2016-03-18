@@ -72,7 +72,7 @@ function post_draw(){
           alert("选择对比的人数不能超过3人!");
         }
         else{
-            window.open('/index/contrast/?uidlist=' + choose_contrast_uid.join(','));
+            window.open('/index/contrast/?uid_list=' + choose_contrast_uid.join(','));
         }
     });
 }

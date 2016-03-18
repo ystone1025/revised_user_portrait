@@ -77,10 +77,11 @@ def influence_rank():
 def tag():
 
     return render_template('portrait/tag.html')
+"""
 @mod.route('/contrast_analysis/')
 def contrast_analysis():
     return render_template('portrait/contrast_analysis.html')
-
+"""
 @mod.route('/portrait_in/')
 def portrait_in():
     return render_template('portrait/portrait_in.html')

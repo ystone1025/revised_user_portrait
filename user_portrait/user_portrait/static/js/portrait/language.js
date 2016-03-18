@@ -270,9 +270,9 @@ function show_domain(data){
 
   // var html = '';
   //html += '<h3>用户领域分析</h3>';
-  data1 = '根据注册信息分类：'+data[0][0];
-  data2 = '根据转发结构分类：'+data[0][1];
-  data3 = '根据发帖内容分类：'+data[0][2];
+  data1 = '根据注册信息分类：\n'+data[0][0];
+  data2 = '根据转发结构分类：\n'+data[0][1];
+  data3 = '根据发帖内容分类：\n'+data[0][2];
   data4 = data[1];
 var myChart1 = echarts.init(document.getElementById('preference_domain')); 
 var option = {
@@ -299,113 +299,36 @@ var option = {
             rootLocation: {x: 50, y: 'center'}, // 根节点位置  {x: 'center',y: 10}
             nodePadding: 50,
             symbol: 'circle',
-            symbolSize: 60,
+            symbolSize: 30,
             itemStyle: {
                 normal: {
+                    color: '#4883b4',
                     label: {
-                        show: false,
-                        position: 'inside',
+                        show: true,
+                        position: 'right',
+                        formatter: "{b}",
                         textStyle: {
                             color: '#000',
-                            fontSize: 14,
-                            font_family: "Microsoft YaHei UI"
+                            fontSize: 5
                         }
                     },
-
                     lineStyle: {
-                        color: '#000',
-                        width: 1,
+                        color: '#ccc',
                         type: 'curve' // 'curve'|'broken'|'solid'|'dotted'|'dashed'
+
                     }
                 },
                 emphasis: {
+                    color: '#4883b4',
                     label: {
-                        show: false,
-                        fontSize: 14,
-                    }
+                        show: false
+                    },
+                    borderWidth: 0
                 }
             },
+            
             data: [
-                {
-                    name: data4,
-                    //value: 2,
-                    // symbolSize: [90, 70],
-                    symbol: 'circle',
-                    itemStyle: {
-                        normal: {
-                           color: '#95C6E2',
-                            label: {
-                                show: true
-                            }
-                        }
-                    },
-                    children: [
-                          {
-                          name: data1,
-                          symbol: 'circle',
-                          symbolSize: 20,
-                          value: 4,
-                          itemStyle: {
-                              normal: {
-                                  color: '#77B1E2',
-                                  label: {
-                                      show: true,
-                                      position: 'right'
-                                  }
-                                  
-                              },
-                              emphasis: {
-                                  label: {
-                                      show: true
-                                  },
-                              borderWidth: 10
-                              }
-                          }
-                        },
-                          {
-                          name: data2,
-                          symbol: 'circle',
-                          symbolSize: 20,
-                          value: 4,
-                          itemStyle: {
-                              normal: {
-                                  color: '#367FBD',
-                                  label: {
-                                      show: true,
-                                      position: 'right'
-                                  }                                  
-                              },
-                              emphasis: {
-                                  label: {
-                                      show: false
-                                  },
-                                  borderWidth: 0
-                              }
-                          }
-                        },
-                          {
-                          name: data3,
-                          symbol: 'circle',
-                          symbolSize: 20,
-                          value: 4,
-                          itemStyle: {
-                              normal: {
-                                  color: '#31708F',
-                                  label: {
-                                      show: true,
-                                      position: 'right'
-                                  }                                 
-                              },
-                              emphasis: {
-                                  label: {
-                                      show: false
-                                  },
-                                  borderWidth: 0
-                              }
-                          }
-                        }    
-                    ]
-                }
+                {"name":data4,"children":[{"name":data1},{"name":data2},{"name":data3}]}
             ]
         }
     ]
@@ -443,7 +366,8 @@ function show_results(data){
   }
   }
 
-var prefrence_url = '/attribute/preference/?uid=' + parent.personalData.uid;
+var prefrence_url = '/attribute/preference/?uid=' + uid;
+
 //console.log(prefrence_url);
 call_sync_ajax_request(prefrence_url, ajax_method, show_results);
 

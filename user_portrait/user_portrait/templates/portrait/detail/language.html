@@ -69,7 +69,7 @@ overflow-y:scroll;
 </style>
     <div class="modal fade" id="language_info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
-        <div class="modal-content" style="position: absolute;margin-top: 100px;margin-left: 350px;float :none;width: 670px;">
+        <div class="modal-content" style="position: absolute;margin-top: 100px;margin-left: 388px;float :none;width: 670px;">
           <div class="modal-header" style="float:inherit;margin:initial;">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">计算说明</h4>
@@ -78,38 +78,47 @@ overflow-y:scroll;
             <table style="font-size:16px">
               <tr><td>本页面中信息更新频率说明如下：</td></tr>
               <tr><td>1）关键词：周更新。</td></tr>
-              <tr><td>2）事件标签：日更新。</td></tr>
-              <tr><td>3）用户领域分析：月更新。</tr>
-              <tr><td>4）用户话题分布：周更新。</td></tr>
+              <tr><td>2）微话题：日更新。</td></tr>
+
             </table>
           </div>
         </div>
       </div>
     </div>
-
-<h3  style="float:left;">偏好特征</h3>
-<div style="float:right;cursor: pointer" type="button" data-toggle="modal" data-target="#language_info"><u>计算说明</u></div>
+    <h3  style="float:left;">偏好特征</h3>
+    <div style="float:right;cursor: pointer" type="button" data-toggle="modal" data-target="#language_info"><u>计算说明</u></div>
 
 
 <div style="width:100%;float:left">
-<div id="framecontent" style="width:49%;float:left">
-    <div class ="framepost" style="height:350px;">
+<div id="framecontent" style="width:280px;float:left">
+    <div class ="framepost" style="height:388px;">
         <h3 class="title">关键词</h3>
-        <div  class="entry" style="width: 370px;float:left;">
+        <div  class="entry" style="width: 280px;float:left;">
             <div class="showmore" id="key_more" style=" float:right; font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showmore_keyWords"><u>查看更多</u></a>
             </div>
-            <div id="Language" style="width:420px;height:280px;"></div> 
+            <div id="Language" style="width:280px;height:280px;"></div> 
         </div>
     </div>
 </div>
 
-<div id="framecontent" style="width:49%;float:left;margin-left:15px;">
-    <div class ="framepost" style="height:350px;">
+<div id="framecontent" style="width:280px;float:left;margin-left:5px;">
+    <div class ="framepost" style="height:388px;">
+        <h3 class="title">敏感词</h3>
+        <div  class="entry" style="width: 280px;float:left;">
+            <div class="showmore" id="sen_more" style=" float:right; font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showsen_keyWords"><u>查看更多</u></a>
+            </div>
+            <div id="sen_Language" style="width:280px;height:280px;"></div> 
+        </div>
+    </div>
+</div>
+
+<div id="framecontent" style="width:280px;float:left;margin-left:5px;">
+    <div class ="framepost" style="height:388px;">
         <h3 class="title">事件标签</h3>
-        <div  class="entry" style="width: 370px;float:left;">
+        <div  class="entry" style="width: 280px;float:left;">
             <div class="showmore" id="hash_more" style="float:right; font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showmore_hashtagWords"><u>查看更多</u></a>
             </div>
-            <div id="hashtag_words" style="width:420px;height:280px;"></div>
+            <div id="hashtag_words" style="width:280px;height:280px;"></div>
           <div id="float-wrap" class="hidden"></div>
         </div>
     </div>
@@ -117,47 +126,13 @@ overflow-y:scroll;
 </div>
 
   <div id="more_keyWords" class="hidden">
-  	<h3 class="title">关键词排名<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
-  	<div id="key_WordList"></div>
+    <h3 class="title">关键词排名<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
+    <div id="key_WordList"></div>
   </div>
   <div id="more_hashtagWords" class="hidden">
       <h3 class="title">微话题排名<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
       <div id="hashtag_WordList"></div>
   </div>
 
-
-
-<div style="width:100%;float:left">
-<div id="framecontent" style="width:49%;float:left">
-    <div class ="framepost" style="height:350px;">
-        <h3 class="title">用户领域分析</h3>
-        <div  class="entry" style="width: 370px;float:left;">
-            <div id="preference_domain" style="width:340px;height:260px;"></div> 
-        </div>
-    </div>
-</div>
-
-<div id="framecontent" style="width:49%;float:left;margin-left:15px;">
-    <div class ="framepost" style="height:350px;">
-        <h3 class="title">用户话题分布</h3>
-        <div  class="entry" style="width: 370px;float:left;">
-            <div class="showmore" id="topic_more" style="float:right; font-size:16px;"><a style="cursor:pointer;color:#555555; "  id="showmore_hashtagWords"><u>查看更多</u></a>
-            </div>
-            <div id="user_topic" style="width:340px;height:260px;"></div>
-          <div id="float-wrap" class="hidden"></div>
-        </div>
-    </div>
-</div>
-</div>
-
-
-    <div id="more_topic" class="hidden">
-      <h3 class="title">用户话题<a href="javascript:void(0)" class="closeList" id="close"></a></h3>
-      <div id="topic_WordList"></div>
-    </div>
-
-
-
-  <div id="preference_conclusion" style="width:100%;float:left"></div>
 <script src="/static/js/portrait/language.js"></script>
                     
