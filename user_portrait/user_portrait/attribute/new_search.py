@@ -6,6 +6,12 @@ write in version: 16-03-15
 import IP
 import json
 import time
+import base62
+import buchheim_weibospread
+from gen_weibospread import Tree
+from gexf import Gexf
+from lxml import etree
+
 from user_portrait.global_utils import es_user_portrait, portrait_index_name, portrait_index_type,\
                           es_flow_text, flow_text_index_name_pre, flow_text_index_type,\
                           es_user_profile, profile_index_name, profile_index_type
@@ -68,6 +74,7 @@ def new_get_user_portrait(uid, admin_user):
         results['tag_remark'] = {}
         results['attention_information'] = {}
         results['tendency'] = {}
+        results['group_tag'] = []
     else:
         #step1: get attention_information
         #sensitive words
@@ -76,10 +83,10 @@ def new_get_user_portrait(uid, admin_user):
         except:
             sensitive_words_dict = {}
         sort_sensitive_words = sorted(sensitive_words_dict.items(), key=lambda x:x[1], reverse=True)
-        results['attention_information'] = {'sensitive_words': sort_sensitive_words}
+        results['attention_information'] = {'sensitive_dict': sort_sensitive_words}
         #keywords
         sort_keywords = json.loads(user_portrait_result['keywords'])
-        results['attention_information']['keywords'] = sorted(sort_keywords)
+        results['attention_information']['keywords'] = sort_keywords
         #hashtag
         hashtag_dict = json.loads(user_portrait_result['hashtag_dict'])
         sort_hashtag = sorted(hashtag_dict.items(), key=lambda x:x[1], reverse=True)
@@ -106,6 +113,18 @@ def new_get_user_portrait(uid, admin_user):
         except:
             remark = ''
         results['tag_remark']['remark'] = remark
+        #step4: get group_tag information
+        results['group_tag'] = []
+        try:
+            group_tag = user_portrait_result['group']
+        except:
+            group_tag = ''
+        if group_tag:
+            group_tag_list = group_tag.split('&')
+            for group_tag in group_tag_list:
+                group_tag_item_list = group_tag.split('-')
+                if group_tag_item_list[0] == admin_user:
+                    results['group_tag'].append(group_tag_item_list[1])
 
     return results
 
@@ -156,6 +175,32 @@ def get_evaluate_max_min_now(history_dict, evaluate_index):
     results = [now_evaluate_value, now_evaluate_rank, max_value, min_value]
     return results
 
+#use to get user influence week ave
+#return week ave rank
+def get_influence_week_ave_rank(week_ave):
+    evaluate_index_key = 'bci_week_ave'
+    query_body = {
+        'query':{
+            'range':{
+                evaluate_index_key: {
+                    'gte': week_ave,
+                    'lt': MAX_VALUE
+                    }
+                }
+            }
+        }
+    index_name = COPY_USER_PORTRAIT_INFLUENCE
+    index_type = COPY_USER_PORTRAIT_INFLUENCE_TYPE
+    week_ave_rank = ES_COPY_USER_PORTRAIT.count(index=index_name, doc_type=index_type,\
+            body=query_body)
+    if week_ave_rank['_shards']['successful'] != 0:
+        rank = week_ave_rank['count']
+    else:
+        rank = ''
+    return rank
+
+
+
 #use to get user evaluate index
 #return result: [now_evaluate_value, now_evaluate_rank, max_value, min_value, all_count]
 def new_get_user_evaluate(uid):
@@ -179,8 +224,12 @@ def new_get_user_evaluate(uid):
         influence_history = []
     #get max value/min value/week ave value
     if influence_history:
+        week_ave = influence_history['bci_week_ave']
+        week_ave_rank = get_influence_week_ave_rank(week_ave)
+        influence_item = [week_ave, week_ave_rank]
         influence_max_min_now_list =  get_evaluate_max_min_now(influence_history, 'bci')
         influence_max_min_now_list.append(all_count)
+        influence_item.extend(influence_max_min_now_list[2:])
         results['influence'] = influence_max_min_now_list
     else:
         results['influence'] = ['', '', '', '', all_count]
@@ -579,6 +628,26 @@ def new_get_user_social(uid):
 
     return results
 
+
+#use to get sensitive words
+def new_get_sensitive_words(uid):
+    try:
+        user_portrait_result = es_user_portrait.get(index=portrait_index_name, doc_type=portrait_index_type,\
+                id=uid)['_source']
+    except:
+        user_portrait_result = {}
+    if user_portrait_result:
+        try:
+            sensitive_dict = json.loads(es_user_portrait['sensitive_dict'])
+        except:
+            sensitive_dict = {}
+    else:
+        sensitive_dict = {}
+    sort_sensitive_dict = sorted(sensitive_dict.items(), key=lambda x:x[1], reverse=True)
+    
+    return sort_sensitive_dict
+
+
 #use to get user weibo
 #sort_type = timestamp/retweet_count/comment_count/sensitive
 def new_get_user_weibo(uid, sort_type):
@@ -614,10 +683,12 @@ def new_get_user_weibo(uid, sort_type):
     sort_weibo_list = sorted(weibo_list, key=lambda x:x['_source'][sort_type], reverse=True)[:100]
     for weibo_item in sort_weibo_list:
         source = weibo_item['_source']
+        mid = source['mid']
         uid = source['uid']
         text = source['text']
         ip = source['geo']
-        date = ts2date(source['timestamp'])
+        timestamp = source['timestamp']
+        date = ts2date(timestamp)
         sentiment = source['sentiment']
         #run_type
         if RUN_TYPE == 1:
@@ -629,6 +700,330 @@ def new_get_user_weibo(uid, sort_type):
             comment_count = 0
             sensitive_score = 0
         city = ip2city(ip)
-        results.append([uid, text, ip, city, date, retweet_count, comment_count, sensitive_score])
+        results.append([mid, uid, text, ip, city,timestamp, date, retweet_count, comment_count, sensitive_score])
 
     return results
+
+
+#use to get evaluate history trend
+#input: history_dict, evaluate_index
+#output: {'timeline':[], 'evaluate_index':[]}
+def get_evaluate_trend(history_dict, evaluate_index):
+    results = {}
+    date_evaluate_dict = {}
+    for item in history_dict:
+        item_list = item.split('_')
+        if len(item_list) == 2 and item_list[0]==evaluate_index:
+            evaluate_ts = int(item_list[1])
+            date_evaluate_dict[evaluate_ts] = history_dict[item]
+    sort_date_evaluate_list = sorted(date_evaluate_dict.items(), key=lambda x:x[0])
+    timeline = [item[0] for item in sort_date_evaluate_list]
+    evaluate_index = [item[1] for item in sort_date_evaluate_list]
+    results = {'timeline': timeline, 'evaluate_index':evaluate_index}
+    return results
+
+
+
+#get influence trend
+#write in version: 16-03-18
+#output: results = {'timeline':[], 'evaluate_index':[]}
+def new_get_influence_trend(uid):
+    results = {}
+    try:
+        influence_history = ES_COPY_USER_PORTRAIT.get(index=COPY_USER_PORTRAIT_INFLUENCE, doc_type=COPY_USER_PORTRAIT_INFLUENCE_TYPE,\
+                id=uid)['_source']
+    except:
+        influence_history = {}
+    if influence_history:
+        results = get_evaluate_trend(influence_history, 'bci')
+    else:
+        results = {}
+    return results
+
+
+#get activeness trend
+#write in version: 16-03-18
+#output: results = {'timeline':[], 'evaluate_index':[]}
+def new_get_activeness_trend(uid):
+    results = {}
+    try:
+        activeness_history = ES_COPY_USER_PORTRAIT.get(index=COPY_USER_PORTRAIT_ACTIVENESS, doc_type=COPY_USER_PORTRAIT_ACTIVENESS_TYPE,\
+                id=uid)['_source']
+    except:
+        activeness_history = {}
+    if activeness_history:
+        results = get_evaluate_trend(activeness_history, 'activeness')
+    else:
+        results = {}
+    return results
+
+
+# identify the weibo exist in es
+def identify_weibo_exist(mid, weibo_timestamp):
+    exist_mark = False
+    weibo_info = {}
+    weibo_date  = ts2datetime(weibo_timestamp)
+    index_name = flow_text_index_name_pre + weibo_date
+    try:
+        weibo_result = es_flow_text.get(index=index_name, doc_type=flow_text_index_type,\
+                id = mid)['_source']
+    except:
+        weibo_result = {}
+    if weibo_result:
+        weibo_info = weibo_result
+        exist_mark = True
+    return exist_mark, weibo_info
+
+
+# get user profile for repost weibo
+def get_user_profile_weibo(user_list):
+    user_info_dict = {}
+    try:
+        user_profile_dict = es_user_profile.mget(index=profile_index_name, doc_type=profile_index_type, \
+                body={'ids': user_list})['docs']
+    except:
+        user_profile_dict = []
+    if user_profile_dict:
+        for user_dict in user_profile_dict:
+            if user_dict['found'] == True:
+                source = user_dict['_source']
+                source_dict['uid'] = source['uid']
+                source_dict['uname'] = source['nick_name']
+                source_dict['location'] = source['location']
+                source_dict['photo_url'] = source['photo_url']
+                source_dict['fansnum'] = source['fansnum']
+                source_dict['friendsnum'] = source['friendsnum']
+                source_dict['statusnum'] = source['statusnum']
+                source_dict['description'] = source['description']
+            else:
+                source_dict['uid'] = source['uid']
+                source_dict['uname'] = 'unknown'
+                source_dict['location'] = 'unknown'
+                source_dict['photo_url'] = ''
+                source_dict['fansnum'] = 0
+                source_dict['friendsnum'] = 0
+                source_dict['statusnum'] = 0
+                source_dict['description'] = ''
+
+            user_info_dict[user_dict['_id']] = source_dict
+    return user_info_dict
+
+
+
+# get repost weibo by mid and weibo_timestamp
+def get_repost_weibo(mid, weibo_timestamp):
+    repost_result = []
+    index_date = ts2datetime(weibo_timestamp)
+    index_name = flow_text_index_name_pre + index_date
+    query_body = {
+            'query':{
+                'bool':{
+                    'must':[
+                        {'term':{'root_mid': mid}},
+                        {'range':{'timestamp':{'gte': weibo_timestamp}}},
+                        {'term':{'message_type': 2}}
+                        ]
+                    }
+                }
+            }
+    try:
+        flow_text_result = es_flow_text.search(index=index_name, doc_type=flow_text_index_type,\
+                body=query_body)['hits']['hits']
+    except:
+        flow_text_result = []
+    repost_uid_list = [item['_source']['uid'] for item in flow_text_result]
+    repost_user_info_dict = get_user_profile_weibo(repost_uid_list)
+    statuses = []
+    for item in flow_text_result:
+        item_source = item['_source']
+        item_source['user'] = repost_user_info_dict[item['uid']]
+        statuses.append(item_source)
+    
+    return statuses
+
+# get tree by repost weibo list
+def reposts2tree(weibo_info, repost_weibo):
+    tree_nodes = []
+    tree_stats = {}
+    node = weibo_info['user']['uname']
+    extra_infos = {
+            'location': weibo_info['user']['location'],
+            'datetime': weibo_info['timestamp'],
+            'mid': weibo_info['mid'],
+            'photo_url': weibo_info['user']['photo_url'],
+            'weibo_url': base62.weiboinfo2url(weibo_info['user']['uid'], source_weibo['mid'])
+            }
+    tree_nodes.append(Tree(node, extra_infos))
+    tree_stats['spread_begin'] = weibo_info['timestamp']
+    tree_stats['spread_end'] = weibo_info['timestamp']
+    #run_type
+    if RUN_TYPE == 1:
+        tree_stats['retweet_count'] = weibo_info['retweeted']
+        tree_stats['retweet_people'] = set([weibo_info['user']['uid']])
+    else:
+        tree_stats['reposts_count'] = 0
+        tree_stats['repost_peoples'] = set([weibo_info['user']['uid']])
+    #sort reposts by uid
+    reposts = sorted(reposts, key=lambda x:x['uid'])
+    reposts = reposts[:1000]
+    # generate tree
+    for repost in repost_weibo:
+        node = repost['user']['uname']
+        extra_infos = {
+                'location': weibo_info['user']['location'],
+                'datetime': weibo_info['timestamp'],
+                'mid': weibo_info['mid'],
+                'photo_url': weibo_info['user']['photo_url'],
+                'weibo_url': base62.weiboinfo2url(repost['user']['uid'], repost['mid'])
+                }
+        tree_nodes.append(Tree(node, extra_infos))
+        
+        repost_users = re.findall(u'/@([a-zA-Z-_\u0391-\uFFE5]+)', repost['text'])
+        parent_idx = 0
+        while parent_idx < len(repost_users):
+            flag = False
+            for node in tree_nodes[-2::-1]:
+                if node.node == repost_users[parent_idx]:
+                    node.append_child(tree_nodes[-1])
+                    flag = True
+                    break
+            if flag:
+                break
+            parent_idx += 1
+        else:
+            tree_nodes[0].append_child(tree_nodes[-1])
+        
+        created_at = repost['timestamp']
+        if created_at > tree_stats['spread_end']:
+            tree_stats['spread_end'] = created_at
+        tree_stats['repost_peoples'].add(repost['user']['id'])
+
+    tree_stats['repost_people_count'] = len(tree_stats['repost_peoples'])
+    del tree_stats['repost_peoples']
+
+    return tree_nodes, tree_stats
+
+class Count:
+    def __init__(self, count=0):
+        self.count = count
+
+
+def add_node_and_edge(drawtree, graph, ct, parent=None, max_width=0):
+    length = len(drawtree.children)
+    size = math.log((math.pow(length, 0.3) + math.sqrt(4)), 4)
+    b, r, g = '217', '254', '240'
+    if length > 6:
+        b = str(random.randint(0, 255))
+        r = str(random.randint(100, 255))
+        g = str(random.randint(0, 255))
+
+    scale_y = max_width / 200 + 1
+    node = graph.addNode(drawtree.tree.extra_infos['wid'], drawtree.tree.node,
+                         b=b, r=r, g=g, x=str(drawtree.x), y=str(drawtree.y * scale_y * 10), z='0.0',
+                         size=str(size))
+
+    node.addAttribute('photo_url', drawtree.tree.extra_infos['photo_url'])
+    node.addAttribute('name', drawtree.tree.node)
+    node.addAttribute('location', drawtree.tree.extra_infos['location'])
+    node.addAttribute('datetime', drawtree.tree.extra_infos['datetime'])
+    node.addAttribute('repost_num', str(length))
+    node.addAttribute('weibo_url', drawtree.tree.extra_infos['weibo_url'])
+    
+    if parent is not None:
+        ct.count += 1
+        graph.addEdge(ct.count, str(drawtree.tree.extra_infos['wid']), str(parent.tree.extra_infos['wid']))
+        
+    for child in drawtree.children:
+        add_node_and_edge(child, graph, ct, drawtree, max_width)
+
+
+
+# get graph by repost tree
+def tree2graph(tree_nodes):
+    tree_xml = ''
+    dt, max_depth, max_width = buchheim_weibospread.buchheim(tree_nodes[0])
+
+    gexf = Gexf('tree', 'simple')
+    graph = gexf.addGraph('directed', 'static', 'weibo graph')
+    graph.addNodeAttribute('photo_url', type='URI', force_id='photo_url')
+    graph.addNodeAttribute('name', type='string', force_id='name')
+    graph.addNodeAttribute('location', type='string', force_id='location')
+    graph.addNodeAttribute('datetime', type='string', force_id='datetime')
+    graph.addNodeAttribute('repost_num', type='string', force_id='repost_num')
+    graph.addNodeAttribute('weibo_url', type='URI', force_id='weibo_url')
+    
+    add_node_and_edge(dt, graph, Count(), max_width=max_width)
+
+    return etree.tostring(gexf.getXML(), pretty_print=False, encoding='utf-8', xml_declaration=True), max_depth, max_width
+
+# get main tree when source weibo exist
+def get_main_tree(source_mid, source_weibo_info):
+    results = {}
+    source_weibo_timestamp = source_weibo_info['timestamp']
+    #step1: get repost weibo list by root_mid == source_mid, after source_weibo_timestamp
+    source_repost_weibo = get_repost_weibo(source_mid, source_weibo_timestamp)
+    #step2: get repost tree by source_repost_weibo
+    if not repost_weibo:
+        return results
+    #step2.2: get source weibo user profile
+    user_result = get_user_profile_weibo([source_weibo_info['uid']])
+    source_weibo_info['user'] = user_result[source_weibo_info['uid']]
+    tree, tree_stats = reposts2tree(source_weibo_info, source_repost_weibo)
+    #step3: get graph by tree
+    graph, max_depth, max_width = tree2graph(tree)
+    
+    results = {'graph': graph, 'stats': tree_stats, 'reposts':source_repost_weibo, \
+            'ori': source_weibo_info}
+    return results
+
+# use to filter repost_weibo by directed_uid
+def filter_sub_repost_weibo(weibo_info, repost_weibo):
+    results = []
+    return results
+
+
+
+# get sub tree
+def get_sub_tree(mid, weibo_info):
+    results = {}
+    #step1: get reposts weibo list by root_mid == source_mid, after weibo_timestamp
+    repost_weibo = get_repost_weibo(source_mid, weibo_timestamp)
+    #step2: get repost tree by source_repost_weibo
+    if not repost_weibo:
+        return results
+    filter_repost_weibo = filter_sub_repost_weibo(weibo_info, repost_weibo)
+    tree, tree_stats = reposts2tree(weibo_info, filter_repost_weibo)
+    #step3: get graph by tree]
+    graph. max_depth. max_width = tree2graph(tree)
+
+    return results
+
+
+# use to get weibo repost tree
+def new_get_weibo_tree(mid, weibo_timestamp):
+    #step1: identify the weibo exist in es
+    exist_mark, weibo_info = identify_weibo_exist(mid, weibo_timestamp)
+    if exist_mark == False:
+        return 'mid is not exist'
+    #step2: identify the weibo is origin or retweet weibo
+    weibo_type = weibo_info['message_type']
+    if weibo_type == 2:
+        return 'mid is comment'
+    elif weibo_type == 1:
+        source_weibo = weibo_info
+        source_mid = mid
+        source_weibo_exist_mark = True
+    elif weibo_type == 3:
+        source_mid = weibo_info['root_mid']
+        source_weibo_exist_mark, source_weibo = identify_weibo_exist(source_mid, weibo_timestamp)
+
+    #step3: get main tree when source weibo exist
+    if source_weibo_exist_mark == True:
+        main_tree_graph_result = get_main_tree(source_mid, source_weibo)
+    #step4: get sub tree by weibo mid
+    if weibo_type == 3:
+        sub_tree_graph_result = get_sub_tree(mid, weibo_info)
+    else:
+        sub_tree_graph_result = {}
+    results = {'main': main_tree_graph_result, 'sub': sub_tree_graph_result}
+    return tree

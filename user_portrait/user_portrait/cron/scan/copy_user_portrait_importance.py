@@ -13,7 +13,8 @@ sys.path.append('./../../')
 from global_utils import es_user_portrait, portrait_index_name, portrait_index_type
 from global_utils import ES_COPY_USER_PORTRAIT as es_cluster
 from time_utils import ts2datetime, datetime2ts
-from parameter import DAY,MONTH
+from parameter import DAY
+from parameter import MONTH_TIME as MONTH
 from global_utils import COPY_USER_PORTRAIT_IMPORTANCE, COPY_USER_PORTRAIT_IMPORTANCE_TYPE, RUN_TYPE
 
 def compute_week(item, now_ts):

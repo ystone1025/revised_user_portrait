@@ -15,7 +15,8 @@ from search_daily_info import search_origin_attribute, search_retweeted_attribut
 #use to get new user portrait overview
 from new_search import new_get_user_profile, new_get_user_portrait,\
         new_get_user_evaluate, new_get_user_location, new_get_user_social,\
-        new_get_user_weibo
+        new_get_user_weibo, new_get_weibo_tree, new_get_activeness_trend, \
+        new_get_influence_trend, new_get_sensitive_words
 #from search_mid import index_mid
 from user_portrait.search_user_profile import es_get_source
 from user_portrait.global_utils import es_user_portrait as es
@@ -50,7 +51,7 @@ def ajax_new_user_profile():
     return json.dumps(results)
 
 # url for new user_portrait overview
-# tag information/sensitive_words&keywords&hashtag/domain&topic&character
+# tag information/sensitive_words&keywords&hashtag/domain&topic&character&group_tag
 # write in version: 16-03-15
 @mod.route('/new_user_portrait/')
 def ajax_new_user_portrait():
@@ -105,6 +106,30 @@ def ajax_new_user_weibo():
     if not results:
         results = {}
     return json.dumps(results)
+
+# get user sensitive words
+# sensitive words
+# write in version: 16-03-18
+@mod.route('/new_sensitive_words/')
+def ajax_new_sensitive_words():
+    uid = request.args.get('uid', '')
+    results = new_get_sensitive_words(uid)
+    if not results:
+        results = {}
+    return json.dumps(results)
+
+
+# url for new user_portrait overview
+# weibo reposts tree
+# write in version: 16-03-15
+@mod.route('/new_weibo_tree/')
+def ajax_new_weibo_tree():
+    mid = request.args.get('mid', '')
+    weibo_timestamp = request.args.get('timestamp', '')
+    results = new_get_weibo_tree(mid, weibo_timestamp)
+    if not results:
+        results = ''
+    return results
 
 
 @mod.route('/portrait_attribute/')
@@ -503,7 +528,8 @@ def ajax_online_pattern():
 def ajax_activeness_trend():
     uid = request.args.get('uid', '')
     uid = str(uid)
-    results = get_activeness_trend(uid)
+    #results = get_activeness_trend(uid)
+    results = new_get_activeness_trend(uid)
     if not results:
         results = {}
     return json.dumps(results)
@@ -518,7 +544,8 @@ def ajax_influence_trend():
     uid = str(uid)
     time_segment = request.args.get('time_segment', '30') #time_segment=7/30
     time_segment = int(time_segment)
-    results = get_influence_trend(uid, time_segment)
+    #results = get_influence_trend(uid, time_segment)
+    results = new_get_influence_trend(uid)
     if not results:
         results = {}
     return json.dumps(results)

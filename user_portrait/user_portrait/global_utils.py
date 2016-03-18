@@ -10,7 +10,7 @@ from global_config import REDIS_CLUSTER_HOST_FLOW1, REDIS_CLUSTER_PORT_FLOW1,\
 from global_config import WEIBO_API_HOST, WEIBO_API_PORT
 from global_config import USER_PROFILE_ES_HOST, USER_PROFILE_ES_PORT, ES_CLUSTER_HOST_FLOW1,\
                           USER_PORTRAIT_ES_HOST, USER_PORTRAIT_ES_PORT,\
-                          FLOW_TEXT_ES_HOST, FLOW_TEXT_ES_PORT, ES_COPY_USER_PORTAIT_HOST
+                          FLOW_TEXT_ES_HOST, FLOW_TEXT_ES_PORT, ES_COPY_USER_PORTAIT_HOST, REDIS_TEXT_MID_HOST, REDIS_TEXT_MID_PORT
 from global_config import UNAME2UID_HOST, UNAME2UID_PORT
 from global_config import RETWEET_REDIS_HOST, RETWEET_REDIS_PORT
 from global_config import COMMENT_REDIS_HOST, COMMENT_REDIS_PORT
@@ -28,6 +28,8 @@ R_CLUSTER_FLOW2 = _default_cluster_redis(host=REDIS_CLUSTER_HOST_FLOW2, port=RED
 
 def _default_redis(host=REDIS_HOST, port=REDIS_PORT, db=1):
     return redis.StrictRedis(host, port, db)
+
+redis_flow_text_mid = _default_redis(host=REDIS_TEXT_MID_HOST, port=REDIS_TEXT_MID_PORT, db=2)
 
 redis_host_list = ["1", "2"]
 #use to save retweet/be_retweet

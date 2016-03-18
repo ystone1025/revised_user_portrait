@@ -23,6 +23,7 @@ from time_utils import ts2datetime, datetime2ts
 from parameter import DAY, WEEK, RUN_TYPE
 from parameter import RUN_TEST_TIME
 
+WEEK = 7
 
 test_ts = datetime2ts(RUN_TEST_TIME)
 
@@ -61,7 +62,7 @@ def update_day_hashtag(uid_list):
         user_hashtag_dict = results[uid]
         hashtag_string = '&'.join(user_hashtag_dict.keys())
         all_results[uid] = {'hashtag': hashtag_string, 'hashtag_dict':user_hashtag_dict}
-    return results
+    return all_results
 
 #get user activity geo and geo_action
 #write in version: 15-12-08
@@ -148,15 +149,61 @@ def update_day_influence(uid_list, user_info_list):
         results[uid] = {'influence': day_influence}
     return results
 
+#use to get user sensitive
+#write in version: 16-03-17
+#input: uid_list
+def update_day_sensitive(uid_list):
+    results = {}
+    all_results = {}
+    now_ts = time.time()
+    #run_type
+    if RUN_TYPE == 1:
+        now_date_ts = datetime2ts(ts2datetime(now_ts))
+    else:
+        now_date_ts = test_ts
 
-def save_bulk_action(uid_list, hashtag_results, geo_results, activeness_results, influence_results):
+    for i in range(WEEK,0,-1):
+        ts = now_date_ts - DAY*i
+        count = 0
+        sensitive_results = r_cluster.hmget('sensitive_'+str(ts), uid_list)
+        for uid in uid_list:
+            if uid not in results:
+                results[uid] = {}
+                sensitive_item = sensitive_results[count]
+            if sensitive_item:
+                sensitive_dict = json.loads(sensitive_item)
+            else:
+                sensitive_dict = {}
+            for sensitive in sensitive_dict:
+                try:
+                    results[uid][sensitive] += 1
+                except:
+                    results[uid][sensitive] = 1
+    for uid in uid_list:
+        user_sensitive_dict = results[uid]
+        sensitive_score = 0
+        for item in user_sensitive_dict:
+            k = item
+            v = user_sensitive_dict[k]
+            tmp_stage = r_sensitive.hget('sensitive_words', k)
+            if tmp_stage:
+                sensitive_score += v * sensitive_score_dict[str(tmp_stage)]
+        sensitive_string = '&'.join(user_sensitive_dict.keys())
+        all_results[uid] = {'sensitive_string': sensitive_string, 'sensitive_dict':user_sensitive_dict,\
+                'sensitive': sensitive_score}
+    return all_results
+
+
+
+def save_bulk_action(uid_list, hashtag_results, geo_results, activeness_results, influence_results, sensitive_results):
     bulk_action = []
     for uid in uid_list:
         user_results = {}
         user_results = dict(user_results, **hashtag_results[uid])
         user_results = dict(user_results, **geo_results[uid])
-        user_results = dict(user_results, **activeness_results)
-        user_results = dict(user_results, **influence_results)
+        user_results = dict(user_results, **activeness_results[uid])
+        user_results = dict(user_results, **influence_results[uid])
+        user_results = dict(user_results, **sensitive_results[uid])
         action = {'update':{'_id': uid}}
         bulk_action.extend([action, {'doc': user_results}])
 
@@ -173,6 +220,7 @@ def update_attribute_day():
     user_info_list = {}
     start_ts = time.time()
     while True:
+        print 'start while'
         r_user_info = update_day_redis.rpop(UPDATE_DAY_REDIS_KEY)
         if r_user_info:
             r_user_info = json.loads(r_user_info)
@@ -192,8 +240,10 @@ def update_attribute_day():
             activeness_results = update_day_activeness(geo_results, user_info_list)
             #get user influence
             influence_results = update_day_influence(uid_list, user_info_list)
+            #get user sensitive
+            sensitive_results = update_day_sensitive(uid_list)
             #update to es by bulk action
-            save_bulk_action(uid_list, hashtag_results, geo_results, activeness_results, influence_results)
+            save_bulk_action(uid_list, hashtag_results, geo_results, activeness_results, influence_results, sensitive_results)
             user_info_list = {}
             end_ts = time.time()
             #log_should_delete
@@ -203,16 +253,25 @@ def update_attribute_day():
     
     if user_info_list != {}:
         uid_list = user_info_list.keys()
+        print 'uid_list:', uid_list
         #get user_list hashtag_results
+        print 'get hashtag result'
         hashtag_results = update_day_hashtag(uid_list)
         #get user geo today
+        print 'get geo'
         geo_results = update_day_geo(uid_list, user_info_list)
         #get user activeness evaluate
+        print 'get activeness'
         activeness_results = update_day_activeness(geo_results, user_info_list)
         #get user influence
+        print 'get influence'
         influence_results = update_day_influence(uid_list, user_info_list)
+        #get user sensitive
+        print 'get sensitive'
+        sensitive_results = update_day_sensitive(uid_list)
+
         #update to es by bulk action
-        save_bulk_action(uid_list, hashtag_results, geo_results, activeness_results, influence_results)
+        save_bulk_action(uid_list, hashtag_results, geo_results, activeness_results, influence_results, sensitive_results)
 
 
 #abandon in version: 15-12-08

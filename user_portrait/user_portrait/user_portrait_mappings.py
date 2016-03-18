@@ -79,13 +79,13 @@ index_info = {
                 },
 
                 "importance": {
-                    "type": "long"
+                    "type": "double"
                 },
                 "influence": {
-                    "type": "long"
+                    "type": "double"
                 },
                 "activeness": {
-                    "type": "long"
+                    "type": "double"
                 },
                 "online_pattern":{
                     "type": "string",
@@ -138,6 +138,17 @@ index_info = {
                 'online_pattern_aggs':{
                     'type': 'string',
                     'analyzer': 'my_analyzer'
+                },
+                'sensitive':{
+                    'type': 'double',
+                },
+                'sensitive_dict':{
+                    'type': 'string',
+                    'index': 'not_analyzed'
+                },
+                'sensitive_string':{
+                    'type': 'string',
+                    'analyzer': 'my_analyzer'
                 }
             }
         }
@@ -145,10 +156,12 @@ index_info = {
 }
 
 
-es.indices.create(index="user_portrait_1222", body=index_info, ignore=400)
+#es.indices.create(index="user_portrait_1222", body=index_info, ignore=400)
 
-'''
+
 es.indices.put_mapping(index='user_portrait_1222', doc_type='user', \
-        body={'properties':{'character_text':{'type':'string', 'index':'not_analyzed'}, \
-        'character_sentiment':{'type':'string', 'index':'not_analyzed'}}}, ignore=400)
-'''
+        body={'properties':{'sensitive_dict':{'type':'string', 'index':'not_analyzed'}, \
+        'sensitive_string':{'type':'string', 'analyzer':'my_analyzer'}, \
+        'sensitive':{'type': 'double'}, 'group':{'type':'string', \
+        'analyzer': 'my_analyzer'}}}, ignore=400)
+

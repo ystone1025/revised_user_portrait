@@ -16,7 +16,8 @@ UNAME2UID_HOST = '219.224.134.211'
 UNAME2UID_PORT = '7381'
 # uname2uid in redis: {'weibo_user': {uname:uid, ...}}
 UNAME2UID_HASH = 'weibo_user'
-
+REDIS_TEXT_MID_HOST = '219.224.134.211' # 注意；和redis flow1的host/port相同
+REDIS_TEXT_MID_PORT = '7381'
 #flow3:retweet/be_retweet redis
 RETWEET_REDIS_HOST = '219.224.134.212'
 RETWEET_REDIS_PORT = '6381'

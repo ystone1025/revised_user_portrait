@@ -12,8 +12,10 @@ Fifteen = 60 * 15
 HALF_HOUR = 1800
 FOUR_HOUR = 3600*4
 MAX_VALUE = 99999999
-WEEK = 7*24*3600
-MONTH = 30*24*3600
+WEEK = 7
+WEEK_TIME = 7*24*3600
+MONTH = 30
+MONTH_TIME = 30*24*3600
 EXPIRE_TIME = 8*24*3600
 
 #new attribute: verified_type
@@ -166,7 +168,7 @@ EVENT_ABS_PATH = '/home/ubuntu8/huxiaoqian/user_portrait_151220/user_portrait/us
 
 #cron/text_attribute/character
 CH_ABS_PATH = '/home/ubuntu8/huxiaoqian/user_portrait_151220/user_portrait/user_portrait/cron/model_file/character'
-CHARACTER_TIME_GAP = WEEK
+CHARACTER_TIME_GAP = 7
 
 # pre-influence index
 pre_influence_index = "bci_"

@@ -18,6 +18,7 @@
 	        <link href="/static/bootstrap/css/bootstrap-cerulean.min.css" rel="stylesheet">
 			<!-- the model styles -->
 		    <link href="/static/css/charisma-app.css" rel="stylesheet">
+            <link href="/static/css/city-picker.css" rel="stylesheet" type="text/css" />
 		    <link href='/static/bower_components/chosen/chosen.min.css' rel='stylesheet'>
 		    <link href='/static/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
 		    <link href='/static/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
@@ -30,9 +31,6 @@
 		    <link href='/static/css/uploadify.css' rel='stylesheet'>
 		    <link href='/static/css/animate.min.css' rel='stylesheet'>
 			<link href='/static/bootstrap/css/bootstrap.css' rel="stylesheet" >
-            <style>
-                #main .page-header {font-weight:bold;}
-            </style>
 
 			
 		    <!-- end model styles -->
@@ -52,51 +50,67 @@
             <!--<script src="/static/js/jquery-page.min.js"></script>-->
 			<!-- data table plugin -->
 			<script src='/static/js/jquery.dataTables.min.js'></script>
+            <script src="/static/js/city-picker.data.js"></script>
+            <script src="/static/js/city-picker.js"></script>
 			<script src='/static/js/portrait/time_for_test.js'></script>
 	    {% endblock %}
+        <script type="text/javascript">
+        $(function () {
+            /* 
+            var winw = parseInt($(window).width());
+            $('.menu .nav .box').css({'padding-left':(winw-960)/2,'padding-right':(winw-960)/2,'margin-left':-(winw-960)/2});
+            */
+            var navLi=$(".menu .nav li");
+            navLi.mouseover(function () {
+                $(this).find("a").addClass("current");
+                var num = $(this).find("a").length - 1;
+                $('.menu .nav .box').css({'width':118*num});
+                $(this).find(".box").stop().slideDown(200);
+                })
+            navLi.mouseleave(function(){
+                $(this).find("a").removeClass("current");
+                $(this).find(".box").stop().slideUp(200);
+                })
+        })
+        </script>
 	    <!-- end js -->
 	</head>
 	<body style="padding-top:0px;">
 		<!-- 上面导航 -->
 		{% block header %}
 			<div id="header">
-                <a href="/index/"><h1 class="headtitle" style="color:#333;">网民画像系统</h1></a>
-				<div class="example">
-        <ul id="nav">
-                    <li><a href="">用户排名</a></li>
-                    <li><a href="">情绪监控</a></li>
-                    <li><a href="">网民画像</a>
-                        <div>
-                            <ul>
-                                <li><a href="/index/portrait_in/">网民入库推荐</a></li>
-                                <li><a href="/index/search_portrait/">查看人物画像</a></li>
-                                <li><a href="/index/search_contrast/">人物对比分析</a></li>
-                                <li><a href="/index/search_connect/">人物关联分析</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a href="">群体分析</a>
-                        <div>
-                            <ul>
-                                <li><a href="#">群体发现</a></li>
-                                <li><a href="#">群体分析</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a href="#">社会感知</a></li>
-                    <li><a href="#">个人中心</a></li>
-                    <li><a href="#">出入管理</a>
-					    <div>
-					        <ul>
-							    <li><a href="#">入库管理</a></li>
-								<li><a href="#">出库管理</a></li>
-                            </ul>
-                        </div>
-					</li>
-                    <li><a title="logout" href=""> 登出 </a></li>
-                </ul>
+                <div><a href="/index/"><h1 class="headtitle" style="color:#333;">网民画像系统</h1></a></div>
+				<div class="menu">
+                    <ul class="nav">
+                        <li><a href="">用户排名</a></li>
+                        <li><a href="">情绪监控</a></li>
+                        <li><a href="">网民画像</a>
+                            <div class="box">
+                                <a href="/index/portrait_in/">网民入库推荐</a>
+                                <a href="/index/search_portrait/">查看人物画像</a>
+                                <a href="/index/search_contrast/">人物对比分析</a>
+                                <a href="/index/search_connect/">人物关联分析</a>
+                            </div>
+                        </li>
+                        <li><a href="">群体分析</a>
+                            <div class="box">
+                                <a href="#">群体发现</a>
+                                <a href="#">群体分析</a>
+                            </div>
+                        </li>
+                        <li><a href="#">社会感知</a></li>
+                        <li><a href="#">个人中心</a></li>
+                        <li><a href="#">出入管理</a>
+                            <div class="box">
+							    <a href="#">入库管理</a>
+								<a href="#">出库管理</a>
+                            </div>
+                        </li>
+                        <li><a href="#">权限管理</a></li>
+                    </ul>
+                </div>
+                <div><a title="logout" href="" style="color:white;font-weight:bold;text-decoration:underline;margin-top:75px;float:right;margin-right:20px;font-size:13px;"> 登出 </a></div>
             </div>
-		</div>
 		{% endblock %}
 		<!-- end 导航 -->
 

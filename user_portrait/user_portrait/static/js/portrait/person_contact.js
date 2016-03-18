@@ -31,11 +31,13 @@ Search_weibo.prototype = {
       user_lable_html += '</tr></thead>';
       user_lable_html += '<tbody>';
       for (key in data){
-       user_lable_html += '<tr>';
-       user_lable_html += '<th class="center" style="text-align:center"><a target="_blank" href="/index/personal/?uid=' + key + '">' + key +'</a></th>'; 
-       user_lable_html += '<th class="center" style="text-align:center">' + data[key] + '</th>';
-       user_lable_html += '<th class="center" style="text-align:center"><input name="in_status" class="in_status" type="checkbox" value="' + key + '"/></th>';
-       user_lable_html += '</tr>';   
+          if (key != ''){
+           user_lable_html += '<tr>';
+           user_lable_html += '<th class="center" style="text-align:center"><a target="_blank" href="/index/personal/?uid=' + key + '">' + key +'</a></th>'; 
+           user_lable_html += '<th class="center" style="text-align:center">' + data[key] + '</th>';
+           user_lable_html += '<th class="center" style="text-align:center"><input name="in_status" class="in_status" type="checkbox" value="' + key + '"/></th>';
+           user_lable_html += '</tr>';
+          }
       }    
       user_lable_html += '</tbody>';
       user_lable_html += '</table>';     
@@ -51,7 +53,7 @@ Search_weibo.prototype = {
     Draw_table: function(data){
         //console.log(data);
         that.data = data;
-        if(data=='0'){
+        if(data.length == 2){
             alert("没有相关人物推荐");
             return false;
         }
@@ -279,8 +281,11 @@ function recommend_all(){
 
 function Show_tag(data){
     var height = $('#box-height').height();
+    var unit = Math.ceil(data.length / 4);
+    $('#box-height').css('height',height+20*unit);
+
+    /*
     if(data.length <=4 && data.length > 0 ){
-        console.log('aaaaa');
         $('#box-height').css('height',height+20);
     }
     else if(data.length >4 && data.length <=8){
@@ -289,16 +294,16 @@ function Show_tag(data){
     else{
         $('#box-height').css('height',height+20*3);
     }
-    html = '';
+    */
+    var html = '';
     if(data.length == 0){
       return false;
     }
     else{
       for(var i = 0; i < data.length; i++){
         html += '<div class="col-lg-3" >';
-        html += '<input type="checkbox" class="inline-checkbox" value="option1">';
         html += '<span class="input-group-addon" style="width:96px;border:1px solid white; background-color:white;display:inline-block" id="'+ data[i] +'">'+ data[i] +'</span>';
-        html += '<input type="text" class="form-control" style="width:40%; display:inline;height:25px;margin-left:7px" disabled>';
+        html += '<input type="text" class="form-control" style="width:40%; display:inline;height:25px;margin-left:7px" value="0">';
         html += '</div>';
       }
       $('#tag').append(html);
@@ -306,25 +311,13 @@ function Show_tag(data){
 }
 
 function add_group_tag(){
-    select_uids = [];
-    select_uids_string = '';
+    var select_uids = [];
     $('input[name="in_status"]:checked').each(function(){
         select_uids.push($(this).attr('value'));
     })
-    console.log(select_uids);
+    //console.log(select_uids);
+    var select_uids_string = select_uids.join(',');
 
-    for (var i = 0; i < test_uids.length; i++) {
-        t=i.toString();
-        test_uids_string += test_uids + ',';
-    };
-    console.log(test_uids);
-    for (var i = 0; i < select_uids.length; i++) {
-        s=i.toString();
-        select_uids_string += select_uids[s] + ',';
-    };
-    total_uids = select_uids_string + test_uids_string;
-    total_uids = total_uids.substring(0,total_uids.length-1);
-    console.log(total_uids);
     add_tag_attribute_name = $("#select_attribute_name").val();
     add_tag_attribute_value = $("#select_attribute_value").val();
     add_group_tag_url = '/tag/add_group_tag/?uid_list=' + select_uids_string + "&attribute_name=" + add_tag_attribute_name + "&attribute_value=" + add_tag_attribute_value;
@@ -333,7 +326,7 @@ function add_group_tag(){
 
 $('.label-success').click(function(){
     var url = get_choose_data(uid);
-    console.log(url);
+    //console.log(url);
     if(url == ''){
         return false;
     }
@@ -358,34 +351,36 @@ $('.inline-checkbox').click(function(){
 
 //获取选择的条件，把参数传出获取返回值
 function get_choose_data(uid){
-    var url = '/manage/imagine/?uid=' + uid + '&keywords=';
+    var url = '/manage/imagine/?field=importance&uid=' + uid + '&keywords=';
     var keywords = new Array();
     var weight = new Array();
-    var field ;
+    //var field ;
     var isflag = 1;
-    $('.inline-checkbox').each(function(){
-        if($(this).is(':checked')){
-            keywords.push($(this).next().attr('id'));
-            if($(this).next().next().val() > 10 || $(this).next().next().val < 1 ){
-                alert("请输入1到10之间的权重");
-                isflag = 0;
-            }else{
-                weight.push($(this).next().next().val());
-            }
+    $('.input-group-addon').each(function(){
+        keywords.push($(this).attr('id'));
+        var value = $(this).next().val();
+        if((parseInt(value) != value) || (value > 10) || (value < 0 )){
+            alert("请输入0-10的整数");
+            isflag = 0;
+            return false;
+        }else{
+            weight.push(value);
         }
     });
+    /*
     $('[type="radio"]').each(function(){
         if($(this).is(':checked')){
             field = $(this).attr('id');
         }
     });
+    */
     if(isflag == 1){
-    url = url + keywords.join(',') + '&weight=' + weight.join(',') + '&field=' +field ;
+        url = url + keywords.join(',') + '&weight=' + weight.join(',');
     }
     else{
         url = '';
     }
-    //console.log(url);
+    console.log(url);
     return url;
 }
 
