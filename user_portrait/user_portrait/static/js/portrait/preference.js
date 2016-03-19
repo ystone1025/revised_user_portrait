@@ -258,7 +258,8 @@ function show_results0(data){
   show_domain0(domain);
 }
 
-var prefrence_url = '/attribute/preference/?uid=' + uid;
-var sen_url = '/attribute/new_sensitive_words/?uid=' +uid;
-//console.log(prefrence_url);
-call_sync_ajax_request(prefrence_url, ajax_method, show_results0);
+function preference_load(){
+  var prefrence_url = '/attribute/preference/?uid=' + uid;
+  //console.log(prefrence_url);
+  call_sync_ajax_request(prefrence_url, ajax_method, show_results0);
+}

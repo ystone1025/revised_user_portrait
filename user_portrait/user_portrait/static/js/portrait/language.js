@@ -216,9 +216,11 @@ function show_results1(data){
   //show_conclusion(conclusion);
   }
 
-var prefrence_url = '/attribute/preference/?uid=' + uid;
-var sen_url = '/attribute/new_sensitive_words/?uid=' +uid;
-//console.log(prefrence_url);
-call_sync_ajax_request(prefrence_url, ajax_method, show_results);
-// call_sync_ajax_request(prefrence_url, ajax_method, show_results0);
-call_sync_ajax_request(sen_url, ajax_method, show_results1);
+function language_load(){
+  var prefrence_url = '/attribute/preference/?uid=' + uid;
+  var sen_url = '/attribute/new_sensitive_words/?uid=' +uid;
+  //console.log(prefrence_url);
+  call_sync_ajax_request(prefrence_url, ajax_method, show_results);
+  // call_sync_ajax_request(prefrence_url, ajax_method, show_results0);
+  call_sync_ajax_request(sen_url, ajax_method, show_results1);  
+}
