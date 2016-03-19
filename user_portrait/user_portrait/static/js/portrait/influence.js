@@ -516,7 +516,7 @@ function Draw_get_top_weibo(data,div_name){
         }
         var user_link = 'http://weibo.com/u/' + uid;
         html += '<li class="item">';
-        html += '<div class="weibo_detail" style="width:1000px">';
+        html += '<div class="weibo_detail" style="width:800px">';
         html += '<p style="text-align:left;margin-bottom:0;">' +s + '、昵称:<a class="undlin" target="_blank" href="' + user_link  + '">' + name + '</a>(' + geo_s + ')&nbsp;&nbsp;发布内容：&nbsp;&nbsp;' + text + '</p>';
         html += '<div class="weibo_info"style="width:100%">';
         html += '<div class="weibo_pz">';
@@ -626,6 +626,7 @@ function influence_load(){
     Influence.call_async_ajax_request(get_top_weibo_url_style0, Influence.ajax_method, Influence.Draw_get_top_weibo1);
     var get_top_weibo_url_style1 = '/attribute/get_top_weibo/?uid='+parent.personalData.uid+'&date='+date_str+'&style=1';
     Influence.call_async_ajax_request(get_top_weibo_url_style1, Influence.ajax_method, Influence.Draw_get_top_weibo2);
+    console.log(date_str);
     var get_top_weibo_url_style2 = '/attribute/get_top_weibo/?uid='+parent.personalData.uid+'&date='+date_str+'&style=2';
     Influence.call_async_ajax_request(get_top_weibo_url_style2, Influence.ajax_method, Influence.Draw_get_top_weibo3);
     var get_top_weibo_url_style3 = '/attribute/get_top_weibo/?uid='+parent.personalData.uid+'&date='+date_str+'&style=3';
