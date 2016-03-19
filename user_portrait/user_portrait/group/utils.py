@@ -90,8 +90,6 @@ def submit_task(input_data):
     
     return status
 
-
-
 #search task by some condition -whether add download
 def search_task(task_name, submit_date, state, status, submit_user):
     results = []
@@ -156,7 +154,6 @@ def search_task(task_name, submit_date, state, status, submit_user):
         task_dict_list = source['hits']['hits']
     except:
         return None
-    print 'step yes'
     result = []
     for task_dict in task_dict_list:
         try:
