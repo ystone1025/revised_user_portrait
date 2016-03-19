@@ -1531,6 +1531,7 @@ def ip2city(ip):
     return city
 
 # show user geo track
+# abandon in version: 16-03-19
 def get_geo_track(uid):
     date_results = [] # {'2013-09-01':[(geo1, count1),(geo2, count2)], '2013-09-02'...}
     now_ts = time.time()
@@ -1563,6 +1564,7 @@ def get_geo_track(uid):
     return [date_results, geo_conclusion]
 
 # get geo track from es about one month by ip-timestamp
+# abandon in version: 16-03-18
 def get_geo_track_ip(uid):
     result = []
     index_name = 'user_portrait'
