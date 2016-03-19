@@ -222,21 +222,21 @@ function Compare(url_photo, portrait, tag_data){
     }
     html += '</tr>';
     j = 0 ;
-    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">hashtag</td>';
+    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">微话题</td>';
     for(var k in portrait){
         j += 1;
         html += '<td class="center" name="line'+ j +'"><div id = "hashtag'+ j +'" style="height:200px"></div></td>';
     }
     html += '</tr>';
     j = 0;
-    html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
-    j = 0;
-    html += '<tr class="list-6"><td class="cate_title" style="width:90px;text-align:right">心理状态</td>';
-    for(var k in portrait){
-        j += 1;
-        html += '<td class="center" name="line'+ j +'"><div id="emotion'+ j +'" style="height:300px"></div></td>';
-    }
-    html += '</tr>';
+    // html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
+    // j = 0;
+    // html += '<tr class="list-6"><td class="cate_title" style="width:90px;text-align:right">心理状态</td>';
+    // for(var k in portrait){
+    //     j += 1;
+    //     html += '<td class="center" name="line'+ j +'"><div id="emotion'+ j +'" style="height:300px"></div></td>';
+    // }
+    // html += '</tr>';
     
     j = 0;
     html += '<tr><td colspan="'+ (num+1) +'" name="list-7" class="cate_title" style="font-size:20px"><b>自定义标签</b></td></tr>';
@@ -373,7 +373,7 @@ function compare_extra(portrait){
         }
         div = 'emotion'+ mark;
         var psycho_status = portrait[key]['psycho_status']
-        Draw_think_emotion(psycho_status,div);
+        // Draw_think_emotion(psycho_status,div);
 
         div = 'hashtag'+ mark;
         if(portrait[key]['hashtag']){

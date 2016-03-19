@@ -25,6 +25,11 @@
 </style>
 
 <script type="text/javascript">
+var pre_flag = false;
+var lan_flag = false;
+var in_flag = false;
+var so_flag = false;
+var th_flag = false;
 $(function(){
     /**软件功能切换js**/
      activity_load();
@@ -35,20 +40,36 @@ $(function(){
         $(this).children("p").css({"color":"#008dd9"}).parent().parent().siblings().children().children("p").css({"color":"#333333"});
         if(x==0){
            $("#xzgl").css({"display":"block"}).siblings().css({"display":"none"});
+        }else if(x==5){
+            if(pre_flag==false){
+                preference_load();
+                pre_flag = true;
+            }
+            $("#qxtz").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==1){
+            if(lan_flag==false){
+                language_load();
+                lan_flag = true;
+            }
            $("#crm ").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==2){
-            influence_load();
+            if(in_flag==false){
+                influence_load();
+                in_flag = true;
+            }
            $("#xmgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==3){
-            social_load();
+            if(so_flag==false){
+                social_load();
+                so_flag = true;
+            }
            $("#zsgl").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==4){
-            thought_load();
+            if(th_flag==false){
+                thought_load();
+                th_flag = true;
+            }
            $("#ydbg").css({"display":"block"}).siblings().css({"display":"none"});
-        }else if(x==5){
-            thought_load();
-           $("#qxtz").css({"display":"block"}).siblings().css({"display":"none"});
         }else if(x==6){
 
            $("#bqtz").css({"display":"block"}).siblings().css({"display":"none"});
@@ -68,7 +89,7 @@ $(function(){
 	<div id="basicpage-bgtop">
     <div id="basicpage-bgbtm">
         <div id="framesidebar" style="margin-top:50px;" >
-            <div ><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="120" height="120" /></span></div>
+            <div style="margin-left:45px;"><span class="img-photo"><img id="portraitImg" src="http://tp2.sinaimg.cn/1878376757/50/0/1" alt="Photo" width="120" height="120" /></span></div>
             <div >
                 <div style="width:300px;height:30px; margin-bottom: 77px;">
                   <div style="width:640px; float:left;">

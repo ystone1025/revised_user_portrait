@@ -269,25 +269,45 @@ function location_all(){
                 var div0 = document.getElementById('active_geo');
                 var div1 = document.getElementById('more_t_list');
                 if(div1.style.display=='none'){
-                 div0.style.height=div0.offsetHeight+200+'px';
+                 div0.style.height=div0.offsetHeight+130+'px';
                 }                
                 $('#more_t_list').css('display', 'block');
                 //month_process(data.month_track, true);
             });
 
             $('#total_daily_ip_map').click(function(){
+                var div0 = document.getElementById('active_geo');  
+                var div1 = document.getElementById('map');                
+                if(div1.style.display=='none'){
+                 div0.style.height=div0.offsetHeight+850+'px';
+                }
                 $('#map').css('display', 'block');
                 month_process(daily_map_data, false);
             });
             $('#total_weekly_ip_map').click(function(){
+                var div0 = document.getElementById('active_geo');  
+                var div1 = document.getElementById('map');                
+                if(div1.style.display=='none'){
+                 div0.style.height=div0.offsetHeight+850+'px';
+                }
                 $('#map').css('display', 'block');
                 month_process(weekly_map_data, false);
             });
             $('#span_daily_ip_map').click(function(){
+                var div0 = document.getElementById('active_geo');  
+                var div1 = document.getElementById('map');                
+                if(div1.style.display=='none'){
+                 div0.style.height=div0.offsetHeight+850+'px';
+                }
                 $('#map').css('display', 'block');
                 month_process(span_daily_map_data, true);
             });
             $('#span_weekly_ip_map').click(function(){
+                var div0 = document.getElementById('active_geo');  
+                var div1 = document.getElementById('map');                
+                if(div1.style.display=='none'){
+                 div0.style.height=div0.offsetHeight+850+'px';
+                }
                 $('#map').css('display', 'block');
                 month_process(span_weekly_map_data, true);
             });
