@@ -43,12 +43,16 @@ def upload_file():
 # submit group analysis task and save to redis as lists
 # submit group task: task name should be unique
 # input_data is dict ---two types
-# one type: {'submit_date':x, 'state': x, 'uid_list':[],'task_name':x}
-# two type: {'submit_date':x, 'state': x, 'task_name':x, 'uid_file':filename}
+# one type: {'submit_date':x, 'state': x, 'uid_list':[],'task_name':x, 'submit_user':submit_user}
+# two type: {'submit_date':x, 'state': x, 'task_name':x, 'uid_file':filename, 'submit_user':submit_user}
 @mod.route('/submit_task/',methods=['GET', 'POST'])
 def ajax_submit_task():
     input_data = dict()
     input_data = request.get_json()
+    try:
+        submit_user = input_data['submit_user']
+    except:
+        return 'no submit_user information'
     now_ts = int(time.time())
     input_data['submit_date'] = now_ts
     status = submit_task(input_data)
@@ -62,7 +66,8 @@ def ajax_show_task():
     submit_date = request.args.get('submit_date', '')
     state = request.args.get('state', '')
     status = request.args.get('status', '')
-    results = search_task(task_name, submit_date, state, status)
+    submit_user = request.args.get('submit_user', 'admin')
+    results = search_task(task_name, submit_date, state, status, submit_user)
     return json.dumps(results)
 
 
@@ -74,8 +79,9 @@ def ajax_show_task():
 def ajax_show_group_result_basic():
     results = {}
     task_name = request.args.get('task_name', '')
+    submit_user = request.args.get('submit_user', 'admin')
     module = request.args.get('module', 'basic')
-    results = search_group_results(task_name, module)
+    results = search_group_results(task_name, module, submit_user)
     return json.dumps(results)
 
 
@@ -96,7 +102,8 @@ def ajax_show_group_menber_track():
 def ajax_group_member():
     results = {}
     task_name = request.args.get('task_name', '')
-    results = get_group_member_name(task_name)
+    submit_user = request.args.get('submit_user', 'admin')
+    results = get_group_member_name(task_name, submit_user)
     return json.dumps(results)
 
 
@@ -108,7 +115,8 @@ def ajax_activity_weibo():
     results = []
     task_name = request.args.get('task_name', '')
     start_ts = int(request.args.get('start_ts', ''))
-    results = get_activity_weibo(task_name, start_ts)
+    submit_user = request.args.get('submit_user', 'admin')
+    results = get_activity_weibo(task_name, start_ts, submit_user)
     return json.dumps(results)
 
 
@@ -158,10 +166,11 @@ def ajax_get_social_out_content():
 @mod.route('/group_sentiment_weibo/')
 def ajax_group_sentiment_weibo():
     task_name = request.args.get('task_name', '')
+    submit_user = request.args.get('submit_user', 'admin')
     start_ts = request.args.get('start_ts', '')
     start_ts = int(start_ts)
     sentiment_type = request.args.get('sentiment', '')
-    results = search_group_sentiment_weibo(task_name, start_ts, sentiment_type)
+    results = search_group_sentiment_weibo(task_name, start_ts, sentiment_type, submit_user)
     if not results:
         results = []
     return json.dumps(results)
@@ -171,7 +180,8 @@ def ajax_group_sentiment_weibo():
 def sjax_show_group_list():
     results = []
     task_name = request.args.get('task_name', '')
-    results = get_group_list(task_name)
+    submit_user = request.args.get('submit_user', 'admin')
+    results = get_group_list(task_name, submit_user)
     return json.dumps(results)
 
 # delete the group task
@@ -179,7 +189,8 @@ def sjax_show_group_list():
 def ajax_delete_group_task():
     results = {}
     task_name = request.args.get('task_name', '')
-    results = delete_group_results(task_name)
+    submit_user = request.args.get('submit_user', 'admin')
+    results = delete_group_results(task_name, submit_user)
     return json.dumps(results)
 
 

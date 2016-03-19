@@ -27,10 +27,10 @@ r_beigin_ts = datetime2ts(R_BEGIN_TIME)
 #use to identify the task is exist
 #input: task_name
 #output: status True/False
-def identify_task_exist(task_name):
+def identify_task_exist(task_id):
     status = True
     try:
-        task_exist_result = es_group_result.get(index=group_index_name, doc_type=group_index_type, id=task_name)['_source']
+        task_exist_result = es_group_result.get(index=group_index_name, doc_type=group_index_type, id=task_id)['_source']
     except:
         task_exist_result = {}
     if task_exist_result != {}:
@@ -357,7 +357,9 @@ def single_detect(input_dict):
     results = {}
     task_information_dict = input_dict['task_information']
     task_name = task_information_dict['task_name']
-    task_exist_mark = identify_task_exist(task_name)
+    submit_user = task_information_dict['submit_user']
+    task_id = submit_user + '-' + task_name
+    task_exist_mark = identify_task_exist(task_id)
     if task_exist_mark == False:
         return 'task is not exist'
 
@@ -415,7 +417,7 @@ def single_detect(input_dict):
             body={'query':{'bool':{'should': attribute_query_list}}, 'size':count})['hits']['hits']
     
     #step2.3: change process proportion
-    process_mark = change_process_proportion(task_name, 25)
+    process_mark = change_process_proportion(task_id, 25)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -425,7 +427,7 @@ def single_detect(input_dict):
     #step3.1: search structure user result
     structure_user_result = get_structure_user([seed_uid], structure_dict, filter_dict)
     #step3.2: change process proportion
-    process_mark = change_process_proportion(task_name, 50)
+    process_mark = change_process_proportion(task_id, 50)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -443,7 +445,7 @@ def single_detect(input_dict):
     else:
         filter_user_list = [item[0] for item in all_union_user]
     #step5.2: change process proportion
-    process_mark = change_process_proportion(task_name, 75)
+    process_mark = change_process_proportion(task_id, 75)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -554,7 +556,9 @@ def multi_detect(input_dict):
     results = {}
     task_information_dict = input_dict['task_information']
     task_name = task_information_dict['task_name']
-    task_exist_mark = identify_task_exist(task_name)
+    submit_user = task_information_dict['submit_user']
+    task_id = submit_user + '-' + task_name
+    task_exist_mark = identify_task_exist(task_id)
     if task_exist_mark == False:
         return 'task is not exist'
     query_condition_dict = input_dict['query_condition']
@@ -565,7 +569,7 @@ def multi_detect(input_dict):
     seed_user_list = task_information_dict['uid_list']
     attribute_query_condition = get_seed_user_attribute(seed_user_list, attribute_list)
     #step1.2: change process proportion
-    process_mark = change_process_proportion(task_name, 20)
+    process_mark = change_process_proportion(task_id, 20)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -585,7 +589,7 @@ def multi_detect(input_dict):
     attribute_user_result = es_user_portrait.search(index=portrait_index_name, doc_type=portrait_index_type ,\
             body={'query':{'bool':{'should':attribute_query_condition}}, 'size':count})['hits']['hits']
     #step2.3: change process proportion
-    process_mark = change_process_proportion(task_name, 40)
+    process_mark = change_process_proportion(task_id, 40)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -595,7 +599,7 @@ def multi_detect(input_dict):
     #step 3.1: structure user
     structure_user_result = get_structure_user(seed_user_list, structure_dict, filter_dict)
     #step3.2: change process proportion
-    process_mark = change_process_proportion(task_name, 60)
+    process_mark = change_process_proportion(task_id, 60)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -615,7 +619,7 @@ def multi_detect(input_dict):
     else:
         filter_user_list = [item[0] for item in all_union_user]
     #step5.2: change process proportion
-    process_mark = change_process_proportion(task_name, 80)
+    process_mark = change_process_proportion(task_id, 80)
     if process_mark == 'task is not exist':
         return 'task is not exist'
     elif process_mark == False:
@@ -790,7 +794,9 @@ def attribute_pattern_detect(input_dict):
     results = {}
     task_information_dict = input_dict['task_information']
     task_name = task_information_dict['task_name']
-    task_exist_mark = identify_task_exist(task_name)
+    submit_user = task_information_dict['submit_user']
+    task_id = submit_user + '-' + task_name
+    task_exist_mark = identify_task_exist(task_id)
     if task_exist_mark == False:
         return 'task is not exist'
     query_condition_dict = input_dict['query_condition']
@@ -814,7 +820,7 @@ def attribute_pattern_detect(input_dict):
         except:
             user_portrait_result = []
         #step1.2:change process proportion
-        process_mark = change_process_proportion(task_name, 30)
+        process_mark = change_process_proportion(task_id, 30)
         if process_mark == 'task is not exist':
             return 'task is not exist'
         elif process_mark == False:
@@ -826,7 +832,7 @@ def attribute_pattern_detect(input_dict):
             #step2: get user_list from user_portrait_result
             filter_user_result = [item['_id'] for item in user_portrait_result]
         #change process mrak
-        process_mark = change_process_proportion(task_name, 60)
+        process_mark = change_process_proportion(task_id, 60)
         if process_mark == 'task is not exist':
             return 'task is not exist'
         elif process_mark == False:
@@ -836,7 +842,7 @@ def attribute_pattern_detect(input_dict):
         #step1: search pattern list and filter by in-user_portrait and filter_dict
         filter_user_result = pattern_filter_attribute(pattern_list, filter_dict)
         #step2.2: change process proportion
-        process_mark = change_process_proportion(task_name, 60)
+        process_mark = change_process_proportion(task_id, 60)
         if process_mark == 'task is not exist':
             return 'task is not exist'
         elif process_mark == False:
@@ -858,7 +864,9 @@ def event_detect(input_dict):
     results = {}
     task_information_dict = input_dict['task_information']
     task_name = task_information_dict['task_name']
-    task_exist_mark = identify_task_exist(task_name)
+    submit_user = task_information_dict['submit_user']
+    task_id = submit_user + '-' + task_name
+    task_exist_mark = identify_task_exist(task_id)
     if task_exist_mark == False:
         return 'task is not exist'
     query_condition_dict = input_dict['query_condition']
@@ -881,7 +889,7 @@ def event_detect(input_dict):
         except:
             user_portrait_result = []
         #change process proportion
-        process_mark = change_process_proportion(task_name, 30)
+        process_mark = change_process_proportion(task_id, 30)
         if process_mark == 'task is not exist':
             return 'task is not exist'
         elif process_mark == False:
@@ -895,7 +903,7 @@ def event_detect(input_dict):
             #step2.2: get uid list from user_portrait_result
             filter_user_list = [item['_id'] for item in user_portrait_result]
         #change process proportion
-        process_mark = change_process_proportion(task_name, 60)
+        process_mark = change_process_proportion(task_id, 60)
         if process_mark == 'task is not exist':
             return 'task is not exist'
         elif process_mark == False:
@@ -904,7 +912,7 @@ def event_detect(input_dict):
         #type2: no attribute condition, just flow_text condition
         filter_user_list = pattern_filter_attribute(event_list, filter_dict)
         #change process proportion
-        process_mark = change_process_proportion(task_name, 60)
+        process_mark = change_process_proportion(task_id, 60)
         if process_mark == 'task is not exist':
             return 'task is not exist'
         elif process_mark == False:
@@ -921,16 +929,16 @@ def event_detect(input_dict):
 #use to save detect results to es
 #input: uid list (detect results)
 #output: status (True/False)
-def save_detect_results(detect_results, task_name):
+def save_detect_results(detect_results, task_id):
     mark = False
     try:
-        task_exist_result = es_group_result.get(index=group_index_name, doc_type=group_index_type, id=task_name)['_source']
+        task_exist_result = es_group_result.get(index=group_index_name, doc_type=group_index_type, id=task_id)['_source']
     except:
         task_exist_result = {}
     if task_exist_result != {}:
         task_exist_result['uid_list'] = json.dumps(detect_results)
         task_exist_result['detect_process'] = 100
-        es_group_result.index(index=group_index_name, doc_type=group_index_type, id=task_name, body=task_exist_result)
+        es_group_result.index(index=group_index_name, doc_type=group_index_type, id=task_id, body=task_exist_result)
         mark = True
 
     return mark
@@ -938,16 +946,16 @@ def save_detect_results(detect_results, task_name):
 #use to change detect task process proportion
 #input: task_name, proportion
 #output: status (True/False)
-def change_process_proportion(task_name, proportion):
+def change_process_proportion(task_id, proportion):
     mark = False
     try:
-        task_exist_result = es_group_result.get(index=group_index_name, doc_type=group_index_type, id=task_name)['_source']
+        task_exist_result = es_group_result.get(index=group_index_name, doc_type=group_index_type, id=task_id)['_source']
     except:
         task_exist_result = {}
         return 'task is not exist'
     if task_exist_result != {}:
         task_exist_result['detect_process'] = proportion
-        es_group_result.index(index=group_index_name, doc_type=group_index_type, id=task_name, body=task_exist_result)
+        es_group_result.index(index=group_index_name, doc_type=group_index_type, id=task_id, body=task_exist_result)
         mark = True
 
     return mark
@@ -992,6 +1000,8 @@ def compute_group_detect():
             start_ts = time.time()
             task_information_dict = detect_task_information['task_information']
             task_name = task_information_dict['task_name']
+            submit_user = task_information_dict['submit_user']
+            task_id = submit_user + '-' + task_name
             #step1: modify filter dict evalute index to abnormal
             filter_dict = detect_task_information['query_condition']['filter']
             importance_from = filter_dict['importance']['gte']
@@ -1018,7 +1028,7 @@ def compute_group_detect():
             #step3:identify the return---'task is not exist'/'false'/normal_results
             if detect_results != 'task is not exist':
                 #step4:save detect results to es (status=1 and process=100 and add uid_list)
-                mark = save_detect_results(detect_results, task_name)
+                mark = save_detect_results(detect_results, task_id)
                 #step5:add task_information_dict to redis queue when detect process fail
                 if mark == False:
                     status = add_task2queue(detect_task_information)
