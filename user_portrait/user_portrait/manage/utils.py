@@ -245,7 +245,9 @@ def compare_user_portrait_v3(uid_list, submit_user):
         #attr: keywords
         user_result[uid]['keywords'] = json.loads(source['keywords'])
         #attr: hashtag
-        user_result[uid]['hashtag'] = json.loads(source['hashtag_dict'])
+        hashtag_dict = json.loads(source['hashtag_dict'])
+        hashtag_list = sorted(hashtag_dict.items(), key=lambda x:x[1], reverse=True)
+        user_result[uid]['hashtag'] = hashtag_list
         #attr: psycho status
         #user_result[uid]['psycho_status'] = user_psycho_status_result[uid]
         #attr: sensitive words
@@ -253,7 +255,8 @@ def compare_user_portrait_v3(uid_list, submit_user):
             sensitive_dict = json.loads(source['sensitive_dict'])
         except:
             sensitive_dict = {}
-        user_result[uid]['sensitive_words'] = sensitive_dict
+        sensitive_list = sorted(sensitive_dict.items(), key=lambda x:x[1], reverse=True)
+        user_result[uid]['sensitive_words'] = sensitive_list
         #attr:photo_url
         try:
             photo_result[uid] = {'photo_url': item['photo_url']}
