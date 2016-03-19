@@ -18,9 +18,9 @@ Search_weibo.prototype = {
           url: url,
           type: method,
           dataType: 'json',
-          async: true,
-          beforeSend:function(){$('#compare_loading').showLoading();},
-          complete:function(){$('#compare_loading').hideLoading();},
+          // async: true,
+          // beforeSend:function(){$('#compare_loading').showLoading();},
+          // complete:function(){$('#compare_loading').hideLoading();},
           success:callback,
         });
     },
@@ -220,7 +220,8 @@ function Compare(url_photo, portrait, tag_data){
 		
     }
     html += '</tr>';
-
+    html += '<tr><td colspan="'+ (num+1) +'" name="list-5" class="cate_title" style="font-size:20px"><b>语言属性</b></td></tr>';
+    
     j = 0 ;
     html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">微话题</td>';
     for(var k in portrait){
@@ -235,8 +236,7 @@ function Compare(url_photo, portrait, tag_data){
         html += '<td class="center" name="line'+ j +'"><div id = "sensitiveword'+ j +'" style="height:200px"></div></td>';
     }
     html += '</tr>';    
-    j = 0;
-    html += '<tr><td colspan="'+ (num+1) +'" name="list-5" class="cate_title" style="font-size:20px"><b>语言属性</b></td></tr>';
+
     html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">关键词</td>';
     for(var k in portrait){
         j += 1;
@@ -245,19 +245,11 @@ function Compare(url_photo, portrait, tag_data){
     html += '</tr>';
 
     j = 0;
-    // html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
-    // j = 0;
-    // html += '<tr class="list-6"><td class="cate_title" style="width:90px;text-align:right">心理状态</td>';
-    // for(var k in portrait){
-    //     j += 1;
-    //     html += '<td class="center" name="line'+ j +'"><div id="emotion'+ j +'" style="height:300px"></div></td>';
-    // }
-    // html += '</tr>';
-    
-    j = 0;
     html += '<tr><td colspan="'+ (num+1) +'" name="list-7" class="cate_title" style="font-size:20px"><b>自定义标签</b></td></tr>';
     html += '<tr class="list-7"><td class="cate_title" style="width:90px;text-align:right">标签</td>';
+    console.log(tag_data);
     for(var k in tag_data){
+        console.log('k');
         j += 1;
         html += '<td class="center" name="line'+ j +'">';
         if(tag_data[k].length == 0){

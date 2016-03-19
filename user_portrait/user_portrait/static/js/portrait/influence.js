@@ -21,8 +21,8 @@ Influence.prototype = {   //获取数据，重新画表
   Draw_influence:function(data){
     //console.log(data);
   var item_x = [];
-  for (var t in data.timeline){
-    item_x.push(getDate_in(t));
+  for (var t=0;t<data.timeline.length;t++){
+    item_x.push(getDate_in(data.timeline[t]));
   }
   //var item_y = data.influence;
 	var item_y = data.evaluate_index;
