@@ -3,12 +3,12 @@
 import json
 import time
 import datetime
+from user_portrait.extensions import user_datastore
 from user_portrait.time_utils import ts2datetime, ts2date
-from flask import Blueprint, url_for, render_template, request, abort, flash, session, redirect, make_response
+from flask import Blueprint, url_for, render_template, request, abort, flash, session, redirect, make_response, g
 from flask.ext.security import login_required, roles_required
 
 mod = Blueprint('portrait', __name__, url_prefix='/index')
-
 
 @mod.route('/')
 @login_required
@@ -17,10 +17,12 @@ def loading():
     return render_template('portrait/overview.html')
 
 @mod.route('/user_rank/')
+@login_required
 def user_rank():
     return render_template('portrait/user_rank.html')
 
 @mod.route('/mood_detect/')
+@login_required
 def mood_detect():
     return render_template('portrait/mood_detect.html')
 
@@ -50,17 +52,12 @@ def group_analysis():
 def contrast():
     
     return render_template('portrait/compare.html')
+
 @mod.route('/personal/')
-#@login_required
 def personal():
     uid = request.args.get('uid', '1642591402')
 
     return render_template('portrait/personal.html', uid=uid)
-@mod.route('/personal_detail/')
-def personal_detail():
-    uid = request.args.get('uid', '1642591402')
-
-    return render_template('portrait/personal_detail.html', uid=uid)
 
 @mod.route('/recommend_in/')
 def recommend_in():
@@ -80,11 +77,10 @@ def influence_rank():
 def tag():
 
     return render_template('portrait/tag.html')
-"""
 @mod.route('/contrast_analysis/')
 def contrast_analysis():
     return render_template('portrait/contrast_analysis.html')
-"""
+
 @mod.route('/portrait_in/')
 def portrait_in():
     return render_template('portrait/portrait_in.html')
@@ -132,4 +128,9 @@ def contact():
     uid = request.args.get('uid', '2001627641')
     return render_template('portrait/contact.html', uid=uid)
 
-
+@mod.route('/usercenter/')
+@login_required
+def usercenter():
+    print g.user.email
+    print user_datastore.find_user(email=g.user.email)
+    return render_template('portrait/usercenter.html')

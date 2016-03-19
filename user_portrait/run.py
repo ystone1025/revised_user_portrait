@@ -6,9 +6,9 @@ from flask import g, session, flash, redirect, request, render_template
 from flask_security.utils import logout_user
 from optparse import OptionParser
 from user_portrait import create_app
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
             UserMixin, RoleMixin, login_required
+from user_portrait.extensions import db, user_datastore
 
 optparser = OptionParser()
 optparser.add_option('-p', '--port', dest='port', help='Server Http Port Number', default=9001, type='int')
@@ -16,37 +16,6 @@ optparser.add_option('-p', '--port', dest='port', help='Server Http Port Number'
 
 # Create app
 app = create_app()
-
-# Create database connection object
-db = SQLAlchemy(app)
-
-# Define models
-roles_users = db.Table('roles_users',
-        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
-
-
-class Role(db.Model, RoleMixin):
-    """用户角色
-    """
-    id = db.Column(db.Integer(), primary_key=True)
-    # 该用户角色名称
-    name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(255))
-
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255))
-    active = db.Column(db.Boolean())
-    confirmed_at = db.Column(db.DateTime())
-    roles = db.relationship('Role', secondary=roles_users,
-                            backref=db.backref('users', lazy='dynamic'))
-
-# Setup Flask-Security
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
 
 # Create user role data to test with
 @app.route('/create_user_role_test')
