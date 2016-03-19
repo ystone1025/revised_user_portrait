@@ -257,10 +257,10 @@ function Compare(url_photo, portrait, tag_data){
         else{
         	for(var i = 0; i < portrait[k]['tag'].length; i++){
         		if(i == portrait[k]['tag'].length -1){
-        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['tag'][i] +'</span>';
+        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['tag'][i].replace('-',':') +'</span>';
         		}
         		else{
-        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['tag'][i] +',</span>';
+        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['tag'][i].replace('-',':') +',</span>';
         		}
         	}
         }
@@ -276,10 +276,10 @@ function Compare(url_photo, portrait, tag_data){
         else{
             for(var i = 0; i < portrait[k]['group_tag'].length; i++){
                 if(i == portrait[k]['group_tag'].length -1){
-                    html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['group_tag'][i] +'</span>';
+                    html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['group_tag'][i].replace('-',':') +'</span>';
                 }
                 else{
-                    html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['group_tag'][i] +',</span>';
+                    html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['group_tag'][i].replace('-',':') +',</span>';
                 }
             }
         }
@@ -305,7 +305,7 @@ function compare_extra(portrait){
     var div ='';
     for(var key in portrait){
         var div = 'line'+ mark;
-        console.log(portrait[key]['keywords'],'portrait[key]["keywords"]');
+        //console.log(portrait[key]['keywords'],'portrait[key]["keywords"]');
         if(portrait[key]['keywords'].length == 0){
             $('#'+div).empty();
             $('#'+div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
@@ -316,14 +316,14 @@ function compare_extra(portrait){
         //var psycho_status = portrait[key]['psycho_status']
         // Draw_think_emotion(psycho_status,div);
         var div = 'hashtag'+ mark;
-        if(portrait[key]['hashtag']){
+        if(portrait[key]['hashtag'] == 0){
             $('#'+div).empty();
             $('#'+div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
         }else{
             Search_weibo.Draw_cloud_keywords(portrait[key]['hashtag'], div);
         }
         var div = 'sensitiveword'+ mark;
-        if(portrait[key]['sensitive_words']){
+        if(portrait[key]['sensitive_words'] == 0){
             $('#'+div).empty();
             $('#'+div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
         }else{
