@@ -222,7 +222,7 @@ function Compare(url_photo, portrait, tag_data){
     }
     html += '</tr>';
     j = 0 ;
-    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">hashtag</td>';
+    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">微话题</td>';
     for(var k in portrait){
         j += 1;
         html += '<td class="center" name="line'+ j +'"><div id = "hashtag'+ j +'" style="height:200px"></div></td>';
@@ -373,7 +373,7 @@ function compare_extra(portrait){
         }
         div = 'emotion'+ mark;
         var psycho_status = portrait[key]['psycho_status']
-        Draw_think_emotion(psycho_status,div);
+        // Draw_think_emotion(psycho_status,div);
 
         div = 'hashtag'+ mark;
         if(portrait[key]['hashtag']){
