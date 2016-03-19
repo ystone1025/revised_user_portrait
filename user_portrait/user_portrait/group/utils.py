@@ -454,6 +454,45 @@ def get_group_member_name(task_name, submit_user):
 # delete group results from es_user_portrait 'group_analysis'
 def delete_group_results(task_name, submit_user):
     task_id = submit_user + '-' + task_name
+    #step1: get group uid list
+    try:
+        group_result = es_group_result.get(index=group_index_name, doc_type=group_index_type,\
+                id=task_id)['_source']
+    except:
+        return False
+    uid_list = group_result['uid_list']
+    #step2: update group_tag in user_portrait
+    query_body = {'query':{'term':{'group': task_id}}}
+    try:
+        user_portrait_result = es_user_portrait.mget(index=portrait_index_name, doc_type=portrait_index_type,\
+                body={'ids': uid_list})['docs']
+    except:
+        user_portrait_result = []
+    bulk_action = []
+    for item in user_portrait_result:
+        uid = item['_id']
+        try:
+            source = user_portrait_item['_source']
+        except:
+            source = {}
+        try:
+            group_tag = item['group']
+        except:
+            group_tag = ''
+        if group_tag != '':
+            new_group_tag_list = []
+            group_tag_list = group_tag.split('&')
+            for group_tag_item in group_tag_list:
+                if group_tag_item != task_id:
+                    new_group_tag_list.append(group_tag_item)
+            new_group_tag = '&'.join(new_group_tag_list)
+        else:
+            new_group_tag = ''
+        action = {'update':{'_id': uid}}
+        bulk_action.extend([action, {'doc': {'group': new_group_tag}}])
+    if bulk_action:
+        es_user_portrait.bulk(bulk_action, index=portrait_index_name, doc_type=portrait_index_type)
+    #step3: delete group results in group_manage
     try:
         result = es.delete(index=index_name, doc_type=index_type, id=task_id)
     except:
