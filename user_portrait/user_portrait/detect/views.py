@@ -249,7 +249,6 @@ def ajax_multi_person():
         input_dict = {}
         input_dict['task_information'] = task_information_dict
         input_dict['query_condition'] = query_dict
-        print 'views multi save'
         results = save_detect_multi_task(input_dict, extend_mark)
     results = json.dumps(results) # [True/False, out_user_list]
     return results
@@ -455,7 +454,8 @@ def ajax_event_detect():
 #output: group detect task information list
 @mod.route('/show_detect_task/')
 def ajax_show_detect_task():
-    results = show_detect_task()
+    submit_user = request.args.get('submit_user', 'admin')
+    results = show_detect_task(submit_user)
     return json.dumps(results)
 
 #use to search group detect task
@@ -468,7 +468,7 @@ def ajax_search_detect_task():
     state = request.args.get('state', '')
     process = request.args.get('process', '')
     detect_type = request.args.get('detect_type', '')
-    submit_user = request.args.get('submit_user', '')
+    submit_user = request.args.get('submit_user', 'admin')
     results = search_detect_task(task_name, submit_date, state, process, detect_type, submit_user)
     return json.dumps(results)
 
@@ -479,7 +479,8 @@ def ajax_search_detect_task():
 def ajax_show_detect_result():
     results = {}
     task_name = request.args.get('task_name', '')
-    results = show_detect_result(task_name)
+    submit_user = request.args.get('submit_user', '')
+    results = show_detect_result(task_name, submit_user)
     return json.dumps(results)
 
 
@@ -488,7 +489,7 @@ def ajax_show_detect_result():
 #output: results
 @mod.route('/add_detect2analysis/',methods=['GET', 'POST'])
 def ajax_add_detect2analysis():
-    input_data = request.get_json() #input_data = {'uid_list':[], 'task_name':xx}
+    input_data = request.get_json() #input_data = {'uid_list':[], 'task_name':xx, 'submit_user':xx}
     results = detect2analysis(input_data)
 
     return json.dumps(results)
@@ -498,7 +499,8 @@ def ajax_add_detect2analysis():
 def ajax_delete_task():
     status = True
     task_name = request.args.get('task_name', '')
-    status = delete_task(task_name)
+    submit_user = request.args.get('submit_user', '')
+    status = delete_task(task_name, submit_user)
     return json.dumps(status)
 
 #use to get social sensing group detect results
