@@ -19,6 +19,7 @@ from user_portrait.tag.views import mod as tagModule
 from user_portrait.weibo.views import mod as weiboModule
 from user_portrait.social_sensing.views import mod as sensingModule
 from user_portrait.sentiment.views import mod as sentimentModule
+from user_portrait.user_rank.views import mod as userrankModule
 
 def create_app():
     app = Flask(__name__)
@@ -41,6 +42,7 @@ def create_app():
     app.register_blueprint(weiboModule)
     app.register_blueprint(sensingModule)
     app.register_blueprint(sentimentModule)
+    app.register_blueprint(userrankModule)
     # the debug toolbar is only enabled in debug mode
     app.config['DEBUG'] = True
 

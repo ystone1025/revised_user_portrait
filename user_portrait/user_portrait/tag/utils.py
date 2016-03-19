@@ -19,13 +19,14 @@ attribute_dict_key = ['attribute_value', 'attribute_user', 'date', 'user']
 # use to submit attribute to es (custom_attribute, attribute)
 def submit_attribute(attribute_name, attribute_value, submit_user, submit_date):
     status = False
+    id_attribute = str(submit_user) + "-" + str(attribute_name)
     #maybe there have to identify the user admitted to submit attribute
     try:
-        attribute_exist = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        attribute_exist = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except:
         attribute_exist = {}
     #identify the tag name not same with the identify_attribute_list
-    if attribute_exist == {} and attribute_name not in identify_attribute_list:
+    if attribute_exist == {} and id_attribute not in identify_attribute_list:
         input_data = dict()
         now_ts = time.time()
         date = ts2datetime(now_ts)
@@ -33,11 +34,14 @@ def submit_attribute(attribute_name, attribute_value, submit_user, submit_date):
         input_data['attribute_value'] = '&'.join(attribute_value.split(','))
         input_data['user'] = submit_user
         input_data['date'] = submit_date
-        es_tag.index(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name, body=input_data)
+        es_tag.index(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute, body=input_data)
         status = True
         #put mappings to es_user_portrait
-        es.indices.put_mapping(index=user_index_name, doc_type=user_index_type, \
-                body={'properties':{attribute_name:{'type':'string', 'index':'not_analyzed'}}}, ignore=400)
+        submit_user_tag = str(submit_user) + "-tag"
+        exist_field = es.indices.get_field_mapping(index=user_index_name, doc_type=user_index_type, field=submit_user_tag)
+        if not exist_field:
+            es.indices.put_mapping(index=user_index_name, doc_type=user_index_type, \
+                body={'properties':{submit_user_tag:{'type':'string', 'analyzer':'my_analyzer'}}}, ignore=400)
     return status
 
 # use to search attribute table
@@ -64,10 +68,11 @@ def search_attribute(query_body, condition_num):
 
 # use to change attribtue
 def change_attribute(attribute_name, value, user, state):
+    id_attribute = str(submit_user) + "-" + str(attribute_name)
     status = False
     # identify the attribute_name is in ES - custom attribute
     try:
-        result =  es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        result =  es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except:
         result = None
         return status
@@ -78,50 +83,66 @@ def change_attribute(attribute_name, value, user, state):
     now_ts = time.time()
     now_date = ts2datetime(now_ts)
     result['date'] = now_date
-    es_tag.index(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name ,body=result)
+    es_tag.index(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute ,body=result)
     status = True
     return status
 
 # use to delete attribute
-def delete_attribute(attribute_name):
+def delete_attribute(attribute_name, submit_user):
     status = False
+    id_attribute = str(submit_user) + "-" + str(attribute_name)
+    submit_user_tag = str(submit_user)+"-tag"
     try:
-        result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except Exception, e:
         raise e
         return status
-    es_tag.delete(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)
+    es_tag.delete(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)
     # delete attribute in user_portrait
+    # user_portrait中，以attribute_name-attribute_value给用户赋值
     query = []
+    portrait_attribute_field = []
     attribute_value = result['attribute_value'].split('&')
     for value in attribute_value:
-        query.append({'match':{attribute_name: value}})
+        portrait_attribute_field.append(str(attribute_name)+"-"+value)
+    query.append({'match':{submit_user_tag: portrait_attribute_field}})
     try:
         attribute_user_result = es.search(index=user_index_name, doc_type=user_index_type, \
-                                         body={'query':{'bool':{'should':query}}})['hits']['hits']
+                body={'query':{'bool':{'should':query}}, "size": 100000000})['hits']['hits']
     except:
         attribute_user_result = []
     if attribute_user_result==[]:
         status = True
         return status
     bulk_action = []
+    count = 0
     for user_dict in attribute_user_result:
         try:
             user_item = user_dict['_source']
         except:
             next
-        user_item.pop(attribute_name)
+        tmp = user_item[submit_user_tag]
+        delete_set = set(tmp.split('&')) - set(portrait_attribute_field)
+        user_item[submit_user_tag] = "&".join(list(delete_set))
         user = user_item['uid']
         action = {'index':{'_id':str(user)}}
         bulk_action.extend([action, user_item])
-    es.bulk(bulk_action, index=user_index_name, doc_type=user_index_type)
-    
+        count += 1
+        if count % 1000 == 0:
+            es.bulk(bulk_action, index=user_index_name, doc_type=user_index_type)
+            bulk_action = []
+    if bulk_action:
+        es.bulk(bulk_action, index=user_index_name, doc_type=user_index_type)
+
     status = True
     return status
 
 # use to add attribute to user in es_user_portrait
 def add_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
     status = False
+    submit_user_tag = str(submit_user)+"-tag"
+    id_attribute = submit_user + "-" + attribute_name
+    add_attribute_value = attribute_name + "-" + attribute_value
     # identify the user exist
     # identify the attribute exist
     # identify the attribute exist in user_portrait
@@ -131,58 +152,82 @@ def add_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
     except:
         return 'no user'
     try:
-        attribute_result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        attribute_result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except:
         return 'no attribute'
     attribute_value_list = attribute_result['attribute_value'].split('&')
     if attribute_value not in attribute_value_list:
         return 'no attribute value'
-    if attribute_name in user_result:
+    value_set = set()
+    for value in attribute_value_list:
+        value_set.add(attribute_name + '-' + value) #
+    submit_user_attribute = user_result.get(submit_user_tag, '') # 个人是否存在该管理员打上的个人标签
+    tmp_attribute_set = set(submit_user_attribute.split('&'))
+    attribute_exist = tmp_attribute_set & submit_user_attribute
+    if attribute_exist:
         return 'attribute exist'
-    add_attribute_dict = {attribute_name: attribute_value}
-    
-    es.update(index=user_index_name, doc_type=user_index_type, id=uid, body={'doc':add_attribute_dict})
+    user_result[submit_user_tag] = submit_user_attribute + "&" + add_attribute_value
+    es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_result)
     status = True
     return status
 
 # use to change attribute of user in es_user_portrait
 def change_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
     status = False
+    submit_user_tag = str(submit_user)+"-tag"
+    id_attribute = submit_user + "-" + attribute_name
     #identify the user exist
     #identify the attribute exist
     #identify the attribute value exist
     #identify the submit_user have been admitted----without 
     try:
-        user_exist = es.get(index=user_index_name, doc_type=user_index_type, id=uid)['_source']
+        user_result = es.get(index=user_index_name, doc_type=user_index_type, id=uid)['_source']
     except:
         return 'no user'
     try:
-        attribute_result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        attribute_result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except:
         return 'no attribute'
     value_list = attribute_result['attribute_value'].split('&')
     if attribute_value not in value_list:
         return 'no attribute value'
-    change_attribute_dict = {attribute_name: attribute_value}
-    es.update(index=user_index_name, doc_type=user_index_type, id=uid, body={'doc': change_attribute_dict})
+    submit_user_attribute = user_result.get(submit_user_tag, '') # 个人是否存在该管理员打上的个人标签
+    if attribute_name not in submit_user_attribute:
+        return 'personal attribute no exist'
+    tmp_attribute_list = submit_user_attribute.split("&")
+    attribute_list = []
+    for item in tmp_attribute_list:
+        if attribute_name in item:
+            attribute_list.append(attribute_name + '-' + attribute_value)
+        else:
+            attribute_list.append(item)
+    user_result[submit_user_tag] = "&".join(attribute_list)
+    es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_result)
     status = True
     return status
 
 # use to delete attribute of user in es_user_portrait
 def delete_attribute_portrait(uid, attribute_name, submit_user):
     status = False
+    submit_user_tag = str(submit_user)+"-tag"
+    id_attribute = submit_user + "-" + attribute_name
     #identify the user exist
     #identify the attribute value exist in es_user_portrait
     #identify the submit_user have been admitted---without
     try:
-        user_exist = es.get(index=user_index_name, doc_type=user_index_type, id=uid)['_source']
+        user_result = es.get(index=user_index_name, doc_type=user_index_type, id=uid)['_source']
     except:
         return 'no user'
-    if attribute_name not in user_exist:
+    submit_user_attribute = user_result.get(submit_user_tag, '')
+    if attribute_name not in submit_user_attribute:
         return 'user have no attribtue'
     try:
-        del_attribute_value = user_exist.pop(attribute_name)
-        es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_exist)
+        tmp_attribute = submit_user_attribute.split('&')
+        for item in tmp_attribute:
+            if attribute_name in item:
+                tmp_attribute.pop(item)
+        user_result[submit_user_attribute] = "&".join(tmp_attribute)
+        es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_result)
         status = True
     except Exception, e:
         raise e
