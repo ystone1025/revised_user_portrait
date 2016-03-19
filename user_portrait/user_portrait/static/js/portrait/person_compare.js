@@ -198,21 +198,43 @@ function Compare(url_photo, portrait, tag_data){
     }
     html += '</tr>';
     j = 0;
-    html += '<tr><td colspan="'+ (num+1) +'" name="list-3" class="cate_title" style="font-size:20px"><b>标签属性</b></td></tr>';
-    html += '<tr class="list-3"><td class="cate_title" style="width:90px;text-align:right">领域</td>';
+    html += '<tr class="list-2"><td class="cate_title" style="width:90px;text-align:right">敏感度</td>';
+    for(var k in portrait){
+        j += 1;
+        html += '<td class="center" name="line'+ j +'">'+ portrait[k]['sensitive'].toFixed(2) +'</td>';
+    }
+    html += '</tr>';
+    j = 0;
+    html += '<tr><td colspan="'+ (num+1) +'" name="list-3" class="cate_title" style="font-size:20px"><b>倾向特征</b></td></tr>';
+    html += '<tr class="list-3"><td class="cate_title" style="width:90px;text-align:right">身份</td>';
     for(var k in portrait){
         j += 1;
         html += '<td class="center" name="line'+ j +'">'+ portrait[k]['domain'] +'</td>';
     }
     html += '</tr>';
     j = 0;
-    html += '<tr class="list-3"><td class="cate_title" style="width:90px;text-align:right">话题</td>';
+    html += '<tr class="list-3"><td class="cate_title" style="width:90px;text-align:right">领域</td>';
     for(var k in portrait){
         j += 1;
         html += '<td class="center" name="line'+ j +'">'+ portrait[k]['topic'][0]+','+ portrait[k]['topic'][1]+','+portrait[k]['topic'][2]+ '</td>';
 		
     }
     html += '</tr>';
+
+    j = 0 ;
+    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">微话题</td>';
+    for(var k in portrait){
+        j += 1;
+        html += '<td class="center" name="line'+ j +'"><div id = "hashtag'+ j +'" style="height:200px"></div></td>';
+    }
+    html += '</tr>';
+    j = 0 ;
+    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">敏感词</td>';
+    for(var k in portrait){
+        j += 1;
+        html += '<td class="center" name="line'+ j +'"><div id = "sensitiveword'+ j +'" style="height:200px"></div></td>';
+    }
+    html += '</tr>';    
     j = 0;
     html += '<tr><td colspan="'+ (num+1) +'" name="list-5" class="cate_title" style="font-size:20px"><b>语言属性</b></td></tr>';
     html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">关键词</td>';
@@ -221,13 +243,7 @@ function Compare(url_photo, portrait, tag_data){
         html += '<td class="center" name="line'+ j +'"><div id="line'+ j +'" style="height:300px"></div></td>';
     }
     html += '</tr>';
-    j = 0 ;
-    html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">微话题</td>';
-    for(var k in portrait){
-        j += 1;
-        html += '<td class="center" name="line'+ j +'"><div id = "hashtag'+ j +'" style="height:200px"></div></td>';
-    }
-    html += '</tr>';
+
     j = 0;
     // html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
     // j = 0;
@@ -270,96 +286,96 @@ function Compare(url_photo, portrait, tag_data){
     }
     $('#picturebig').append(html2);
 }
-function Draw_think_emotion(psycho_status,div){
-    //console.log(psycho_status);
-    var first_data = psycho_status['first'];
-    var first = new Array();
+// function Draw_think_emotion(psycho_status,div){
+//     //console.log(psycho_status);
+//     var first_data = psycho_status['first'];
+//     var first = new Array();
 
-    for(var key in first_data){
-        if(first_data[key] != 0){
-            if(key == 7){
-                first.push({'name':SENTIMENT_DICT_NEW[key],'value':first_data[key].toFixed(2),selected:true});
-            }else{
-                first.push({'name':SENTIMENT_DICT_NEW[key],'value':first_data[key].toFixed(2)});
-            } 
-        }
-    }
-    var second = new Array();
-    var second_data = psycho_status['second'];
-    if(first_data[0] != 0){
-        second.push({'name':SENTIMENT_DICT_NEW[0],'value':first_data[0].toFixed(2)});
-    }
-    if(first_data[1] != 0){
-        second.push({'name':SENTIMENT_DICT_NEW[1],'value':first_data[1].toFixed(2)});
-    }
-    for(var key in second_data){
-        //console.log(second_data[key]);
-        if(second_data[key] != 0){
-            second.push({'name':SENTIMENT_DICT_NEW[key],'value':second_data[key].toFixed(2)});
-        }
-    };
+//     for(var key in first_data){
+//         if(first_data[key] != 0){
+//             if(key == 7){
+//                 first.push({'name':SENTIMENT_DICT_NEW[key],'value':first_data[key].toFixed(2),selected:true});
+//             }else{
+//                 first.push({'name':SENTIMENT_DICT_NEW[key],'value':first_data[key].toFixed(2)});
+//             } 
+//         }
+//     }
+//     var second = new Array();
+//     var second_data = psycho_status['second'];
+//     if(first_data[0] != 0){
+//         second.push({'name':SENTIMENT_DICT_NEW[0],'value':first_data[0].toFixed(2)});
+//     }
+//     if(first_data[1] != 0){
+//         second.push({'name':SENTIMENT_DICT_NEW[1],'value':first_data[1].toFixed(2)});
+//     }
+//     for(var key in second_data){
+//         //console.log(second_data[key]);
+//         if(second_data[key] != 0){
+//             second.push({'name':SENTIMENT_DICT_NEW[key],'value':second_data[key].toFixed(2)});
+//         }
+//     };
 
-    var myChart = echarts.init(document.getElementById(div)); 
-    var option = {
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
+//     var myChart = echarts.init(document.getElementById(div)); 
+//     var option = {
+//     tooltip : {
+//         trigger: 'item',
+//         formatter: "{a} <br/>{b} : {c} ({d}%)"
+//     },
 
-    toolbox: {
-        show : true,
-        feature : {
-            mark : {show: false},
-            dataView : {show: false, readOnly: false},
-            magicType : {
-                show: false, 
-                type: ['pie', 'funnel']
-            },
-            restore : {show: false},
-            saveAsImage : {show: true}
-        }
-    },
-    calculable : false,
-    series : [
-        {
-            name:'',
-            type:'pie',
-            selectedMode: 'single',
-            radius : [0, 35],
+//     toolbox: {
+//         show : true,
+//         feature : {
+//             mark : {show: false},
+//             dataView : {show: false, readOnly: false},
+//             magicType : {
+//                 show: false, 
+//                 type: ['pie', 'funnel']
+//             },
+//             restore : {show: false},
+//             saveAsImage : {show: true}
+//         }
+//     },
+//     calculable : false,
+//     series : [
+//         {
+//             name:'',
+//             type:'pie',
+//             selectedMode: 'single',
+//             radius : [0, 35],
             
-            // for funnel
-            x: '20%',
-            width: '40%',
-            funnelAlign: 'right',
-            max: 1548,
+//             // for funnel
+//             x: '20%',
+//             width: '40%',
+//             funnelAlign: 'right',
+//             max: 1548,
             
-            itemStyle : {
-                normal : {
-                    label : {
-                        position : 'inner'
-                    },
-                    labelLine : {
-                        show : false
-                    }
-                }
-            },
-            data:first
-        },
-        {
-            name:'',
-            type:'pie',
-            radius : [50, 70],
-            // for funnel
-            x: '60%',
-            width: '35%',
-            funnelAlign: 'left',
-            max: 1048,
-            data:second
-        }
-    ]
-}
-myChart.setOption(option);  
-}
+//             itemStyle : {
+//                 normal : {
+//                     label : {
+//                         position : 'inner'
+//                     },
+//                     labelLine : {
+//                         show : false
+//                     }
+//                 }
+//             },
+//             data:first
+//         },
+//         {
+//             name:'',
+//             type:'pie',
+//             radius : [50, 70],
+//             // for funnel
+//             x: '60%',
+//             width: '35%',
+//             funnelAlign: 'left',
+//             max: 1048,
+//             data:second
+//         }
+//     ]
+// }
+// myChart.setOption(option);  
+// }
 function compare_extra(portrait){
     var mark = 1;
     var div ;
@@ -374,7 +390,6 @@ function compare_extra(portrait){
         div = 'emotion'+ mark;
         var psycho_status = portrait[key]['psycho_status']
         // Draw_think_emotion(psycho_status,div);
-
         div = 'hashtag'+ mark;
         if(portrait[key]['hashtag']){
             $('#'+div).empty();
@@ -405,12 +420,23 @@ function bind_close_click(portrait){
             var topic_div = 'topic'+ value;
             var emotion_div = 'emotion' + value;
             var hashtag_div = 'hashtag'+ value ;
+            var sen_div = 'sensitiveword' + value;
             if(portrait[uid]['keywords'].length == 0){
                 $('#'+cloud_div).empty();
                 $('#'+cloud_div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
             }else{
                 Search_weibo.Draw_cloud_keywords(portrait[uid]['keywords'], cloud_div);
             }
+
+
+            if(portrait[uid]['sensitive_words'].length == 0){
+                $('#'+sen_div).empty();
+                $('#'+sen_div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
+            }else{
+                Search_weibo.Draw_cloud_keywords(portrait[uid]['sensitive_words'], sen_div);
+            }
+
+
             if(portrait[uid]['hashtag']){
                 $('#'+hashtag_div).empty();
                 $('#'+hashtag_div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
@@ -418,7 +444,7 @@ function bind_close_click(portrait){
                 Search_weibo.Draw_cloud_keywords(portrait[uid]['hashtag'], hashtag_div);
             }
             var psycho_status = portrait[uid]['psycho_status']
-            Draw_think_emotion(psycho_status,emotion_div);
+            // Draw_think_emotion(psycho_status,emotion_div);
         }
 
      });
