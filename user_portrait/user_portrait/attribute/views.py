@@ -55,7 +55,7 @@ def ajax_new_user_profile():
 # write in version: 16-03-15
 @mod.route('/new_user_portrait/')
 def ajax_new_user_portrait():
-    admin_user = request.args.get('admin_user', '')
+    admin_user = request.args.get('admin_user', 'admin')
     uid = request.args.get('uid', '')
     results = new_get_user_portrait(uid, admin_user)
     if not results:
