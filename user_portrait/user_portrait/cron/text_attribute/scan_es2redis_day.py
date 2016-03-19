@@ -13,6 +13,7 @@ from global_utils import es_user_portrait, portrait_index_name, portrait_index_t
 from global_utils import update_day_redis, UPDATE_DAY_REDIS_KEY
 from time_utils import ts2datetime
 
+
 #scan es to redis as a queue for update day
 #write in version: 15-12-08
 #order time task for every day
@@ -21,7 +22,6 @@ def scan_es2redis_day():
     count = 0
     s_re = scan(es_user_portrait, query={'query':{'match_all':{}}, 'size':1000}, index=portrait_index_name, doc_type=portrait_index_type)
     start_ts = time.time()
-    user_list = []
     user_info = {}
     while True:
         try:

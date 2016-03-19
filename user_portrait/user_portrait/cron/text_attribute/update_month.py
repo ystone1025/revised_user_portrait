@@ -19,9 +19,11 @@ from character.test_ch_topic import classify_topic
 
 sys.path.append('../../')
 from global_utils import update_month_redis, UPDATE_MONTH_REDIS_KEY
+from global_utils import es_user_portrait, portrait_index_name, portrait_index_type
 from parameter import CHARACTER_TIME_GAP, DAY, WEIBO_API_INPUT_TYPE
 from parameter import RUN_TYPE, RUN_TEST_TIME
 from time_utils import ts2datetime, datetime2ts
+
 
 def deal_bulk_action(user_info_list, fansnum_max):
     start_ts = time.time()
