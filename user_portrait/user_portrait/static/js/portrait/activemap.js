@@ -256,11 +256,25 @@ function location_all(){
         bind_map();
         function bind_map(){
             $('#month_track').click(function(){
-                $('#map').css('display', 'block');
-                var div0 = document.getElementById('active_geo');
-                div0.style.height="1800px";
+                var div0 = document.getElementById('active_geo');  
+                var div1 = document.getElementById('map');                
+                if(div1.style.display=='none'){
+                 div0.style.height=div0.offsetHeight+850+'px';
+                }
+                $('#map').css('display', 'block')
                 month_process(data.month_track, true);
             });
+
+            $('#more_track').click(function(){
+                var div0 = document.getElementById('active_geo');
+                var div1 = document.getElementById('more_t_list');
+                if(div1.style.display=='none'){
+                 div0.style.height=div0.offsetHeight+200+'px';
+                }                
+                $('#more_t_list').css('display', 'block');
+                //month_process(data.month_track, true);
+            });
+
             $('#total_daily_ip_map').click(function(){
                 $('#map').css('display', 'block');
                 month_process(daily_map_data, false);
