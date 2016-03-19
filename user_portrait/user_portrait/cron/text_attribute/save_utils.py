@@ -34,6 +34,7 @@ def attr_hash(uid):
 
 def save_user_results(bulk_action):
     print 'save utils bulk action len:', len(bulk_action)
-    es.bulk(bulk_action, index='user_portrait_1222', doc_type=index_type, timeout=60)
+    print 'bulk action:', bulk_action
+    #es.bulk(bulk_action, index='user_portrait_1222', doc_type=index_type, timeout=60)
     return True    
 
