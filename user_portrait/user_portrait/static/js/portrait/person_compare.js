@@ -229,14 +229,14 @@ function Compare(url_photo, portrait, tag_data){
     }
     html += '</tr>';
     j = 0;
-    html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
-    j = 0;
-    html += '<tr class="list-6"><td class="cate_title" style="width:90px;text-align:right">心理状态</td>';
-    for(var k in portrait){
-        j += 1;
-        html += '<td class="center" name="line'+ j +'"><div id="emotion'+ j +'" style="height:300px"></div></td>';
-    }
-    html += '</tr>';
+    // html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
+    // j = 0;
+    // html += '<tr class="list-6"><td class="cate_title" style="width:90px;text-align:right">心理状态</td>';
+    // for(var k in portrait){
+    //     j += 1;
+    //     html += '<td class="center" name="line'+ j +'"><div id="emotion'+ j +'" style="height:300px"></div></td>';
+    // }
+    // html += '</tr>';
     
     j = 0;
     html += '<tr><td colspan="'+ (num+1) +'" name="list-7" class="cate_title" style="font-size:20px"><b>自定义标签</b></td></tr>';
