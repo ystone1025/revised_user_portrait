@@ -1,0 +1,19 @@
+{% extends "tbase.html" %}
+{% block title %}主页{% endblock title%}
+{% block css %}
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/portrait.css">
+    {{ super() }}    
+        <style type="text/css">
+            body {
+                font-family: '微软雅黑';
+                font-size: 14px;
+                 }
+        </style>
+{% endblock css %}
+{% block head_js %}
+   {{ super() }}
+    <script type="text/javascript" src="/static/js/portrait/overview.js"></script>   
+{% endblock head_js %}
+
+

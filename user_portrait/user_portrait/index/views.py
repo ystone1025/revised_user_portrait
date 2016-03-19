@@ -5,14 +5,15 @@ import time
 import datetime
 from user_portrait.time_utils import ts2datetime, ts2date
 from flask import Blueprint, url_for, render_template, request, abort, flash, session, redirect, make_response
-
+from flask.ext.security import login_required, roles_required
 
 mod = Blueprint('portrait', __name__, url_prefix='/index')
 
 
 @mod.route('/')
+@login_required
+@roles_required("overview")
 def loading():
-
     return render_template('portrait/overview.html')
 
 @mod.route('/user_rank/')
@@ -24,6 +25,8 @@ def mood_detect():
     return render_template('portrait/mood_detect.html')
 
 @mod.route('/social_sensing/')
+@login_required
+@roles_required("social_sensing")
 def social_sensing():
     return render_template('portrait/social_sensing.html')
 
