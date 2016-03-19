@@ -99,7 +99,7 @@ def new_get_user_portrait(uid, admin_user):
         #step3: get tag_information
         #tag
         try:
-            admin_tag = user_portrait_result[admin_user]
+            admin_tag = user_portrait_result[admin_user + '-tag']
         except:
             admin_tag = {}
         if not admin_tag:
