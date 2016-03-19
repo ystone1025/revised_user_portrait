@@ -349,7 +349,7 @@ def new_get_user_location(uid):
         abnormal_ip = ''
         abnormal_city = ''
     else:
-        abnormal_ip = sort_abnormal_ip_list[0][0]
+        abnormal_ip = sort_abnormal_ip_list[0]
         abnormal_city = ip2city(abnormal_ip)
     results['abnormal_ip'] = [abnormal_ip, abnormal_city]
     #home ip
