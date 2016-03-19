@@ -19,7 +19,7 @@ attribute_dict_key = ['attribute_value', 'attribute_user', 'date', 'user']
 # use to submit attribute to es (custom_attribute, attribute)
 def submit_attribute(attribute_name, attribute_value, submit_user, submit_date):
     status = False
-    id_attribute = str(submit_user) + "-" + str(attribute_name)
+    id_attribute = '-'.join([submit_user,attribute_name])
     #maybe there have to identify the user admitted to submit attribute
     try:
         attribute_exist = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
@@ -67,8 +67,8 @@ def search_attribute(query_body, condition_num):
     return item_list
 
 # use to change attribtue
-def change_attribute(attribute_name, value, user, state):
-    id_attribute = str(submit_user) + "-" + str(attribute_name)
+def change_attribute(attribute_name, value, submit_user, state):
+    id_attribute = "-".join([submit_user, attribute_name])
     status = False
     # identify the attribute_name is in ES - custom attribute
     try:
@@ -79,7 +79,7 @@ def change_attribute(attribute_name, value, user, state):
     value_list = '&'.join(value.split(','))
     result['attribute_name'] = attribute_name
     result['attribute_value'] = value_list
-    result['user'] = user
+    result['user'] = submit_user
     now_ts = time.time()
     now_date = ts2datetime(now_ts)
     result['date'] = now_date
@@ -90,12 +90,12 @@ def change_attribute(attribute_name, value, user, state):
 # use to delete attribute
 def delete_attribute(attribute_name, submit_user):
     status = False
-    id_attribute = str(submit_user) + "-" + str(attribute_name)
-    submit_user_tag = str(submit_user)+"-tag"
+    id_attribute = "-".join([submit_user,attribute_name])
+    submit_user_tag = submit_user+"-tag"
     try:
         result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except Exception, e:
-        raise e
+        #raise e
         return status
     es_tag.delete(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)
     # delete attribute in user_portrait
@@ -104,7 +104,7 @@ def delete_attribute(attribute_name, submit_user):
     portrait_attribute_field = []
     attribute_value = result['attribute_value'].split('&')
     for value in attribute_value:
-        portrait_attribute_field.append(str(attribute_name)+"-"+value)
+        portrait_attribute_field.append(attribute_name +"-"+value)
     query.append({'match':{submit_user_tag: portrait_attribute_field}})
     try:
         attribute_user_result = es.search(index=user_index_name, doc_type=user_index_type, \
@@ -140,7 +140,7 @@ def delete_attribute(attribute_name, submit_user):
 # use to add attribute to user in es_user_portrait
 def add_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
     status = False
-    submit_user_tag = str(submit_user)+"-tag"
+    submit_user_tag = submit_user + "-tag"
     id_attribute = submit_user + "-" + attribute_name
     add_attribute_value = attribute_name + "-" + attribute_value
     # identify the user exist
@@ -163,10 +163,11 @@ def add_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
         value_set.add(attribute_name + '-' + value) #
     submit_user_attribute = user_result.get(submit_user_tag, '') # 个人是否存在该管理员打上的个人标签
     tmp_attribute_set = set(submit_user_attribute.split('&'))
-    attribute_exist = tmp_attribute_set & submit_user_attribute
+    print tmp_attribute_set
+    attribute_exist = tmp_attribute_set & value_set
     if attribute_exist:
         return 'attribute exist'
-    user_result[submit_user_tag] = submit_user_attribute + "&" + add_attribute_value
+    user_result[submit_user_tag] = "&".join([submit_user_attribute, add_attribute_value])
     es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_result)
     status = True
     return status
@@ -174,7 +175,7 @@ def add_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
 # use to change attribute of user in es_user_portrait
 def change_attribute_portrait(uid, attribute_name, attribute_value, submit_user):
     status = False
-    submit_user_tag = str(submit_user)+"-tag"
+    submit_user_tag = submit_user + "-tag"
     id_attribute = submit_user + "-" + attribute_name
     #identify the user exist
     #identify the attribute exist
@@ -209,7 +210,7 @@ def change_attribute_portrait(uid, attribute_name, attribute_value, submit_user)
 # use to delete attribute of user in es_user_portrait
 def delete_attribute_portrait(uid, attribute_name, submit_user):
     status = False
-    submit_user_tag = str(submit_user)+"-tag"
+    submit_user_tag = submit_user + "-tag"
     id_attribute = submit_user + "-" + attribute_name
     #identify the user exist
     #identify the attribute value exist in es_user_portrait
@@ -225,7 +226,7 @@ def delete_attribute_portrait(uid, attribute_name, submit_user):
         tmp_attribute = submit_user_attribute.split('&')
         for item in tmp_attribute:
             if attribute_name in item:
-                tmp_attribute.pop(item)
+                tmp_attribute.remove(item)
         user_result[submit_user_attribute] = "&".join(tmp_attribute)
         es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_result)
         status = True
@@ -245,7 +246,7 @@ identify_attribute_list = ['emoticon','domain', 'psycho_status_string', 'uid', '
 
 # use to get user custom tag
 # return {uid:['attribute_name1:attribute_value1', 'attribute_name2:attribtue_value2']}
-def get_user_tag(uid_list):
+def get_user_tag(uid_list, submit_user):
     result = {}
     user_result = es.mget(index=user_index_name, doc_type=user_index_type, body={'ids':uid_list})['docs']
     for user_item in user_result:
@@ -255,23 +256,27 @@ def get_user_tag(uid_list):
             source = user_item['_source']
         except:
             source = {}
-        for key in source:
-            if key not in identify_attribute_list:
-                value = source[key]
-                tag_string = key+':'+value
-                result[uid].append(tag_string)
+        submit_user_tag = submit_user + '-tag'
+        submit_user_attribute = source.get(submit_user_tag, '')
+        if submit_user_attribute:
+            attribute_list = submit_user_attribute.split('&')
+            for item in attribute_list:
+                result[uid].append(item.replace('-',':'))
 
     return result
 
 # use to add tag to group
-def add_tag2group(uid_list, attribute_name, attribute_value):
+def add_tag2group(uid_list, attribute_name, attribute_value, submit_user):
+    id_attribute = submit_user + "-" + attribute_name
+    add_attribute = attribute_name + "-" + attribute_value
+    submit_user_tag = submit_user + "-tag"
     status = False
     #identify the attribute exist
     #for uid in uid_list
     #identify the attribute not in this user
     #add tag to this user
     try:
-        attribute_exist = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        attribute_exist = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except:
         return 'no attribute'
     attribute_exist_value_list = attribute_exist['attribute_value'].split('&')
@@ -282,18 +287,32 @@ def add_tag2group(uid_list, attribute_name, attribute_value):
             user_exist = es.get(index=user_index_name, doc_type=user_index_type, id=uid)['_source']
         except:
             user_exist = {}
-        if user_exist and attribute_name not in user_exist:
-            add_attribute_dict = {attribute_name: attribute_value}
-            es.update(index=user_index_name, doc_type=user_index_type, id=uid, body={'doc':add_attribute_dict})
+            continue
+        submit_user_attribute = user_exist.get(submit_user_tag, '')
+        if user_exist and attribute_name not in submit_user_attribute:
+            user_exist[submit_user_tag] = "&".join([submit_user_attribute, add_attribute])
+            es.index(index=user_index_name, doc_type=user_index_type, id=uid, body=user_exist)
     status = True
     return status
 
 # use to show custom_attribute_name
-def get_attribute_name():
+def get_attribute_name(submit_user):
     attribute_name_list = []
     try:
+        query_body = {
+            "query":{
+                "filtered":{
+                    "filter":{
+                        "term":{
+                            "user": submit_user
+                        }
+                    }
+                }
+            },
+            "size": 100000
+        }
         attribute_result = es_tag.search(index=attribute_index_name, doc_type=attribute_index_type, \
-                                     body={'query':{'match_all':{}}})['hits']['hits']
+                                     body=query_body)['hits']['hits']
     except Exception, e:
         raise e
     if attribute_result:
@@ -303,10 +322,11 @@ def get_attribute_name():
     return attribute_name_list
 
 # use to show cutom_attribute_value
-def get_attribute_value(attribute_name):
+def get_attribute_value(attribute_name, submit_user):
+    id_attribute = submit_user + "-" + attribute_name
     attribute_value_list = []
     try:
-        attribute_result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=attribute_name)['_source']
+        attribute_result = es_tag.get(index=attribute_index_name, doc_type=attribute_index_type, id=id_attribute)['_source']
     except:
         return 'no attribute'
     attribute_value_string = attribute_result['attribute_value']
@@ -314,9 +334,10 @@ def get_attribute_value(attribute_name):
     return attribute_value_list
 
 # use to show group tag statistic result
-def get_group_tag(group_name):
+def get_group_tag(group_name, submit_user):
     result = {}
     order_result = []
+    submit_user_tag = submit_user + "-tag"
     #get group task uid list
     #get user tag
     #statistic tag
@@ -338,20 +359,20 @@ def get_group_tag(group_name):
             source = user_item['_source']
         except:
             source = {}
-        for key in source:
-            if key not in identify_attribute_list:
-                value = source[key]
-                tag_string = key + ':' + value
-                try:
-                    result[tag_string] += 1
-                except:
-                    result[tag_string] = 1
+        submit_user_attribute = source.get(submit_user_tag, '')
+        attribute_list = submit_user_attribute.split("&")
+        for item in attribute_list:
+            tag_string = item.replace("-", ":")
+            try:
+                result[tag_string] += 1
+            except:
+                result[tag_string] = 1
     order_result = sorted(result.items(), key=lambda x:x[1], reverse=True)
     return order_result
 
 
 # use to get user attribute name for imagin
-def get_user_attribute_name(uid):
+def get_user_attribute_name(uid, submit_user):
     result = []
     user_result = es.get(index=user_index_name, doc_type=user_index_type, \
                         id=uid)
@@ -359,7 +380,9 @@ def get_user_attribute_name(uid):
         source = user_result['_source']
     except:
         source = {}
-    for key in source:
-        if key not in identify_attribute_list:
-            result.append(key)
+    submit_user_tag = submit_user + "-tag"
+    submit_user_attribute = source.get(submit_user_tag, '')
+    tag_list = submit_user_attribute.split('&')
+    for item in tag_list:
+        result.append(item.split('-')[0])
     return result
