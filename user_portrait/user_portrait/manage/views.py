@@ -59,9 +59,10 @@ def ajax_user_profile():
 def ajax_all_user_portrait():
     results = {}
     uid_string = request.args.get('uid_list', '')
+    submit_user = request.args.get('submit_user', 'admin')
     uid_list = uid_string.split(',')
     if uid_list:
-        results['user_portrait'] = compare_user_portrait_v3(uid_list)
+        results['user_portrait'] = compare_user_portrait_v3(uid_list, submit_user)
     if results:
         return json.dumps(results)
     else:
