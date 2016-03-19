@@ -63,7 +63,8 @@ def ajax_change_attribtue():
 def ajax_delete_attribute():
     status = False
     attribute_name = request.args.get('attribute_name', '')
-    status = delete_attribute(attribute_name)
+    submit_user = request.args.get('user', '')
+    status = delete_attribute(attribute_name, submit_user)
     return json.dumps(status)
 
 # use to add attribute and value to user in portrait
