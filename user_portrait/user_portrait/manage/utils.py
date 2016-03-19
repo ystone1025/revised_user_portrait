@@ -18,7 +18,7 @@ WEEK = 7
 #use to get evaluate max
 def get_evaluate_max():
     max_result = {}
-    evaluate_index = ['influence', 'activeness', 'importance']
+    evaluate_index = ['influence', 'activeness', 'importance', 'sensitive']
     for evaluate in evaluate_index:
         query_body = {
             'query':{
@@ -30,9 +30,12 @@ def get_evaluate_max():
         try:
             result = es_user_portrait.search(index=portrait_index_name, doc_type=portrait_index_type,\
                     body=query_body)['hits']['hits']
-        except Exception, e:
-            raise e
-        max_evaluate = result[0]['_source'][evaluate]
+        except:
+            result = {}
+        try:
+            max_evaluate = result[0]['_source'][evaluate]
+        except:
+            max_evaluate = MAX_VALUE
         max_result[evaluate] = max_evaluate
     
     return max_result
@@ -180,7 +183,7 @@ def get_user_tag(uid_list):
 
     return result
 
-def compare_user_portrait_v3(uid_list):
+def compare_user_portrait_v3(uid_list, submit_user):
     try:
         user_portrait_result = es.mget(index=portrait_index_name, doc_type=portrait_index_type,\
                 body={'ids':uid_list})['docs']
@@ -216,6 +219,12 @@ def compare_user_portrait_v3(uid_list):
         activeness = source['activeness']
         normal_activeness = math.log(activeness / max_result['activeness'] * 9 + 1, 10)
         user_result[uid]['activeness'] = int(normal_activeness * 100)
+        try:
+            sensitive = source['sensitive']
+        except:
+            sensitive = 0
+        normal_sensitive = math.log(sensitive / max_result['sensitive'] * 9 + 1, 10)
+        user_result[uid]['sensitive'] = int(normal_sensitive * 100)
         #attr: domain
         user_result[uid]['domain'] = source['domain']
         #attr: topic
@@ -238,15 +247,40 @@ def compare_user_portrait_v3(uid_list):
         #attr: hashtag
         user_result[uid]['hashtag'] = json.loads(source['hashtag_dict'])
         #attr: psycho status
-        user_result[uid]['psycho_status'] = user_psycho_status_result[uid]
+        #user_result[uid]['psycho_status'] = user_psycho_status_result[uid]
+        #attr: sensitive words
+        try:
+            sensitive_dict = json.loads(source['sensitive_dict'])
+        except:
+            sensitive_dict = {}
+        user_result[uid]['sensitive_words'] = sensitive_dict
         #attr:photo_url
         try:
             photo_result[uid] = {'photo_url': item['photo_url']}
         except:
             photo_result[uid] = {'photo_url': 'unkown'}
-    #get user tag
-    tag_results = get_user_tag(uid_list)    
-    all_result = {'portrait':user_result, 'photo_url':photo_result, 'tag': tag_results}
+        #get user tag
+        try:
+            user_tag = user_result[uid][submit_user + '-tag']
+        except:
+            user_tag = ''
+        if user_tag:
+            user_tag_list = user_tag.split('&')
+        else:
+            user_tag_list = []
+        user_result[uid]['tag'] = user_tag_list
+        #get group tag
+        try:
+            user_group_tag = user_result[uid]['group']
+        except:
+            user_group_tag = ''
+        if user_group_tag:
+            user_group_tag_list = [item.split('-')[1] for item in user_group_tag.split('&') if item.split('-')[0] == submit_user]
+        else:
+            user_group_tag_list = []
+        user_result[uid]['group_tag'] = user_group_tag_list
+
+    all_result = {'portrait':user_result, 'photo_url':photo_result}
     return all_result
 
 # compare two or three user
