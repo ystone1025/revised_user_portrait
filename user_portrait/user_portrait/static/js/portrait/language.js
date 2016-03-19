@@ -15,14 +15,20 @@ function call_sync_ajax_request(url, method, callback){
 //   });
 $(".closeList").off("click").click(function(){
     $("#float-wrap").addClass("hidden");
-    $("#more_topic").addClass("hidden");
     $("#more_keyWords").addClass("hidden");
     $("#more_hashtagWords").addClass("hidden");
+    $("#more_senWords").addClass("hidden");
+    $("#more_topic").addClass("hidden");
     return false;
   });
 $("#showmore_keyWords").off("click").click(function(){
     $("#float-wrap").removeClass("hidden");
     $("#more_keyWords").removeClass("hidden");
+    return false;
+  });
+$("#showmore_topic").off("click").click(function(){
+    $("#float-wrap").removeClass("hidden");
+    $("#more_topic").removeClass("hidden");
     return false;
   });
 
@@ -31,11 +37,12 @@ $("#showmore_hashtagWords").off("click").click(function(){
         $("#more_hashtagWords").removeClass("hidden");
         return false;
     });
-$("#showmore_topic").off("click").click(function(){
+$("#showsen_keyWords").off("click").click(function(){
         $("#float-wrap").removeClass("hidden");
-        $("#more_topic").removeClass("hidden");
+        $("#more_senWords").removeClass("hidden");
         return false;
     });
+
 function show_conclusion(data){
   var html = '';
   html += '<span class="fleft" style="margin-right:10px;width:32px;height:32px;background-image:url(/static/img/warning.png);margin-top:5px;display:black;"></span>';
@@ -54,11 +61,11 @@ function createRandomItemStyle() {
         }
     };
 }
-function Draw_keyword(data, div_name, more_div, more){
+function Draw_keyword(data, div_name, more_div, more,title){
 	var keyword = [];
   var html = '';
 	$('#'+ more_div).empty();
-  if(data.length == 0){
+  if(data.length == 0||data[0]==undefined){
      //console.log(div_name);
       html = '<h4 style="text-align:center;margin-top:50%;">暂无数据</h4>';
       //$('#'+ more_div).append(html);
@@ -68,7 +75,7 @@ function Draw_keyword(data, div_name, more_div, more){
    
       html = '';
       html += '<table class="table table-striped table-bordered" style="width:450px;">';
-      html += '<tr><th style="text-align:center">排名</th><th style="text-align:center">关键词</th><th style="text-align:center">频数</th></tr>';
+      html += '<tr><th style="text-align:center">排名</th><th style="text-align:center">'+title+'</th><th style="text-align:center">频数</th></tr>';
       for (var i = 0; i < data.length; i++) {
          var s = i.toString();
          var m = i + 1;
@@ -139,14 +146,6 @@ function get_radar_data (data) {
       topic_name.push(topic[0][i]);
     }
   };
-  // var topic_value2 = [];
-  // var topic_name2 = [];
-  // for(var i=0; i<8;i++){ //取前8个最大值
-  //   a=topic_value.indexOf(Math.max.apply(Math, topic_value));
-  //   topic_value2.push(topic_value[a].toFixed(3));
-  //   topic_name2.push(topic_name[a]);
-  //   topic_value[a]=0;
-  // }
   var topic_name3 = [];
   var max_topic = 8;
   if(topic_value.length <8){
@@ -165,176 +164,7 @@ function get_radar_data (data) {
   topic_result.push(topic_value);
   return topic_result;
 }
-function Draw_topic(data){
-  if(data[0][1].toFixed(3) == 0){
-      $('#user_topic').append('<h4 style="text-align:center;margin-top:50%;">暂无数据</h4>');
-      $('#showmore_topic').css('display', 'none');      
-  }else{
-      var topic_sta = [];
-      var topic_name_sta = [];
-      for(var i=0;i<data.length;i++){
-        if(data[i][1] != 0){
-          topic_sta.push(data[i][1]/data[0][1]);
-          topic_name_sta.push(data[i][0]);
-        }
-      };
 
-      var topic = [];
-      var html = '';
-      $('#topic_WordList').empty();
-      if(topic_sta.length == 0){
-         //console.log(div_name);
-          html = '<h3 style="font-size:20px;text-align:center;margin-top:50%;">暂无数据</h3>';
-          //$('#'+ more_div).append(html);
-          $('#more_topic').append(html);
-          $('#showmore_topic').empty();
-      }else{
-          html = '';
-          html += '<table class="table table-striped table-bordered" style="width:450px;">';
-          html += '<tr><th style="text-align:center">排名</th><th style="text-align:center">关键词</th><th style="text-align:center">概率</th></tr>';
-          for (var i = 0; i < topic_sta.length; i++) {
-             var s = i.toString();
-             var m = i + 1;
-             html += '<tr style=""><th style="text-align:center">' + m + '</th><th style="text-align:center"><a href="/index/search_result/?stype=2&uid=&uname=&location=&hashtag=&adkeyword=' + topic_name_sta[i] +  '&psycho_status=&domain&topic" target="_blank">' + topic_name_sta[i] +  '</a></th><th style="text-align:center">' + topic_sta[i].toFixed(3) + '</th></tr>';
-          };
-          html += '</table>'; 
-          $('#topic_WordList').append(html);
-      };
-      var topic_val = [];
-      topic_val.push(topic_name_sta);
-      topic_val.push(topic_sta);
-      var topic_result = [];
-      topic_result = get_radar_data(topic_val);
-      var topic_name = topic_result[0];
-      //console.log(topic_name);
-      var topic_value = topic_result[1];
-     // console.log(topic_value)
-      var myChart2 = echarts.init(document.getElementById('user_topic'));
-      var option = {
-        // title : {
-        //   text: '用户话题分布',
-        //   subtext: ''
-        // },
-          tooltip : {
-            show: true,
-            trigger: 'axis',
-            formatter:  function (params){
-              var res  = '';
-              var indicator = params.indicator;
-              //console.log(params);
-              res += params['0'][3]+' : '+(params['0'][2]/10).toFixed(3);
-              return res;
-              }
-          },
-          toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                restore : {show: true},
-                saveAsImage : {show: true}
-            }
-          },
-          calculable : true,
-          polar : [
-           {
-            indicator :topic_name,
-            radius : 90
-           }
-          ],
-          series : [
-           {
-            name: '话题分布情况',
-            type: 'radar',
-            itemStyle: {
-             normal: {
-              areaStyle: {
-                type: 'default'
-              }
-             }
-            },
-           data : [
-            {
-             value : topic_value,
-             //name : '用户话题分布'
-           }
-           ]
-          }]
-      };
-      myChart2.setOption(option);
-  }
-
-}
-
-function show_domain(data){
-
-  // var html = '';
-  //html += '<h3>用户领域分析</h3>';
-  data1 = '根据注册信息分类：\n'+data[0][0];
-  data2 = '根据转发结构分类：\n'+data[0][1];
-  data3 = '根据发帖内容分类：\n'+data[0][2];
-  data4 = data[1];
-var myChart1 = echarts.init(document.getElementById('preference_domain')); 
-var option = {
-    tooltip : {
-        trigger: 'item',
-        formatter: "{b}"
-    },
-    toolbox: {
-        show : true,
-        feature : {
-            mark : {show: true},
-            dataView : {show: true, readOnly: false},
-            restore : {show: true},
-            saveAsImage : {show: true}
-        }
-    },
-    calculable : false,
-
-    series : [
-        {
-            name:'树图',
-            type:'tree',
-            orient: 'horizontal',  // vertical horizontal
-            rootLocation: {x: 50, y: 'center'}, // 根节点位置  {x: 'center',y: 10}
-            nodePadding: 50,
-            symbol: 'circle',
-            symbolSize: 30,
-            itemStyle: {
-                normal: {
-                    color: '#4883b4',
-                    label: {
-                        show: true,
-                        position: 'right',
-                        formatter: "{b}",
-                        textStyle: {
-                            color: '#000',
-                            fontSize: 5
-                        }
-                    },
-                    lineStyle: {
-                        color: '#ccc',
-                        type: 'curve' // 'curve'|'broken'|'solid'|'dotted'|'dashed'
-
-                    }
-                },
-                emphasis: {
-                    color: '#4883b4',
-                    label: {
-                        show: false
-                    },
-                    borderWidth: 0
-                }
-            },
-            
-            data: [
-                {"name":data4,"children":[{"name":data1},{"name":data2},{"name":data3}]}
-            ]
-        }
-    ]
-};
-   myChart1.setOption(option);               
-}
 
 function show_results(data){
   //console.log(data.results.keywords);
@@ -342,6 +172,7 @@ function show_results(data){
   //console.log(keywordsCloud);
   var hashtag = data.results.hashtag;
   var topic = data.results.topic;
+  var senword = data.results.hashtag;
   var conclusion = data.description;
   var domain = data.results.domain;
   var keywords_name = 'Language';
@@ -350,11 +181,13 @@ function show_results(data){
   var hashtag_more = 'hashtag_WordList';
   var key_more = 'key_more';
   var hash_more = 'hash_more';
-  Draw_keyword(keywordsCloud, keywords_name, keywords_more, key_more);
-  Draw_keyword(hashtag, hashtag_name, hashtag_more, hash_more);
-  Draw_topic(topic);
-  show_conclusion(conclusion);
-  show_domain(domain);
+  var sen_name = 'sen_Language';
+  var senwords_more = 'sen_WordList';
+  var sen_more = 'sen_more';
+
+  Draw_keyword(keywordsCloud, keywords_name, keywords_more, key_more,'关键词');
+  Draw_keyword(hashtag, hashtag_name, hashtag_more, hash_more,'微话题');
+  //show_conclusion(conclusion);
 
   var tag_vector = data.tag_vector;
   //console.log(tag_vector);
@@ -365,9 +198,29 @@ function show_results(data){
     global_tag_vector.push(tag_vector[i]);
   }
   }
+// function show_results0(data){
+//   //console.log(data.results.keywords);
+//   var topic = data.results.topic;
+//   var domain = data.results.domain;
+//   Draw_topic0(topic);
+//   //show_conclusion(conclusion);
+//   show_domain0(domain);
+// }
+function show_results1(data){
+  //console.log(data.results.keywords);
+  var senword = data;
+  var sen_name = 'sen_Language';
+  var senwords_more = 'sen_WordList';
+  var sen_more = 'sen_more';
+  Draw_keyword(senword, sen_name, senwords_more, sen_more,'敏感词');
+  //show_conclusion(conclusion);
+  }
 
-var prefrence_url = '/attribute/preference/?uid=' + uid;
-
-//console.log(prefrence_url);
-call_sync_ajax_request(prefrence_url, ajax_method, show_results);
-
+function language_load(){
+  var prefrence_url = '/attribute/preference/?uid=' + uid;
+  var sen_url = '/attribute/new_sensitive_words/?uid=' +uid;
+  //console.log(prefrence_url);
+  call_sync_ajax_request(prefrence_url, ajax_method, show_results);
+  // call_sync_ajax_request(prefrence_url, ajax_method, show_results0);
+  call_sync_ajax_request(sen_url, ajax_method, show_results1);  
+}

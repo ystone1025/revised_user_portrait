@@ -40,7 +40,6 @@ function activity_call_ajax_request(url, callback){
     });
 }
 function geo_track(data){
-    console.log(data);
     var geo_data = data.week_geo_track;
 	var date = [];
 	var citys = [];
@@ -62,15 +61,20 @@ function geo_track(data){
 
     $('#more_t_list').empty();
     var html = '';
+    var i = 0;
     for(var key in geo_data){
-        console.log(key);
-        html += '<div style="margin-left:20px;float:left;">'
+        if(i == 0){
+        html += '<div style="margin-left:12px;float:left;">'
+        }
+        else{
+             html += '<div style="margin-left:21px;float:left;">'
+        }
         for( var i in geo_data[key]){
-           html += '<div>'+geo_data[key][i]+' </div>';
+           html += '<div>'+geo_data[key][i][0]+' </div>';
         }
         html +=  '</div>'
+        i += 1;
     }
-    console.log(html);
     $('#more_t_list').append(html);
 }
 
@@ -439,10 +443,12 @@ function draw_activeness_chart(data){
     //global_tag_vector.push(['活跃类型', data.tag_vector]);
     var data_time = [];
     var data_count = [];
-    var timeline = data.time_line;
-    var activeness = data.activeness;
+    var timeline = data.timeline;
+    //var activeness = data.activeness;
+    var activeness = data.evaluate_index;
+    //console.log(timeline,activeness);
     for (var i = 0;i < timeline.length;i++){
-        data_time.push(timeline[i].substr(5,6));
+        data_time.push(getDate_zh(timeline[i]));
     }
     for (var i = 0;i < activeness.length;i++){
         data_count.push(parseFloat(activeness[i].toFixed(2)));

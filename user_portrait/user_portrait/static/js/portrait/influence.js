@@ -1,6 +1,10 @@
 function Influence(){
   this.ajax_method = 'GET';
 }
+function getDate_in(tm){
+    var tt = new Date(parseInt(tm)*1000).format("MM-dd");
+    return tt;
+}
 Influence.prototype = {   //获取数据，重新画表
   call_async_ajax_request:function(url, method, callback){
       person_call_ajax_request(url, callback);
@@ -16,9 +20,13 @@ Influence.prototype = {   //获取数据，重新画表
   },
   Draw_influence:function(data){
     //console.log(data);
-	var item_x = data.time_line;
-    var item_y = data.influence;
-	// var conclusion = data.description;
+  var item_x = [];
+  for (var t in data.timeline){
+    item_x.push(getDate_in(t));
+  }
+  //var item_y = data.influence;
+	var item_y = data.evaluate_index;
+  // var conclusion = data.description;
 
 	// document.getElementById('saysth').innerHTML = conclusion[0];
 	// document.getElementById('sayimportant').innerHTML = conclusion[1];
@@ -542,6 +550,7 @@ function Draw_get_top_weibo(data,div_name){
 
 
 function click_action(){
+  //console.log(date_str);
       $(".closeList2").live('click',function(){
         $("#float-wrap").addClass("hidden");
         $("#re_influence").addClass("hidden");
