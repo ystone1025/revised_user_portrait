@@ -349,7 +349,7 @@ def new_get_user_location(uid):
         abnormal_ip = ''
         abnormal_city = ''
     else:
-        abnormal_ip = sort_abnormal_ip_list[0][0]
+        abnormal_ip = sort_abnormal_ip_list[0]
         abnormal_city = ip2city(abnormal_ip)
     results['abnormal_ip'] = [abnormal_ip, abnormal_city]
     #home ip
@@ -358,7 +358,7 @@ def new_get_user_location(uid):
             segment_dict = day_result[i]
         except:
             day_result[i] = {}
-    home_segment_dict = day_result[0]
+    home_segment_dict = union_dict(day_result[0], day_result[5])
     sort_home_segment_dict = sorted(home_segment_dict.items(), key=lambda x:x[1], reverse=True)
     if sort_home_segment_dict:
         home_ip = sort_home_segment_dict[0][0]
@@ -368,7 +368,7 @@ def new_get_user_location(uid):
         home_city = ''
     results['home_ip'] = [home_ip, home_city]
     #job ip
-    job_segment_dict = day_result[2]
+    job_segment_dict = union_dict(day_result[2], day_result[3])
     sort_job_segment_dict = sorted(job_segment_dict.items(), key=lambda x:x[1], reverse=True)
     if sort_job_segment_dict:
         job_ip = sort_job_segment_dict[0][0]
