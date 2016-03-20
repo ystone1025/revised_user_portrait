@@ -129,7 +129,7 @@ def recommentation_in(input_ts, recomment_type):
         return []
     # search from user_profile to rich the show information
     recommend_list = set(r.hkeys(hash_name))
-    identify_in_list = set(r.hkeys(identify_in_hashname))
+    identify_in_list = set(r.hkeys("compute"))
     recomment_results = list(recommend_list - identify_in_list)
 
     if recomment_results:
@@ -152,7 +152,7 @@ def admin_recommentation_in(input_ts):
         return []
     # search from user_profile to rich the show information
     submit_set = set(r.hkeys(hashname_submit))
-    idntify_in_set = set(r.hkeys(identify_in_hashname)) # 已入库用户名单
+    idntify_in_set = set(r.hkeys("compute")) # 已入库用户名单
     recomment_results = list(submit_set - idntify_in_set) #过滤一下
     if recomment_results:
         results = get_user_detail(date, recomment_results, 'show_in', "sensitive", "admin")

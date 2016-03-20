@@ -55,7 +55,7 @@ def ajax_new_user_profile():
 # write in version: 16-03-15
 @mod.route('/new_user_portrait/')
 def ajax_new_user_portrait():
-    admin_user = request.args.get('admin_user', '')
+    admin_user = request.args.get('admin_user', 'admin')
     uid = request.args.get('uid', '')
     results = new_get_user_portrait(uid, admin_user)
     if not results:
@@ -190,7 +190,7 @@ def ajax_portrait_search():
     query = []
     query_list = []
     condition_num = 0
-
+    submit_user = request.args.get('submit_user', 'admin')
     if stype == '1':
         fuzz_item = ['uid', 'uname']
         item_data = request.args.get('term', '')
@@ -201,7 +201,7 @@ def ajax_portrait_search():
         query.append({'bool':{'should':query_list}})
     else:
         query_list = []
-        fuzz_item = ['location', 'activity_geo', 'keywords', 'hashtag']
+        fuzz_item = ['location', 'activity_geo', 'keywords_string', 'hashtag']
         multi_item = ['character_sentiment','character_text','domain','topic_string']
         simple_fuzz_item = ['uid', 'uname']
         item_data = request.args.get('term', '')
@@ -212,8 +212,6 @@ def ajax_portrait_search():
         for item in fuzz_item:
             item_data = request.args.get(item, '')
             if item_data:
-                if item=='keywords':
-                    item = 'keywords_string'
                 query.append({'wildcard':{item:'*'+item_data+'*'}})
                 condition_num += 1
         # custom_attribute
@@ -224,8 +222,9 @@ def ajax_portrait_search():
                 attribute_name_value = tag_item.split(':')
                 attribute_name = attribute_name_value[0]
                 attribute_value = attribute_name_value[1]
+                field_key = submit_user + '-tag'
                 if attribute_name and attribute_value:
-                    query.append({'wildcard':{attribute_name:'*'+attribute_value+'*'}})
+                    query.append({'term':{field_key: attribute_name + '-' + attribute_value}})
                     condition_num += 1
 
         for item in multi_item:

@@ -19,8 +19,9 @@ def ajax_submit_attribute():
     # input cannont be None
     attribute_name = request.args.get('attribute_name', '') # my_attribute1
     attribute_value = request.args.get('attribute_value', '') # attribute_value ='tag1,tag2'
-    submit_user = request.args.get('user', '')           # user_name = admin1
+    submit_user = request.args.get('user', 'admin')           # user_name = admin1
     submit_date = request.args.get('date', '')         # submit_date = 2013-09-08
+
     status = submit_attribute(attribute_name, attribute_value, submit_user, submit_date) # mark success or fail
     return json.dumps(status)
 
@@ -53,7 +54,7 @@ def ajax_change_attribtue():
     #need to identify the user have the power to change the attribute table
     attribute_name = request.args.get('attribute_name', '')
     attribute_value = request.args.get('attribute_value', '')   # attribute_value = 'tag1&tag2'
-    submit_user = request.args.get('user', '')
+    submit_user = request.args.get('user', 'admin')
     submit_date = request.args.get('date', '')
     status = change_attribute(attribute_name, attribute_value, submit_user, submit_date)
     return json.dumps(status)
@@ -63,7 +64,7 @@ def ajax_change_attribtue():
 def ajax_delete_attribute():
     status = False
     attribute_name = request.args.get('attribute_name', '')
-    submit_user = request.args.get('user', '')
+    submit_user = request.args.get('user', 'admin')
     status = delete_attribute(attribute_name, submit_user)
     return json.dumps(status)
 
@@ -86,7 +87,7 @@ def ajax_change_attribute_portrait():
     uid = request.args.get('uid', '')
     attribute_name = request.args.get('attribute_name', '')
     attribute_value = request.args.get('attribute_value', '')
-    submit_user = request.args.get('user', '')
+    submit_user = request.args.get('user', 'admin')
     status = change_attribute_portrait(uid, attribute_name, attribute_value, submit_user)
     return json.dumps(status)
 
@@ -96,7 +97,7 @@ def ajax_delete_attribute_portrait():
     status = False
     uid = request.args.get('uid', '')
     attribute_name = request.args.get('attribute_name', '')
-    submit_user = request.args.get('user', '')
+    submit_user = request.args.get('user', 'admin')
     status = delete_attribute_portrait(uid, attribute_name, submit_user)
     return json.dumps(status)
 
@@ -105,8 +106,9 @@ def ajax_delete_attribute_portrait():
 def ajax_show_user_tag():
     result = {}
     uid_list_string = request.args.get('uid_list', '') # uid_list = 'uid1,uid2'
+    submit_user = request.args.get('user', 'admin')
     uid_list = uid_list_string.split(',')
-    result = get_user_tag(uid_list)
+    result = get_user_tag(uid_list, submit_user)
     return json.dumps(result)
 
 
@@ -115,7 +117,8 @@ def ajax_show_user_tag():
 def ajax_show_user_attribute_name():
     result = []
     uid = request.args.get('uid', '')
-    result = get_user_attribute_name(uid)
+    submit_user = request.args.get('user', 'admin')
+    result = get_user_attribute_name(uid, submit_user)
     return json.dumps(result)
 
 
@@ -123,8 +126,9 @@ def ajax_show_user_attribute_name():
 @mod.route('/show_group_tag/')
 def ajax_show_group_tag():
     result = {}
+    submit_user = request.args.get('user', 'admin')
     group_task_name = request.args.get('task_name', '')
-    result = get_group_tag(group_task_name)
+    result = get_group_tag(group_task_name, submit_user)
     return json.dumps(result)
 
 # use to add tag to group
@@ -132,18 +136,20 @@ def ajax_show_group_tag():
 def ajax_aff_group_tag():
     status = False
     uid_list_string = request.args.get('uid_list', '')
+    submit_user = request.args.get('user', 'admin')
     uid_list = uid_list_string.split(',')
     attribute_name = request.args.get('attribute_name', '')
     attribute_value = request.args.get('attribute_value', '')
-    status = add_tag2group(uid_list, attribute_name, attribute_value)
+    status = add_tag2group(uid_list, attribute_name, attribute_value, submit_user)
     return json.dumps(status)
 
 
 # use to show custom_attribtue_name in search conditon as drop_down_box
 @mod.route('/show_attribute_name/')
 def ajax_show_attribtue_name():
+    submit_user = request.args.get('user', 'admin')
     result = []
-    attribute_name_list = get_attribute_name()
+    attribute_name_list = get_attribute_name(submit_user)
     return json.dumps(attribute_name_list)
 
 # use to show custom_attribtue_value in search condition as drop_down_box
@@ -151,5 +157,6 @@ def ajax_show_attribtue_name():
 def ajax_show_attribute_value():
     result = []
     attribute_name = request.args.get('attribute_name', '')
-    attribute_value_list = get_attribute_value(attribute_name)
+    submit_user = request.args.get('user', 'admin')
+    attribute_value_list = get_attribute_value(attribute_name, submit_user)
     return json.dumps(attribute_value_list)

@@ -24,7 +24,6 @@ from parameter import DAY, WEEK, RUN_TYPE
 from parameter import RUN_TEST_TIME
 
 WEEK = 7
-
 test_ts = datetime2ts(RUN_TEST_TIME)
 
 #get user hashtag by bulk action
@@ -82,6 +81,7 @@ def update_day_geo(uid_list, user_info_list):
         if uid not in results:
             results[uid] = {'activity_geo':{}, 'activity_geo_dict':[]}
         uid_ip_results = ip_results[count]
+        count += 1
         if uid_ip_results:
             uid_ip_dict = json.loads(uid_ip_results)
         else:
@@ -90,6 +90,7 @@ def update_day_geo(uid_list, user_info_list):
         for ip in uid_ip_dict:
             ip_count = len(uid_ip_dict[ip].split('&'))
             geo = ip2city(ip)
+            geo = geo.decode('utf-8')
             try:
                 day_results[geo] += ip_count
             except:
@@ -220,7 +221,6 @@ def update_attribute_day():
     user_info_list = {}
     start_ts = time.time()
     while True:
-        print 'start while'
         r_user_info = update_day_redis.rpop(UPDATE_DAY_REDIS_KEY)
         if r_user_info:
             r_user_info = json.loads(r_user_info)
@@ -247,7 +247,7 @@ def update_attribute_day():
             user_info_list = {}
             end_ts = time.time()
             #log_should_delete
-            print '%s sec count 1000' % (end_ts - start_ts)
+            #print '%s sec count 1000' % (end_ts - start_ts)
             #log_should_delete
             start_ts = end_ts
     

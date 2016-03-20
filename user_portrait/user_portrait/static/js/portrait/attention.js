@@ -12,7 +12,7 @@ Draw_attention:function(data){
 		var say = document.getElementById('test1');
 		say.innerHTML = '该用户暂无此数据';
 	 }else{
-		attention(items,UserID,UserName,texts);
+		    attention(items,UserID,UserName,texts);
         draw_topic(items['in_portrait_result']);
         draw_field(items['in_portrait_result']);
         draw_more_topic(items['in_portrait_result']);        
@@ -28,6 +28,9 @@ function attention(data,UserID,UserName,texts){
     var in_data = data['in_portrait_list'];
     var personal_url = '/index/personal/?uid=';
     var nod = {};
+    var linestyle = '';
+    var select_graph = $('input[name="graph-type"]:checked').attr("title");
+    console.log(select_graph);
     nodeContent = []
     nod['category'] = 0;
     nod['name'] = UserName+'('+UserID+')';
@@ -55,10 +58,25 @@ function attention(data,UserID,UserName,texts){
             //nod['value'] = out_data[i][3];
             nodeContent.push(nod);
             var line ={};
-            line['source'] = nod['name'];
-            line['target'] = UserName+'('+UserID+')';
-            line['weight'] = 1;
-            linkline.push(line);
+            if( select_graph == '转发'||select_graph == '评论'){
+              line['source'] = nod['name'];
+              line['target'] = UserName+'('+UserID+')';
+              line['weight'] = 1;
+              linkline.push(line);
+              linestyle = 'arrow'      
+            }else if(select_graph == '被转发'||select_graph == '被评论'||select_graph == '提及'){
+              line['source'] = UserName+'('+UserID+')' ;
+              line['target'] = nod['name'];
+              line['weight'] = 1;
+              linkline.push(line);
+              linestyle = 'arrow'  
+            }else{
+              line['source'] = nod['name'];
+              line['target'] = UserName+'('+UserID+')';
+              line['weight'] = 1;
+              linkline.push(line);
+              linestyle = 'none'         
+            }
     }
     var rename_in = '';
     for (var i=0;i<in_data.length;i++){
@@ -82,10 +100,26 @@ function attention(data,UserID,UserName,texts){
       //nod['value'] = in_data[i][4];
       nodeContent.push(nod);
       var line ={};
-      line['source'] = nod['name'];
-      line['target'] = UserName+'('+UserID+')';
-      line['weight'] = 1;
-      linkline.push(line);
+      if( select_graph == '转发'||select_graph == '评论'){
+        line['source'] = nod['name'];
+        line['target'] = UserName+'('+UserID+')';
+        line['weight'] = 1;
+        linkline.push(line);
+        linestyle = 'arrow'      
+      }else if(select_graph == '被转发'||select_graph == '被评论'||select_graph == '提及'){
+        line['source'] = UserName+'('+UserID+')' ;
+        line['target'] = nod['name'];
+        line['weight'] = 1;
+        linkline.push(line);
+        linestyle = 'arrow'  
+      }else{
+        line['source'] = nod['name'];
+        line['target'] = UserName+'('+UserID+')';
+        line['weight'] = 1;
+        linkline.push(line);
+        linestyle = 'none'         
+      }
+
     }
 	var myChart3 = echarts.init(document.getElementById('test1'));
 	var option = {
@@ -151,6 +185,7 @@ function attention(data,UserID,UserName,texts){
                     maxRadius : 25,
                     gravity: 1.1,
                     scaling: 1.1,
+                    linkSymbol: linestyle,
                     roam: 'move',
                     nodes:nodeContent,
                     links : linkline
@@ -311,8 +346,6 @@ function draw_out_list(data){
       //item = replace_space(item);
       //global_data[item[0]] = item; // make global data\
       var list_id = '';
-      console.log(item[0]=='' );
-      console.log(item[0],item[1].length);
       if(item[0]=='None'){
         continue;
       }else if(item[0]=='' && item[1].length>0){
@@ -494,7 +527,7 @@ function confirm_ok(data){
     alert('操作成功！');
 }
 function bind_social_mode_choose(){
-    $('#detail #graph_button').click(function(){
+    $('#graph_button').click(function(){
       var select_graph = $('input[name="graph-type"]:checked').val();
       var select_num=document.getElementById('num-range').value;
       var UserName = document.getElementById('nickname').innerHTML;
@@ -541,8 +574,8 @@ function bind_social_mode_choose(){
         var url = '/attribute/bidirect_interaction/?uid='+uid+'&top_count='+select_num  ;
         Attention.call_sync_ajax_request(url, Attention.ajax_method, Attention.Draw_attention);
       }      
-    });
-}
+    }); 
+  }
 function social_load(){
     var url = '/attribute/attention/?uid='+uid+'&top_count='+select_num ;
     Attention.call_sync_ajax_request(url, Attention.ajax_method, Attention.Draw_attention);

@@ -7,10 +7,10 @@ Thought.prototype = {   //获取数据，重新画表
             var say = document.getElementById('emotion');
             say.innerHTML = '该用户暂无此数据';
         }else{
-            var con0 = document.getElementById('con_emotion0');
-            con0.innerHTML = items['description'][0];
-            var con = document.getElementById('con_emotion');
-            con.innerHTML = items['description'][1];
+            // var con0 = document.getElementById('con_emotion0');
+            // con0.innerHTML = items['description'][0];
+            // var con = document.getElementById('con_emotion');
+            // con.innerHTML = items['description'][1];
             emotions(items);
             var time_init = new Date(items['time_list'][0]);
             var times_init = time_init.getTime().toString().substr(0,10);
@@ -181,18 +181,18 @@ function draw_character(data){
     var second_content = [];
     for (var i = 0;i < 7; i++){
         if (pie_data[i] && pie_data[i] != 0){
-            console.log(i,pie_data[i]);
+            //console.log(i,pie_data[i]);
             var nod = {};
             nod['name'] = character_dict[i];
             nod['value'] = pie_data[i];
             second_content.push(nod);
             if ((i == 0 ) || (i == 1)){
-                console.log(2,nod);
+                //console.log(2,nod);
                 first_content.push(nod);
             }
             else{
                 neg += pie_data[i];
-                console.log(neg);
+                //console.log(neg);
             }
         }
     }
