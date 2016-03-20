@@ -1,0 +1,71 @@
+{% extends "tbase.html" %}
+    {% block title %}个人中心{% endblock title%}
+      {% block css %}
+		<link href="/static/css/dashboard.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/portrait.css">
+      {{ super() }}    
+    <style type="text/css">
+    body {
+  font-family: '微软雅黑';
+  font-size: 14px;
+	}
+  .shadow {
+    -webkit-box-shadow:5px 6px 3px #ABA8A8;
+    -moz-box-shadow:5px 6px 3px #ABA8A8;
+    box-shadow:5px 6px 3px #ABA8A8;
+    width: 500px;
+    padding: 10px;
+    border: 2px solid #B3B0B0;
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+  #user_center{
+      font-size: 15px;
+  }
+  #user_center li{
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #cccccc;
+  }
+
+ 	</style>
+ {% endblock css %}
+
+ {% block head_js %}
+  {{ super() }}
+	<script type="text/javascript">
+  </script>   
+  {% endblock head_js %}
+
+    {% block head_title %}<img src="/static/img/rank.jpg" style="width:32px;">个人中心{% endblock %}
+    {% block main %}
+    <div id="user_center">
+      <b>
+        用户名：{{g.user.email}}
+      </b>
+      <br>
+      <div style="margin-top:30px;">
+        <div style="width:100px"><b>用户权限</b></div>
+        <div class="shadow" style="nargin-left:20px;">
+          {% with roles = g.user.roles %}
+          {% if roles %}
+            <ul>
+            {% for role in roles %}
+            <li class=""><div style="width:150px;float:left;">{{ role.name }}</div><span style="float:left;margin-left:20px">{{role.description}}</span> </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+    {% endblock main %}
+
+{% block Own_js %}
+    {{ super() }}
+{% endblock Own_js %}
+    {% block end_js %}
+    {{ super() }}
+<!--     // <script type="text/javascript" src="/static/js/portrait/overview_table.js"></script> -->
+    {% endblock end_js %}
+

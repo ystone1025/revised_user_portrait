@@ -18,9 +18,9 @@ Search_weibo.prototype = {
           url: url,
           type: method,
           dataType: 'json',
-          async: true,
-          beforeSend:function(){$('#compare_loading').showLoading();},
-          complete:function(){$('#compare_loading').hideLoading();},
+          // async: true,
+          // beforeSend:function(){$('#compare_loading').showLoading();},
+          // complete:function(){$('#compare_loading').hideLoading();},
           success:callback,
         });
     },
@@ -28,8 +28,8 @@ Search_weibo.prototype = {
         var data = all_data.user_portrait;
         var url_photo = data.photo_url;
         var portrait = data.portrait;
-        var tag_data = data.tag;
-        //console.log(portrait);
+        console.log(data);
+        var tag_data = portrait.tag;
         Compare(url_photo, portrait, tag_data);
         compare_extra(portrait);
         bind_close_click(portrait);
@@ -41,6 +41,7 @@ Search_weibo.prototype = {
         return that.call_data;
     },
     Draw_cloud_keywords:function(data, div){
+        console.log(data,div);
         function createRandomItemStyle() {
             return {
                 normal: {
@@ -52,7 +53,7 @@ Search_weibo.prototype = {
                 }
             };
         }
-        // var keywords_data = data;
+        var keywords_data = data;
         //console.log(data);
 
         var key_value = [];
@@ -79,13 +80,13 @@ Search_weibo.prototype = {
             word['itemStyle'] = createRandomItemStyle();
             keyword.push(word);
         }        
-        // var keywords = new Array();
-        // for(i in keywords_data){
-        //     keywords.push({'name':keywords_data[i][0], 'value':keywords_data[i][1]*1000, 'itemStyle':createRandomItemStyle()});
-        //     if(keywords.length == 20){
-        //         break;
-        //     }
-        // }
+        var keywords = new Array();
+        for(i in keywords_data){
+            keywords.push({'name':keywords_data[i][0], 'value':keywords_data[i][1]*1000, 'itemStyle':createRandomItemStyle()});
+            if(keywords.length == 20){
+                break;
+            }
+        }
         var option = {
             title: {
                 text: '',
@@ -111,7 +112,7 @@ Search_weibo.prototype = {
                 },
                 data: keyword,
             }]
-        };
+        }
         var myChart = echarts.init(document.getElementById(div));
         myChart.setOption(option);
     },
@@ -220,7 +221,8 @@ function Compare(url_photo, portrait, tag_data){
 		
     }
     html += '</tr>';
-
+    html += '<tr><td colspan="'+ (num+1) +'" name="list-5" class="cate_title" style="font-size:20px"><b>语言属性</b></td></tr>';
+    
     j = 0 ;
     html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">微话题</td>';
     for(var k in portrait){
@@ -235,8 +237,7 @@ function Compare(url_photo, portrait, tag_data){
         html += '<td class="center" name="line'+ j +'"><div id = "sensitiveword'+ j +'" style="height:200px"></div></td>';
     }
     html += '</tr>';    
-    j = 0;
-    html += '<tr><td colspan="'+ (num+1) +'" name="list-5" class="cate_title" style="font-size:20px"><b>语言属性</b></td></tr>';
+    j = 0 ;
     html += '<tr class="list-5"><td class="cate_title" style="width:90px;text-align:right">关键词</td>';
     for(var k in portrait){
         j += 1;
@@ -245,36 +246,48 @@ function Compare(url_photo, portrait, tag_data){
     html += '</tr>';
 
     j = 0;
-    // html += '<tr><td colspan="'+ (num+1) +'" name="list-6" class="cate_title" style="font-size:20px"><b>思想属性</b></td></tr>';
-    // j = 0;
-    // html += '<tr class="list-6"><td class="cate_title" style="width:90px;text-align:right">心理状态</td>';
-    // for(var k in portrait){
-    //     j += 1;
-    //     html += '<td class="center" name="line'+ j +'"><div id="emotion'+ j +'" style="height:300px"></div></td>';
-    // }
-    // html += '</tr>';
-    
-    j = 0;
     html += '<tr><td colspan="'+ (num+1) +'" name="list-7" class="cate_title" style="font-size:20px"><b>自定义标签</b></td></tr>';
     html += '<tr class="list-7"><td class="cate_title" style="width:90px;text-align:right">标签</td>';
-    for(var k in tag_data){
+    for(var k in portrait){
         j += 1;
         html += '<td class="center" name="line'+ j +'">';
-        if(tag_data[k].length == 0){
-        	 html += '';
+        if(portrait[k]['tag'].length == 0){
+        	 html += '<div>暂无数据</div>';
         }
         else{
-        	for(var i = 0; i < tag_data[k].length; i++){
-        		if(i == tag_data[k].length -1){
-        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ tag_data[k][i] +'</span>';
+        	for(var i = 0; i < portrait[k]['tag'].length; i++){
+        		if(i == portrait[k]['tag'].length -1){
+        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['tag'][i].replace('-',':') +'</span>';
         		}
         		else{
-        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ tag_data[k][i] +',</span>';
+        			html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['tag'][i].replace('-',':') +',</span>';
         		}
         	}
         }
     }
     html += '</tr>';
+    html += '<tr class="list-7"><td class="cate_title" style="width:90px;text-align:right">群体标签</td>';
+    for(var k in portrait){
+        j += 1;
+        html += '<td class="center" name="line'+ j +'">';
+        if(portrait[k]['tag'].length == 0){
+             html += '<div>暂无数据</div>';
+        }
+        else{
+            for(var i = 0; i < portrait[k]['group_tag'].length; i++){
+                if(i == portrait[k]['group_tag'].length -1){
+                    html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['group_tag'][i].replace('-',':') +'</span>';
+                }
+                else{
+                    html += '<span class="input-group-addon" style="width:96px;border:1px solid white; border-radius: 8px;display:inline-block">'+ portrait[k]['group_tag'][i].replace('-',':') +',</span>';
+                }
+            }
+        }
+    }
+    html += '</tr>';
+
+
+
     html += '</tbody>';
     $('#table_compare').append(html);
 
@@ -286,117 +299,37 @@ function Compare(url_photo, portrait, tag_data){
     }
     $('#picturebig').append(html2);
 }
-// function Draw_think_emotion(psycho_status,div){
-//     //console.log(psycho_status);
-//     var first_data = psycho_status['first'];
-//     var first = new Array();
 
-//     for(var key in first_data){
-//         if(first_data[key] != 0){
-//             if(key == 7){
-//                 first.push({'name':SENTIMENT_DICT_NEW[key],'value':first_data[key].toFixed(2),selected:true});
-//             }else{
-//                 first.push({'name':SENTIMENT_DICT_NEW[key],'value':first_data[key].toFixed(2)});
-//             } 
-//         }
-//     }
-//     var second = new Array();
-//     var second_data = psycho_status['second'];
-//     if(first_data[0] != 0){
-//         second.push({'name':SENTIMENT_DICT_NEW[0],'value':first_data[0].toFixed(2)});
-//     }
-//     if(first_data[1] != 0){
-//         second.push({'name':SENTIMENT_DICT_NEW[1],'value':first_data[1].toFixed(2)});
-//     }
-//     for(var key in second_data){
-//         //console.log(second_data[key]);
-//         if(second_data[key] != 0){
-//             second.push({'name':SENTIMENT_DICT_NEW[key],'value':second_data[key].toFixed(2)});
-//         }
-//     };
-
-//     var myChart = echarts.init(document.getElementById(div)); 
-//     var option = {
-//     tooltip : {
-//         trigger: 'item',
-//         formatter: "{a} <br/>{b} : {c} ({d}%)"
-//     },
-
-//     toolbox: {
-//         show : true,
-//         feature : {
-//             mark : {show: false},
-//             dataView : {show: false, readOnly: false},
-//             magicType : {
-//                 show: false, 
-//                 type: ['pie', 'funnel']
-//             },
-//             restore : {show: false},
-//             saveAsImage : {show: true}
-//         }
-//     },
-//     calculable : false,
-//     series : [
-//         {
-//             name:'',
-//             type:'pie',
-//             selectedMode: 'single',
-//             radius : [0, 35],
-            
-//             // for funnel
-//             x: '20%',
-//             width: '40%',
-//             funnelAlign: 'right',
-//             max: 1548,
-            
-//             itemStyle : {
-//                 normal : {
-//                     label : {
-//                         position : 'inner'
-//                     },
-//                     labelLine : {
-//                         show : false
-//                     }
-//                 }
-//             },
-//             data:first
-//         },
-//         {
-//             name:'',
-//             type:'pie',
-//             radius : [50, 70],
-//             // for funnel
-//             x: '60%',
-//             width: '35%',
-//             funnelAlign: 'left',
-//             max: 1048,
-//             data:second
-//         }
-//     ]
-// }
-// myChart.setOption(option);  
-// }
 function compare_extra(portrait){
     var mark = 1;
-    var div ;
+    var div ='';
     for(var key in portrait){
-        div = 'line'+ mark;
+        var div = 'line'+ mark;
+        //console.log(portrait[key]['keywords'],'portrait[key]["keywords"]');
         if(portrait[key]['keywords'].length == 0){
             $('#'+div).empty();
             $('#'+div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
         }else{
             Search_weibo.Draw_cloud_keywords(portrait[key]['keywords'], div);
         }
-        div = 'emotion'+ mark;
-        var psycho_status = portrait[key]['psycho_status']
+        //div = 'emotion'+ mark;
+        //var psycho_status = portrait[key]['psycho_status']
         // Draw_think_emotion(psycho_status,div);
-        div = 'hashtag'+ mark;
-        if(portrait[key]['hashtag']){
+        var div = 'hashtag'+ mark;
+        if(portrait[key]['hashtag'] == 0){
             $('#'+div).empty();
             $('#'+div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
         }else{
             Search_weibo.Draw_cloud_keywords(portrait[key]['hashtag'], div);
         }
+        var div = 'sensitiveword'+ mark;
+        if(portrait[key]['sensitive_words'] == 0){
+            $('#'+div).empty();
+            $('#'+div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
+        }else{
+            Search_weibo.Draw_cloud_keywords(portrait[key]['sensitive_words'], div);
+        }
+
         mark = mark + 1;
     }
 }
@@ -428,22 +361,19 @@ function bind_close_click(portrait){
                 Search_weibo.Draw_cloud_keywords(portrait[uid]['keywords'], cloud_div);
             }
 
-
             if(portrait[uid]['sensitive_words'].length == 0){
                 $('#'+sen_div).empty();
                 $('#'+sen_div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
             }else{
                 Search_weibo.Draw_cloud_keywords(portrait[uid]['sensitive_words'], sen_div);
             }
-
-
             if(portrait[uid]['hashtag']){
                 $('#'+hashtag_div).empty();
                 $('#'+hashtag_div).append('<span style="display:block; padding-top:83px">该数据为空</span>');
             }else{
                 Search_weibo.Draw_cloud_keywords(portrait[uid]['hashtag'], hashtag_div);
             }
-            var psycho_status = portrait[uid]['psycho_status']
+            //var psycho_status = portrait[uid]['psycho_status']
             // Draw_think_emotion(psycho_status,emotion_div);
         }
 

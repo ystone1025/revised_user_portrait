@@ -230,6 +230,7 @@ function Draw_get_top_weibo(data, div_name){
 
 //显示所有的相关微博
 function show_all_related_weibo(url) {
+    $('#weibo_sort').empty();
     //$('#related_weibo').empty();
     var html = '';
     //html += '<div style="border-bottom: 3px solid #dddddd;height: 40px;line-height:40px;">';

@@ -19,10 +19,12 @@ from user_portrait.tag.views import mod as tagModule
 from user_portrait.weibo.views import mod as weiboModule
 from user_portrait.social_sensing.views import mod as sensingModule
 from user_portrait.sentiment.views import mod as sentimentModule
-from user_portrait.user_rank.views import mod as userrankModule
+from user_portrait.extensions import db, security, user_datastore
+from flask.ext.security import SQLAlchemyUserDatastore
 
 def create_app():
     app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///flask-admin.db'
 
     register_blueprints(app)
     register_extensions(app)
@@ -42,7 +44,6 @@ def create_app():
     app.register_blueprint(weiboModule)
     app.register_blueprint(sensingModule)
     app.register_blueprint(sentimentModule)
-    app.register_blueprint(userrankModule)
     # the debug toolbar is only enabled in debug mode
     app.config['DEBUG'] = True
 
@@ -71,6 +72,14 @@ def create_app():
     
     # debug toolbar
     # toolbar = DebugToolbarExtension(app)
+
+    # init database
+    db.init_app(app)
+    with app.test_request_context():
+        db.create_all()
+
+    # init security
+    security.init_app(app, datastore=user_datastore)
     
     '''
     app.config['MONGO_HOST'] = MONGODB_HOST

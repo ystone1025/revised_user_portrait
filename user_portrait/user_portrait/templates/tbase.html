@@ -82,34 +82,44 @@
 		{% block header %}
 			<div id="header">
                 <div><a href="/index/"><h1 class="headtitle" style="color:#333;">网民画像系统</h1></a></div>
-				<div class="menu">
-                    <ul class="nav">
-                        <li><a href="/index/user_rank">用户排名</a></li>
-                        <li><a href="/index/mood_detect">情绪监控</a></li>
-                        <li><a href="">网民画像</a>
-                            <div class="box">
-                                <a href="/index/portrait_in/">网民入库推荐</a>
+				<div class="menu" style="width:800px;">
+        		<ul class="nav">
+                    <li><a href="/index/user_rank/">用户排行</a></li>
+                    <li><a href="/index/mood_detect">情绪监测</a></li>
+                    <li><a href="">网民画像</a>
+                        <div class="box">
+                            <a href="/index/portrait_in/">网民入库推荐</a>
                                 <a href="/index/search_portrait/">查看人物画像</a>
                                 <a href="/index/search_contrast/">人物对比分析</a>
                                 <a href="/index/search_connect/">人物关联分析</a>
-                            </div>
-                        </li>
-                        <li><a href="">群体分析</a>
-                            <div class="box">
+                        </div>
+                    </li>
+                    <li><a href="">群体分析</a>
+                        <div class="box">
                                 <a href="#">群体发现</a>
                                 <a href="#">群体分析</a>
                             </div>
-                        </li>
-                        <li><a href="#">社会感知</a></li>
-                        <li><a href="#">个人中心</a></li>
-                        <li><a href="#">出入管理</a>
-                            <div class="box">
-							    <a href="#">入库管理</a>
-								<a href="#">出库管理</a>
-                            </div>
-                        </li>
-                        <li><a href="#">权限管理</a></li>
-                    </ul>
+                    </li>
+                    <li><a href="/index/social_sensing/">社会感知</a></li>
+                    
+                    <li><a href="#">系统管理</a>
+					    <div class="box">
+					        	<a href="#">权限管理</a>
+					        	<a href="#">日志管理</a>
+							    <a href="#">出入库管理</a>
+                        </div>
+					</li>
+					<li><a href="#">个人中心</a>
+						<div class="box">
+								{% if not g.user.is_anonymous %}
+								<a href="/index/usercenter/" style="font-size:12px;"><span>{{g.user.email}}</span> </a>
+								<a href="/logout/"> 登出 </a>
+								{% else %}
+								<a href="/login"> 登陆 </a>
+								{% endif %}
+						</div>
+					</li>
+                </ul>
                 </div>
                 <div><a title="logout" href="" style="color:white;font-weight:bold;text-decoration:underline;margin-top:75px;float:right;margin-right:20px;font-size:13px;"> 登出 </a></div>
             </div>
