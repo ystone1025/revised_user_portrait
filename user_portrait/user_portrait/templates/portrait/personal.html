@@ -89,7 +89,7 @@ $(function(){
 			<li><span>注册地：</span><span id="location"></span></li>
 			<li><span>个人描述：</span><span id="description"></span></li>
 			<li><span>主页微博：</span></li>
-			<li><a id="homepage" ></a></li>
+			<li><a href="" id="homepage" ></a></li>
 		</ul>
 	</div>
 	
@@ -182,13 +182,13 @@ $(function(){
 		<span id="retweet" style="margin-left:20px;float:left;width:180px;"></span>
 		<a href="#" data-toggle="modal" data-target="#more_retweet" id="moreretweet" style="float:left;line-height:30px;margin-left:5px;">更多</a>
         <span style="color:red;margin-left:20px;margin-right:10px;float:left;line-height:30px;">转发及评论他的用户</span>
-		<span id="retweeted" style="margin-left:20px;float:left;width:180px;"></span>
+		<span id="tweeted" style="margin-left:20px;float:left;width:180px;"></span>
 		<a href="#" data-toggle="modal" data-target="#more_tweeted" id="moretweeted" style="float:left;line-height:30px;margin-left:5px;">更多</a>
     </div>
     <div class = "row" style="font-size:13px;margin-top:10px;margin-bottom:20px;line-height:30px;" >
 	    <span style="color:red;margin-left:30px;margin-right:10px;float:left;line-height:30px;width:117px;">双向交互的用户</span>
 		<span id="two_way" style="margin-left:20px;float:left;width:180px;"></span>
-		<a href="#" data-toggle="modal" data-target="#moretwo_way"  id="moretwo_way" style="float:left;line-height:30px;margin-left:5px;">更多</a>
+		<a href="#" data-toggle="modal" data-target="#more_two_way"  id="moretwo_way" style="float:left;line-height:30px;margin-left:5px;">更多</a>
 		<span style="color:red;margin-left:20px;margin-right:25px;float:left;line-height:30px;width:117px;">他@的相关用户</span>
 		<span id="related" style="margin-left:20px;float:left;width:180px;"></span>
 		<a href="#" data-toggle="modal" data-target="#more_related" id="morerelated" style="float:left;line-height:30px;margin-left:5px;">更多</a>
@@ -313,7 +313,7 @@ $(function(){
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" style="font-size:18px" id="myModalLabel">转发及评论他的用户排名</h4>
       </div>
-      <div class="modal-body" id='userretweeted'>
+      <div class="modal-body" id='usertweeted'>
       </div>
     </div>
   </div>
@@ -390,6 +390,7 @@ Personal.prototype = {   //群组搜索
 		personalData = data ;
         var homepage_url = 'http://weibo.com/u/' + uid;
         document.getElementById('homepage').innerHTML = homepage_url;
+        document.getElementById('homepage').href = homepage_url;
 		var UID = document.getElementById('uid');
 		UID.innerHTML = personalData.uid;
         var Uname = document.getElementById('uname');
@@ -402,9 +403,13 @@ Personal.prototype = {   //群组搜索
         var Verfi = document.getElementById('verf');
         var verf = personalData.verified_type;
         var Verf_type = document.getElementById('verf_type');
-        if(verf != -1 && verf != 0 && verf != 1 && verf != 2 && verf != 3 && verf != 4 && verf != 5 && verf != 6 && verf != 7 && verf != 8 && verf != 200 && verf != 220 && verf != 400 ){
+        if(verf != 0 && verf != 1 && verf != 2 && verf != 3 && verf != 4 && verf != 5 && verf != 6 && verf != 7 && verf != 8 && verf != 200 && verf != 220 && verf != 400 ){
 		    Verfi.innerHTML = "否";
-            Verf_type.innerHTML = '无';
+		    if(verf == -1){
+		    	Verf_type.innerHTML = personalData.verified_type_ch;
+		    }else{
+		    	Verf_type.innerHTML = "无";
+		    }
 		}else{
 		    Verfi.innerHTML = "是";
 			Verf_type.innerHTML = personalData.verified_type_ch;
@@ -695,7 +700,7 @@ Personal.prototype = {   //群组搜索
 
 	socialData:function(data){
 		Draw(data.top_retweet_comment,'retweet');
-        Draw(data.top_be_retweet_comment,'retweeted');
+        Draw(data.top_be_retweet_comment,'tweeted');
 		Draw(data.top_interaction,'two_way');
 		Draw(data.top_mention,'related');
 		var topics = document.getElementById('analyse_topic');
@@ -705,7 +710,11 @@ Personal.prototype = {   //群组搜索
 		}else if(data.in_topic.length>0 && data.in_topic.length<=3){
 		    var html ='';
 		    for(var i=0;i<data.in_topic.length;i++){
-			    html = html + data.in_topic[i][0] +'&nbsp&nbsp';
+		    	if(i == 0){
+		    		html = html + data.in_topic[i][0];
+		    	}else{
+		    		html = html +'&nbsp&nbsp'+ data.in_topic[i][0];
+		    	}			    
 			}
 			topics.innerHTML = html;
 			$('#moreanalyse_topic').css('display','none');
@@ -717,10 +726,14 @@ Personal.prototype = {   //群组搜索
 		if(data.in_domain.length>=4){
 		    domains.innerHTML = data.in_domain[0][0] +'&nbsp&nbsp' +data.in_domain[1][0]+'&nbsp&nbsp' +data.in_domain[2][0];
 			DrawMore(data.in_domain,'domian_WordList')
-		}else if(data.in_domain.length<=3 &&data.in_domain.length==0){
+		}else if(data.in_domain.length<=3 &&data.in_domain.length>0){
 		    var html ='';
 		    for(var i=0;i<data.in_domain.length;i++){
-			    html = html + data.in_domain[i][0] +'&nbsp&nbsp';
+		    	if(i==0){
+		    		html = html + data.in_domain[i][0];
+		    	}else{
+		    		html = html +'&nbsp&nbsp'+ data.in_domain[i][0] ;
+		    	}			    
 			}
 			domains.innerHTML = html;
 			$('#moreanalyse_identify').css('display','none');
@@ -752,7 +765,7 @@ function Draw(data,div){
 				}
 			    html = html + '<span class="img-photo" style="margin-left:5px;display:block;float:left;"><img id="portraitImg" src="'+ data[i][2] + '"alt="'+data[i][1]+'" width="30" height="30"></span>';
 			}
-			$('#more_'+div).css('display','none');
+			$('#more'+div).css('display','none');
 			$('#'+div).append(html);
 		}else if(data.length>5){
 			var html = '';
