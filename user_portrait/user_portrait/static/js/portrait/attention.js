@@ -8,6 +8,7 @@ Attention.prototype = {   //获取数据，重新画表
 Draw_attention:function(data){
   var texts = '';
 	var items = data;
+  var UserName = document.getElementById('username').innerHTML;
 	if(items==null){
 		var say = document.getElementById('test1');
 		say.innerHTML = '该用户暂无此数据';
@@ -30,7 +31,6 @@ function attention(data,UserID,UserName,texts){
     var nod = {};
     var linestyle = '';
     var select_graph = $('input[name="graph-type"]:checked').attr("title");
-    console.log(select_graph);
     nodeContent = []
     nod['category'] = 0;
     nod['name'] = UserName+'('+UserID+')';
@@ -251,8 +251,6 @@ function draw_topic(data){
     $('#topic').empty();
     var datas = data['topic'];
     html = '';
-    console.log(datas);
-    console.log(datas.length);
     if(datas.length==0){
       html = '无入库用户';
     }else{
@@ -530,7 +528,8 @@ function bind_social_mode_choose(){
     $('#graph_button').click(function(){
       var select_graph = $('input[name="graph-type"]:checked').val();
       var select_num=document.getElementById('num-range').value;
-      var UserName = document.getElementById('nickname').innerHTML;
+      var UserName = document.getElementById('username').innerHTML;
+      console.log(username);
         $("#test1").empty();
         $("#test0").empty();
         $("#field").empty();
