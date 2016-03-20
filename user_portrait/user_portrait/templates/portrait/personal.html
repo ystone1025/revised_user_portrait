@@ -788,7 +788,7 @@ function Draw(data,div){
 
 function DrawWeibo(data, div_name, sub_div_name){
     page_num = 5;
-		
+	console.log(data);	
     if (data.length < page_num) {
         //console.log('data_length', data.length);
         $('#'+ div_name + ' #pageGro .pageUp').css('display', 'none');
@@ -904,14 +904,14 @@ function page_group_influ_weibo(start_row,end_row,data, sub_div_name){
         if (i%2 ==0){
             html += '<div style="padding:5px;background:whitesmoke;font-size:14px">';
             html += '<p style="margin-left:10px;"><a target="_blank" href="/index/personal/?uid=' + uid + '">' + Pname + '</a>&nbsp;&nbsp;发布:<font color=black>' + text + '</font></p>';
-            html += '<p style="margin-top:-5px;margin-left:10px;"><font color:#e0e0e0 style="text-decoration: underline;">' + date + '</font>-<a target="_blank" href="http://weibo.com/"'+uid+'/'+mid+'>用户详情</a>-<a>转发树</a>';
+            html += '<p style="margin-top:-5px;margin-left:10px;"><a color:#e0e0e0 target="_blank" style="text-decoration: underline;" href="http://weibo.com/'+uid+'/'+mid+'">' + date + '</a>-<a target="_blank" href="/index/personal_detail/?uid=' + uid + '">用户详情</a>-<a>转发树</a>';
             html += '<span style="margin-left:300px;"><a>转发数（'+ retweet_count +'）</a><a>评论数（'+ comment_count +'）</a></span></p>';
 			html += '</div>'
     }
         else{
             html += '<div style="padding;5px;">';
             html += '<p style="margin-left:10px;"><a target="_blank" href="/index/personal/?uid=' + uid + '">' + Pname + '</a>&nbsp;&nbsp;发布:<font color=black>' + text + '</font></p>';    
-            html += '<p style="margin-top:-5px;margin-left:10px;"><font color:#e0e0e0 style="text-decoration: underline;">' + date + '</font>-<a target="_blank" href="http://weibo.com/"'+uid+'/'+mid+'>用户详情</a>-<a>转发树</a>';
+            html += '<p style="margin-top:-5px;margin-left:10px;"><a color:#e0e0e0 target="_blank" style="text-decoration: underline;" href="http://weibo.com/'+uid+'/'+mid+'">' + date + '</a>-<a target="_blank" href="/index/personal_detail/?uid=' + uid + '">用户详情</a>-<a>转发树</a>';
             html += '<span style="margin-left:330px;"><a>转发数（'+ retweet_count +'）</a><a>评论数（'+ comment_count +'）</a></span></p>';
 			html += '</div>';
         }
